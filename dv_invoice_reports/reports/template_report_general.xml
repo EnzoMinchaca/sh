@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="dv_invoice_reports.reporte_filtros_template">
+        <t t-call="web.html_container">
+            <meta charset="UTF-8"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="dv_invoice_reports.external_layout">
+                
+                    <t t-if="tipo_reporte=='vendedor_marca'">
+                        <div width="100%" class="page">
+                            <!-- Contadores Globales -->
+                            <t t-set="static_height_page" t-value="254"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_marca" t-value="0"/>
+
+                            <!-- ITERACION DE VENDEDORES -->
+                            <t t-foreach="report_data" t-as="vendedor_data">
+
+                                <t t-if="(current_height + 12.35) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <t t-set="current_height" t-value="current_height + 3.70"/>
+
+                                <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                        Cliente: <t t-esc="vendedor_data['vendedor'][:67]  or 'Sin vendedor'"/>
+                                    </div>
+                                </div>
+
+                                <!-- Contadores -->
+                                <t t-set="count_marca" t-value="count_marca + 1"/>
+                                <t t-set="count_vendedor" t-value="0"/>
+
+                                <!-- ITERACION DE MARCAS -->
+                                <t t-foreach="vendedor_data['marcas']" t-as="marca_data">
+
+                                    <t t-set="count_vendedor" t-value="count_vendedor + 1"/>
+
+
+                                    <t t-if="(current_height + 3) > static_height_page">
+                                        <div style="page-break-before: always;"></div>
+
+                                        <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                Cliente: <t t-esc="vendedor_data['vendedor'][:67] or 'Sin vendedor'"/>
+                                            </div>
+                                        </div>
+
+                                        <t t-set="current_height" t-value="3.70"/>
+                                    </t>
+
+                                    <t t-if="len(vendedor_data['marcas']) == count_vendedor and len(report_data) != 1">
+                                        <t t-if="(current_height + 8.75) > static_height_page">
+                                            <div style="page-break-before: always;"></div>
+
+                                            <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                    Cliente: <t t-esc="vendedor_data['vendedor'][:67]  or 'Sin vendedor'"/>
+                                                </div>
+                                            </div>
+
+                                            <t t-set="current_height" t-value="3.70"/>
+                                        </t>
+                                    </t>
+
+                                    <!-- Contadores -->
+                                    <t t-set="current_height" t-value="current_height + 3"/>
+
+                                    <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white; line-height: 1;">
+
+                                        <tbody>
+                                            <tr>
+                                                <td width="3%"></td>
+                                                <td width="41%" style="text-align: left; padding: 0px; margin:0px;">
+                                                    <t t-out="str(marca_data['marca']).upper()[:35]"/>
+                                                </td>
+                                                <!-- Importe Soles -->
+                                                <td width="16%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-raw="'%.2f' % (marca_data['total_pen'] or 0.0)"/>
+                                                </td>       
+                                                <!-- Importe IGV Soles -->
+                                                <td width="14%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-out="'{:.2f}'.format(marca_data['total_pen_impuestos'])"/>
+                                                </td>
+                                                <!-- Importe USD -->
+                                                <td width="13%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-raw="'%.2f' % (marca_data['total_usd'] or 0.0)"/>
+                                                </td>
+                                                <!-- Importe USD IGV -->
+                                                <td width="13%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-out="'{:.2f}'.format(marca_data['total_usd_impuestos'])"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr t-if="len(vendedor_data['marcas']) == count_vendedor and len(report_data) != 1">
+                                                <t t-set="current_height" t-value="current_height + 4.94"/>
+
+                                                <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_pen_vendedor'])" /></strong>
+                                                </td>
+                                                
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_pen_vendedor_impuestos'])" /></strong>
+                                                </td>
+                                                
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_usd_vendedor'])" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align: center; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 95%;"/>
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_usd_vendedor_impuestos'])" /></strong>
+                                                </td>
+                                            </tr>
+
+                                            <tr t-if="len(vendedor_data['marcas']) == count_vendedor and len(report_data) == count_marca">
+                                                <t t-set="current_height" t-value="current_height + 4.94"/>
+
+                                                <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                    <strong>Total Reporte:</strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(total_pen_reporte)" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(total_pen_reporte_impuestos - total_pen_reporte)" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(total_usd_reporte)" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align: center; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 95%;"/>
+                                                    <strong><t t-esc="'{:.2f}'.format(total_usd_reporte_impuestos - total_usd_reporte)" /></strong>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+                                </t>
+                            </t>
+                        </div>
+                    </t>
+                    
+                    <t t-elif="tipo_reporte=='cliente_producto'">
+                        <div width="100%" class="page">
+                            <!-- Contadores Globales -->
+                            <t t-set="static_height_page" t-value="254"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_marca" t-value="0"/>
+
+                            <!-- ITERACION DE CLIENTES -->
+                            <t t-foreach="report_data" t-as="vendedor_data">
+
+                                <t t-if="(current_height + 12.35) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <t t-set="current_height" t-value="current_height + 3.70"/>
+
+                                <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                        Cliente: <t t-esc="vendedor_data['cliente'][:67]  or 'Sin Cliente'"/>
+                                    </div>
+                                </div>
+
+                                <!-- Contadores -->
+                                <t t-set="count_marca" t-value="count_marca + 1"/>
+                                <t t-set="count_vendedor" t-value="0"/>
+
+                                <!-- ITERACION DE PRODUCTOS -->
+                                <t t-foreach="vendedor_data['productos']" t-as="marca_data">
+
+                                    <t t-set="count_vendedor" t-value="count_vendedor + 1"/>
+
+
+                                    <t t-if="(current_height + 3) > static_height_page">
+                                        <div style="page-break-before: always;"></div>
+
+                                        <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                Cliente: <t t-esc="vendedor_data['cliente'][:67] or 'Sin Cliente'"/>
+                                            </div>
+                                        </div>
+
+                                        <t t-set="current_height" t-value="3.70"/>
+                                    </t>
+
+                                    <t t-if="len(vendedor_data['productos']) == count_vendedor and len(report_data) != 1">
+                                        <t t-if="(current_height + 8.65) > static_height_page">
+                                            <div style="page-break-before: always;"></div>
+
+                                            <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                    Cliente: <t t-esc="vendedor_data['cliente'][:67]  or 'Sin Cliente'"/>
+                                                </div>
+                                            </div>
+
+                                            <t t-set="current_height" t-value="3.70"/>
+                                        </t>
+                                    </t>
+
+                                    <!-- Contadores -->
+                                    <t t-set="current_height" t-value="current_height + 3"/>
+
+                                    <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white; line-height: 1;">
+
+                                        <tbody>
+                                            <tr>
+                                                <td width="3%"></td>
+                                                <td width="41%" style="text-align: left; padding: 0px; margin:0px;">
+                                                    <t t-out="str(marca_data['producto']).upper()[:35]"/>
+                                                </td>
+                                                <!-- Importe Soles -->
+                                                <td width="16%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-raw="'%.2f' % (marca_data['total_pen'] or 0.0)"/>
+                                                </td>       
+                                                <!-- Importe IGV Soles -->
+                                                <td width="14%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-out="'{:.2f}'.format(marca_data['total_pen_impuestos'] - marca_data['total_pen'])"/>
+                                                </td>
+                                                <!-- Importe USD -->
+                                                <td width="13%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-raw="'%.2f' % (marca_data['total_usd'] or 0.0)"/>
+                                                </td>
+                                                <!-- Importe USD IGV -->
+                                                <td width="13%" style="text-align: center; padding: 0px; margin:0px;">
+                                                    <t t-out="'{:.2f}'.format(marca_data['total_usd_impuestos'] - marca_data['total_usd'])"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr t-if="len(vendedor_data['productos']) == count_vendedor and len(report_data) != 1">
+                                                <t t-set="current_height" t-value="current_height + 5.65"/>
+
+                                                <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_pen_cliente'])" /></strong>
+                                                </td>
+                                                
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_pen_cliente_impuestos'] - vendedor_data['total_pen_cliente'])" /></strong>
+                                                </td>
+                                                
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_usd_cliente'])" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align: center; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 95%;"/>
+                                                    <strong><t t-esc="'{:.2f}'.format(vendedor_data['total_usd_cliente_impuestos'] - vendedor_data['total_usd_cliente'])" /></strong>
+                                                </td>
+                                            </tr>
+
+                                            <tr t-if="len(vendedor_data['productos']) == count_vendedor and len(report_data) == count_marca">
+                                                <t t-set="current_height" t-value="current_height + 5.65"/>
+
+                                                <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                    <strong>Total Reporte:</strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(total_pen_reporte)" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(total_pen_reporte_impuestos - total_pen_reporte)" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong><t t-esc="'{:.2f}'.format(total_usd_reporte)" /></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align: center; font-size:14px;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 95%;"/>
+                                                    <strong><t t-esc="'{:.2f}'.format(total_usd_reporte_impuestos - total_usd_reporte)" /></strong>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+                                </t>
+                            </t>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte=='ventas_vendedor'">
+                        <div width="100%" class="page">
+                            <!-- Contadores Globales -->
+                            <t t-set="static_height_page" t-value="261"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_marca" t-value="0"/>
+
+                            <t t-set="suma_pen" t-value="0"/>
+                            <t t-set="suma_pen_igv" t-value="0"/>
+
+                            <t t-set="suma_usd" t-value="0"/>
+                            <t t-set="suma_usd_igv" t-value="0"/>
+
+                            <t t-foreach="report_data" t-as="marca_data">
+
+                                <!-- Falta la condicional del salto de linea  -->
+
+                                <t t-if="(current_height + 3) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <!-- Contador y condicional del vendedor para pie de pagina -->
+                                <t t-set="current_height" t-value="current_height + 3"/>
+
+                                <table style="width: 100%; font-size:13px; color: #333333; border-collapse: unset; border-color: white;">
+
+                                    <tbody>
+                                        <tr>
+                                            <td width="3%"></td>
+                                            <td width="41%" style="text-align: left; padding: 0px; margin: 0px;">
+                                                <t t-out="str(marca_data['vendedor']).upper()[:35]"/>
+                                            </td>
+                                            <!-- Importe Soles -->
+                                            <td width="16%" style="text-align: center; padding: 0px; margin: 0px;">
+                                                <t t-raw="'%.2f' % (marca_data['total_pen_vendedor_sin_impuestos'] or 0.0)"/>
+                                                <t t-set="suma_pen" t-value="suma_pen + marca_data['total_pen_vendedor_sin_impuestos']"/>
+                                            </td>       
+                                            <!-- Importe IGV Soles -->
+                                            <td width="14%" style="text-align: center; padding: 0px; margin: 0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_pen_vendedor_valor_impuestos'] )"/>
+                                                <t t-set="suma_pen_igv" t-value="suma_pen_igv + marca_data['total_pen_vendedor_valor_impuestos']"/>
+                                            </td>
+                                            <!-- Importe USD -->
+                                            <td width="13%" style="text-align: center; padding: 0px; margin: 0px;">
+                                                <t t-raw="'%.2f' % (marca_data['total_usd_vendedor_sin_impuestos'] or 0.0)"/>
+                                                <t t-set="suma_usd" t-value="suma_usd + marca_data['total_usd_vendedor_sin_impuestos']"/>
+                                            </td>
+                                            <!-- Importe USD IGV -->
+                                            <td width="13%" style="text-align: center; padding: 0px; margin: 0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_usd_vendedor_valor_impuestos'])"/>
+                                                <t t-set="suma_usd_igv" t-value="suma_usd_igv + marca_data['total_usd_vendedor_valor_impuestos']"/>
+                                            </td>
+                                        </tr>
+
+                                        <t t-set="count_marca" t-value="count_marca + 1"/>
+
+                                        <tr t-if="len(report_data) == count_marca">
+                                            
+                                            <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                <strong>Total Reporte:</strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(suma_pen)" /></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(suma_pen_igv)" /></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(suma_usd)" /></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align: center; font-size:14px;">
+                                                <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;"/>
+                                                <strong><t t-esc="'{:.2f}'.format(suma_usd_igv)" /></strong>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte=='ventas_cliente'">
+                        <div width="100%" class="page">
+                            <!-- Contadores Globales -->
+                            <t t-set="static_height_page" t-value="261"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_marca" t-value="0"/>
+
+                            <t t-set="suma_pen" t-value="0"/>
+                            <t t-set="suma_pen_igv" t-value="0"/>
+
+                            <t t-set="suma_usd" t-value="0"/>
+                            <t t-set="suma_usd_igv" t-value="0"/>
+
+                            <t t-foreach="report_data" t-as="marca_data">
+
+                                <!-- Falta la condicional del salto de linea  -->
+                                <t t-if="(current_height + 3) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <!-- Contador y condicional del vendedor para pie de pagina -->
+                                <t t-set="current_height" t-value="current_height + 3"/>
+
+                                <table style="width: 100%; font-size:13px; color: #333333; border-collapse: unset; border-color: white;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="3%"></td>
+                                            <td width="41%" style="text-align: left; padding: 0px; margin:0px;">
+                                                <t t-out="str(marca_data['cliente']).upper()[:35]"/>
+                                            </td>
+                                            <!-- Importe Soles -->
+                                            <td width="16%" style="text-align: center; padding: 0px; margin:0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_pen_cliente_sin_impuestos'] )"/>
+                                                <t t-set="suma_pen" t-value="suma_pen + marca_data['total_pen_cliente_sin_impuestos']"/>
+                                            </td>       
+                                            <!-- Importe IGV Soles -->
+                                            <td width="14%" style="text-align: center; padding: 0px; margin:0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_pen_cliente_valor_impuestos'] )"/>
+                                                <t t-set="suma_pen_igv" t-value="suma_pen_igv + marca_data['total_pen_cliente_valor_impuestos']"/>
+                                            </td>
+                                            <!-- Importe USD -->
+                                            <td width="13%" style="text-align: center; padding: 0px; margin:0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_usd_cliente_sin_impuestos'] )"/>
+                                                <t t-set="suma_usd" t-value="suma_usd + marca_data['total_usd_cliente_sin_impuestos']"/>
+                                            </td>
+                                            <!-- Importe USD IGV -->
+                                            <td width="13%" style="text-align: center; padding: 0px; margin:0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_usd_cliente_valor_impuestos'])"/>
+                                                <t t-set="suma_usd_igv" t-value="suma_usd_igv + marca_data['total_usd_cliente_valor_impuestos']"/>
+                                            </td>
+                                        </tr>
+
+                                        <t t-set="count_marca" t-value="count_marca + 1"/>
+
+                                        <tr t-if="len(report_data) == count_marca">
+                                            
+                                            <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                <strong>Total Reporte:</strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(suma_pen)" /></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(suma_pen_igv)" /></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(suma_usd)" /></strong>
+                                            </td>
+
+                                            <td colspan="1" style="position: relative; padding: 4px 0px 0px 0px; text-align: center; font-size:14px;">
+                                                <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;"/>
+                                                <strong><t t-esc="'{:.2f}'.format(suma_usd_igv)" /></strong>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte=='compras'">
+                        <div width="100%" class="page">
+                            <!-- Contadores Globales -->
+                            <t t-set="static_height_page" t-value="261"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_marca" t-value="0"/>
+
+                            <t t-foreach="report_data" t-as="marca_data">
+
+                                <!-- Falta la condicional del salto de linea  -->
+                                <t t-if="(current_height + 3) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <!-- Contador y condicional del vendedor para pie de pagina -->
+                                <t t-set="current_height" t-value="current_height + 3"/>
+
+                                <table style="width: 100%; font-size:13px; color: #333333; border-collapse: unset; border-color: white;">
+
+                                    <tbody>
+                                        <tr>
+                                            <td width="3%"></td>
+                                            <td width="41%" style="text-align: left; margin:0px; padding: 0px;">
+                                                <t t-out="str(marca_data['proveedor']).upper()[:35]"/>
+                                            </td>
+                                            <!-- Importe Soles -->
+                                            <td width="16%" style="text-align: center; margin:0px; padding: 0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_pen_cliente'] )"/>
+                                            </td>       
+                                            <!-- Importe IGV Soles -->
+                                            <td width="14%" style="text-align: center; margin:0px; padding: 0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_pen_cliente_valor_impuestos'] )"/>
+                                            </td>
+                                            <!-- Importe USD -->
+                                            <td width="13%" style="text-align: center; margin:0px; padding: 0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_usd_cliente'] )"/>
+                                            </td>
+                                            <!-- Importe USD IGV -->
+                                            <td width="13%" style="text-align: center; margin:0px; padding: 0px;">
+                                                <t t-out="'{:.2f}'.format(marca_data['total_usd_cliente_valor_impuestos'])"/>
+                                            </td>
+                                        </tr>
+
+                                        <t t-set="count_marca" t-value="count_marca + 1"/>
+
+                                        <tr t-if="len(report_data) == count_marca">
+                                            
+                                            <td colspan="2" style="position: relative; padding: 4px 0px 0px 0px; text-align: end; font-size:14px;">
+                                                <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 97%;"/>
+                                                <strong>Total Reporte:</strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(total_pen_reporte)"/></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(total_pen_reporte_valor_impuestos)"/></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong><t t-esc="'{:.2f}'.format(total_usd_reporte)"/></strong>
+                                            </td>
+
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align:center; font-size:14px;">
+                                                <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;" />
+                                                <strong><t t-esc="'{:.2f}'.format(total_usd_reporte_valor_impuestos)"/></strong>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte=='ranking_productos'">
+                        <div class="page">
+                            <t t-set="static_height_page" t-value="261"/>
+                            <t t-set="current_height" t-value="0"/>
+                            <t t-set="count_ranking" t-value="0"/>
+
+                            <!-- ITERACION DE CLIENTE -->
+                            <t t-foreach="report_data[0]" t-as="ranking">
+
+                                <t t-if="(current_height + 3) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <t t-set="count_ranking" t-value="count_ranking + 1"/>
+                                <t t-set="current_height" t-value="current_height + 3"/>
+
+                                <table style="width: 100%; font-size:13px; color: #333333; border-collapse: unset; border-color: white;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="60%" style="margin:0px; padding:0px; text-align:start;">
+                                                <t t-esc="str(ranking['producto']).upper()[:60]"/>
+                                            </td>
+
+                                            <td width="16%" style="text-align:center; margin:0px; padding:0px;">
+                                                <t t-esc="ranking['marca'].upper()"/>
+                                            </td>
+
+                                            <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                <t t-esc="'{:.2f}'.format(ranking['cantidad'])"/>
+                                            </td>
+
+                                            <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                <t t-esc="'{:.2f}'.format(ranking['total_pen'])"/>
+                                            </td>
+
+                                            <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                <t t-esc="'{:.2f}'.format(ranking['total_dolar'])"/>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr t-if="count_ranking == len(report_data[0])">
+
+                                            <td colspan="3" style="padding: 4px 0px 0px 0px; position: relative; text-align:end;">
+                                                <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 100%;"/>
+                                                <strong style="padding: 0px 8px 0px 0px">Total Reporte:</strong>
+                                            </td>
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                <strong>
+                                                    <t t-out="'{:.2f}'.format(total_pen_reporte)"/>
+                                                </strong>
+                                            </td>
+                                            <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; text-align:center; font-size:14px;">
+                                                <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;" />
+                                                <strong>
+                                                    <t t-out="'{:.2f}'.format(total_usd_reporte)"/>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </t>
+
+                        </div>
+                    </t>
+
+                    <t t-else="">
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

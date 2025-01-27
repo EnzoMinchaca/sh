@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="view_order_line_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.line.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']//tree//field[@name='product_uom_qty']" position="before">
+                    <field name="route_filtered_ids"  column_invisible="True" />  
+                    <field name="selected_route_id" string="Route" options="{'no_create': True}" domain="[('id', 'in', route_filtered_ids)]"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']//form//group//group//field[@name='route_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree//field[@name='route_id']" position="attributes">
+                    <attribute name="column_invisible">True</attribute>
+                    <attribute name="string">All Routes</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

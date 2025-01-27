@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="external_layout">
+            <t t-if="not o" t-set="o" t-value="docs"/>
+            <!-- <t t-set="o" t-value="o.with_context(lang=lang)"/> -->
+
+            <t t-if="not company">
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <t t-call="dv_invoice_reports.custom_external_layout_standard">
+                <t t-out="0"/>
+            </t>
+        </template>
+
+        <template id="custom_external_layout_standard">
+
+            <div t-attf-class="header">
+
+                <div style="min-height:30px;"></div>
+
+                <div style="background-color: #D3D3D3;">
+
+                    <t t-if="tipo_reporte == 'vendedor_marca'">
+                        <div class="m0 p0" style="text-align:center; flex-grow: 1; margin-bottom:0px;">
+                            <h5 class="m0 p0" style="margin-bottom:0px;">
+                                <strong>
+                                    Reporte de Vendedor por Marca Del
+                                    <t t-out="fecha_inicio"/> al <t t-out="fecha_fin"/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+
+                    <t t-if="tipo_reporte == 'cliente_producto'">
+                        <div class="m0 p0" style="text-align:center; flex-grow: 1; margin-bottom:0px;">
+                            <h5 class="m0 p0" style="margin-bottom:0px;">
+                                <strong>
+                                    Reporte de Cliente por Producto Del
+                                    <t t-out="fecha_inicio"/> al <t t-out="fecha_fin"/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+                    
+                    <t t-elif="tipo_reporte == 'ventas_vendedor'">
+                        <div class="m0 p0" style="text-align:center; flex-grow: 1; margin-bottom:0px;">
+                            <h5 class="m0 p0" style="margin-bottom:0px;">
+                                <strong>
+                                    Reporte de Ventas por Vendedor Del
+                                    <t t-out="fecha_inicio"/> al <t t-out="fecha_fin"/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte == 'ventas_cliente'">
+                        <div class="m0 p0" style="text-align:center; flex-grow: 1; margin-bottom:0px;">
+                            <h5 class="m0 p0" style="margin-bottom:0px;">
+                                <strong>
+                                    Reporte de Ventas por Cliente Del
+                                    <t t-out="fecha_inicio"/> al <t t-out="fecha_fin"/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte == 'compras'">
+                        <div class="m0 p0" style="text-align:center; flex-grow: 1; margin-bottom:0px;">
+                            <h5 class="m0 p0" style="margin-bottom:0px;">
+                                <strong>
+                                    Reporte de Compras Del
+                                    <t t-out="fecha_inicio"/> al <t t-out="fecha_fin"/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+
+                    <t t-elif="tipo_reporte == 'ranking_productos'">
+                        <div class="m0 p0" style="text-align:center; flex-grow: 1; margin-bottom:0px;">
+                            <h5 class="m0 p0" style="margin-bottom:0px;">
+                                <strong>
+                                    Reporte de Ranking de Productos Del
+                                    <t t-out="fecha_inicio"/> al <t t-out="fecha_fin"/>
+                                </strong>
+                            </h5>
+                        </div>
+                    </t>
+
+                    <!-- SEGUNDA PARTE DEL HEADER -->
+                    <div class="row m0">
+
+                        <t t-if="tipo == 'General' and tipo_reporte == 'vendedor_marca'">
+                            <div class="col-auto mp p0 text-start" style="font-size:12px; width:40%;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:60%;">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                        </t>
+
+                        <t t-if="tipo == 'General' and tipo_reporte == 'cliente_producto'">
+                            <div class="col-auto mp p0 text-start" style="font-size:12px; width:40%;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:60%;">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                        </t>
+
+                        <t t-elif="tipo == 'Detallado' and tipo_reporte == 'vendedor_marca'">
+                            <div class="col-5 mp p0 text-start" style="text-align: left; font-size:12px;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-2 m0 p0 text-center" style="font-size:16px">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                            <div class="col-5 m0 p0 text-end"></div>
+                        </t>
+
+                        <t t-elif="tipo_reporte == 'ranking_productos'">
+                            <div class="col-auto mp p0 text-start" style="font-size:12px; width:40%;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:60%;">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                        </t>
+
+                        <t t-elif="tipo == 'Detallado' and tipo_reporte == 'cliente_producto'">
+                            <div class="col-5 mp p0 text-start" style="text-align: left; font-size:12px;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-2 m0 p0 text-center" style="font-size:16px">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                            <div class="col-5 m0 p0 text-end"></div>
+                        </t>
+
+                        <t t-elif="tipo == 'Detallado' and tipo_reporte == 'ventas_vendedor'">
+                            <div class="col-5 mp p0 text-start" style="text-align: left; font-size:12px;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-2 m0 p0 text-center" style="font-size:16px">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                            <div class="col-5 m0 p0 text-end"></div>
+                        </t>
+
+                        
+                        <t t-elif="tipo == 'General' and tipo_reporte == 'ventas_vendedor'">
+                            <div class="col-auto mp p0 text-start" style="font-size:12px; width:40%;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:60%;">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                        </t>
+
+                        <t t-elif="tipo == 'Detallado' and tipo_reporte == 'ventas_cliente'">
+                            <div class="col-5 mp p0 text-start" style="text-align: left; font-size:12px;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-2 m0 p0 text-center" style="font-size:16px">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                            <div class="col-5 m0 p0 text-end"></div>
+                        </t>
+
+                        <t t-elif="tipo == 'Detallado' and tipo_reporte == 'compras'">
+                            <div class="col-5 mp p0 text-start" style="text-align: left; font-size:12px;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-2 m0 p0 text-center" style="font-size:16px">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                            <div class="col-5 m0 p0 text-end"></div>
+                        </t>
+
+                        <t t-elif="tipo == 'General' and tipo_reporte == 'ventas_cliente'">
+                            <div class="col-auto mp p0 text-start" style="font-size:12px; width:40%;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:60%;">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                        </t>
+
+                        <t t-elif="tipo == 'General' and tipo_reporte == 'compras'">
+                            <div class="col-auto mp p0 text-start" style="font-size:12px; width:40%;">
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.partner_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.country_id.name"/></p>
+                                <p style="margin:0; padding:0px 0px 0px 8px;"><t t-esc="company.vat"/></p>
+                            </div>
+                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:60%;">
+                                <strong>(Precios NO incluyen el IGV)</strong>
+                            </div>
+                        </t>
+
+                        <t t-else="">
+                        </t>
+
+                    </div>
+                </div>
+
+                <div style="min-height: 6px;"></div>
+
+                <div style="width: 100%; background-color: #D3D3D3;">
+
+                    <!-- Tabla del header general -->
+                    <t t-if="tipo == 'General' and tipo_reporte == 'vendedor_marca'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="2%"></td>
+                                    <td width="39%" style="padding: 8px 8px 8px 5px; text-align:start;"></td>
+                                    <td width="17%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Importes S/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 0px 0px 13px; text-align:center;">
+                                        <strong>
+                                            IGV S/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Importe US$/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 0px 0px 8px; text-align:center;">
+                                        <strong>
+                                            IGV US$/.
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-if="tipo == 'General' and tipo_reporte == 'cliente_producto'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="2%"></td>
+                                    <td width="42%" style="padding: 8px 8px 8px 5px; text-align:start;"></td>
+                                    <td width="16%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Importes S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 0px 0px 13px; text-align:center;">
+                                        <strong>
+                                            IGV S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 8px 0px 0px; text-align:end;">
+                                        <strong>
+                                            Importe US$/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 0px 0px 8px; text-align:center;">
+                                        <strong>
+                                            IGV US$/.
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-if="tipo == 'General' and tipo_reporte == 'ventas_vendedor'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="2%"></td>
+                                    <td width="42%" style="padding: 0px 0px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Vendedor
+                                        </strong>
+                                    </td>
+                                    <td width="16%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Importes S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 0px 0px 13px; text-align:center;">
+                                        <strong>
+                                            IGV S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 8px 0px 0px; text-align:end;">
+                                        <strong>
+                                            Importe US$/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 0px 0px 8px; text-align:center;">
+                                        <strong>
+                                            IGV US$/.
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-if="tipo == 'General' and tipo_reporte == 'ventas_cliente'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="2%"></td>
+                                    <td width="42%" style="padding: 0px 0px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Cliente
+                                        </strong>
+                                    </td>
+                                    <td width="16%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Importes S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 0px 0px 13px; text-align:center;">
+                                        <strong>
+                                            IGV S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 8px 0px 0px; text-align:end;">
+                                        <strong>
+                                            Importe US$/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 0px 0px 8px; text-align:center;">
+                                        <strong>
+                                            IGV US$/.
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-if="tipo == 'General' and tipo_reporte == 'compras'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="2%"></td>
+                                    <td width="42%" style="padding: 0px 0px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Proveedor
+                                        </strong>
+                                    </td>
+                                    <td width="16%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Importes S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 0px 0px 13px; text-align:center;">
+                                        <strong>
+                                            IGV S/.
+                                        </strong>
+                                    </td>
+                                    <td width="13%" style="padding: 0px 8px 0px 0px; text-align:end;">
+                                        <strong>
+                                            Importe US$/.
+                                        </strong>
+                                    </td>
+                                    <td width="14%" style="padding: 0px 0px 0px 8px; text-align:center;">
+                                        <strong>
+                                            IGV US$/.
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-if="tipo_reporte == 'ranking_productos'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="2%"></td>
+                                    <td width="58%" style="padding: 0px; text-align:center;">
+                                        <strong>
+                                            Producto
+                                        </strong>
+                                    </td>
+                                    <td width="16%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            Categ.
+                                        </strong>
+                                    </td>
+                                    <td width="8%" style="padding: 0px 0px 0px 13px; text-align:center;">
+                                        <strong>
+                                            Cant.
+                                        </strong>
+                                    </td>
+                                    <td width="8%" style="padding: 0px 8px 0px 0px; text-align:center;">
+                                        <strong>
+                                            S/.
+                                        </strong>
+                                    </td>
+                                    <td width="8%" style="padding: 0px 0px 0px 8px; text-align:center;">
+                                        <strong>
+                                            US$/.
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-elif="tipo == 'Detallado' and tipo_reporte == 'vendedor_marca'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="5%" style="padding: 1px 8px; text-align:center; font-weight: 900;">Fecha</td>
+                                    <td width="14.5%" style="padding: 1px 0px 1px 25px; font-weight: 900;">Documento</td>
+                                    <td width="10%" style="padding: 1px 7px; font-weight: 900;">Cliente</td>
+                                    <td width="41%" style="padding: 1px 0px 1px 145px; font-weight: 900;">Articulo</td>
+                                    <td width="3.5%" style="padding: 1px 0px; font-weight: 900;">Cant.</td>
+                                    <td width="3%" style="padding: 1px 0px; font-weight: 900;">Und</td>
+                                    <td width="7%" style="padding: 1px 0px 1px 15px; font-weight: 900;">PU</td>
+                                    <td width="5.5%" style="padding: 1px 0px; font-weight: 900;">S/.</td>
+                                    <td width="5.5%" style="padding: 1px 0px; font-weight: 900;">US$/.</td>
+                                    <td width="5%" style="padding: 1px 0px 1px 15px; font-weight: 900;">IGV.</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-if="tipo == 'Detallado' and tipo_reporte == 'cliente_producto'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="9%" style="padding: 1px 8px; text-align:center; font-weight: 900;">Articulo</td>
+                                    <!-- Local -->
+                                    <td width="9%" style="padding: 1px 0px 1px 25px; font-weight: 900;"></td>
+                                    <td width="13%" style="padding: 1px 7px; font-weight: 900;">Documento</td>
+                                    <td width="13%" style="padding: 1px 0px 1px 20px; font-weight: 900;">Fecha</td>
+                                    <td width="9%" style="padding: 1px 0px 1px 10px; font-weight: 900;">Cant.</td>
+                                    <td width="6%" style="padding: 1px 0px; font-weight: 900;">Und</td>
+                                    <td width="18%" style="padding: 1px 15px 1px 0px; font-weight: 900; text-align:center;">PU</td>
+                                    <td width="7%" style="padding: 1px 0px 1px 28px; font-weight: 900;">S/.</td>
+                                    <td width="9%" style="padding: 1px 0px 1px 24px; font-weight: 900;">US$/.</td>
+                                    <td width="7%" style="padding: 1px 0px 1px 22px; font-weight: 900;">IGV.</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>    
+
+                    <t t-elif="tipo == 'Detallado' and tipo_reporte == 'ventas_vendedor'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="40%" style="padding: 1px 7px; font-weight: 900; text-align:center;">Cliente</td>
+                                    <td width="10%" style="padding: 1px 0px 1px 0px; font-weight: 900;">Fecha E.</td>
+                                    <td width="10%" style="padding: 1px 0px; font-weight: 900;">Documento</td>
+                                    <td width="10%" style="padding: 1px 0px 1px 8px; font-weight: 900;">Fecha V.</td>
+                                    <td width="12%" style="padding: 1px 0px 1px 20px; font-weight: 900;">Estado</td>
+                                    <td width="8%" style="padding: 1px 0px 1px 10px; font-weight: 900;">S/.</td>
+                                    <td width="6%" style="padding: 1px 0px; font-weight: 900;">US$/.</td>
+                                    <td width="4%" style="padding: 1px 0px 1px 8px; font-weight: 900;">IGV.</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-elif="tipo == 'Detallado' and tipo_reporte == 'ventas_cliente'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="11%" style="padding: 1px 0px 1px 0px; font-weight: 900; text-align:center;">Fecha E.</td>
+                                    <td width="10%" style="padding: 1px 0px 1px 30px; font-weight: 900;">Documento</td>
+                                    <td width="13%" style="padding: 1px 0px 1px 50px; font-weight: 900;text-align:center;">Fecha V.</td>
+                                    <td width="33%" style="padding: 1px 0px 1px 150px; font-weight: 900;">Vendedor</td>
+                                    <td width="12%" style="padding: 1px 0px 1px 0px; font-weight: 900;">Estado</td>
+                                    <td width="7%" style="padding: 1px 0px 1px 7px; font-weight: 900;">S/.</td>
+                                    <td width="6%" style="padding: 1px 0px 1px 8px; font-weight: 900;">US$/.</td>
+                                    <td width="8%" style="padding: 1px 0px 1px 34px; font-weight: 900;">IGV.</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-elif="tipo == 'Detallado' and tipo_reporte == 'compras'">
+                        <table class="table table-borderless" style="font-size:15px">
+                            <thead>
+                                <tr>
+                                    <td width="7%" style="padding: 1px 0px; font-weight: 900; text-align:end;">Fecha</td>
+                                    <td width="15%" style="padding: 1px 0px 1px 20px; font-weight: 900;">Documento</td>
+                                    <td width="45%" style="padding: 1px 0px; font-weight: 900;text-align:center;">Articulo</td>
+                                    <td width="4%" style="padding: 1px 0px 1px 0px; font-weight: 900;">Cant.</td>
+                                    <td width="4%" style="padding: 1px 0px 1px 0px; font-weight: 900;">Und</td>
+                                    <td width="5%" style="padding: 1px 0px 1px 4px; font-weight: 900;">PU</td>  
+                                    <td width="5%" style="padding: 1px 0px 1px 20px; font-weight: 900;">S/.</td>
+                                    <td width="9%" style="padding: 1px 0px 1px 5px; font-weight: 900; text-align:center;">US$/.</td>
+                                    <td width="5%" style="padding: 1px 0px 1px 0px; font-weight: 900;">IGV.</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </t>
+
+                    <t t-else="">
+                    </t>
+
+                </div>
+            </div>
+            
+            <div t-attf-class="article o_report_layout_standard">
+                <t t-out="0"/>
+            </div>
+
+            <div t-attf-class="footer o_standard_footer">
+                <div class="text-center" style="border-top: 1px solid #6c757d;">
+                    <div class="row" style="padding-top:1px" >
+                        <div class="col-2 m0 p0 text-start">
+                            <p class="p0 mt0" style="font-size:13px; font-weight: 400;"><t t-out="fecha_report"/></p>
+                        </div>
+
+                        <div class="col-8 m0 p0 text-center" style="font-size:13px">
+                            <t t-esc="company.partner_id.name"/>
+                        </div>
+
+                        <div class="col-2 m0 p0 text-end">
+                            <p class="p0 mb0" style="font-size:13px; font-weight: 400;"><span class="page"/> / <span class="topage"/></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </template>
+
+    </data>
+</odoo>

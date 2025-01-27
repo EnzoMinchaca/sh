@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- heredo el template 'mail.Chatter' -->
+    <t t-name="dv_mail_custom.Chatter" t-inherit-mode="extension" t-inherit="mail.Chatter">
+        <xpath expr="//div[@class='flex-shrink-0 px-3 pt-3 text-truncate small mb-2']" position="replace">
+            <div class="flex-shrink-0 px-3 pt-3 text-truncate small mb-2">
+                <div t-if="props.hasFollowers" class="dynamic-width">
+                    <t t-set-slot="default">
+                        <FollowerList onAddFollowers.bind="onAddFollowers" onFollowerChanged.bind="onFollowerChanged" thread="state.thread"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

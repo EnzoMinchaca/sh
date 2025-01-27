@@ -1,0 +1,42 @@
+<odoo>
+    <!-- Vista formulario -->
+    <record id="account_letter_bank_form" model="ir.ui.view">
+        <field name="name">account.letter.bank.form</field>
+        <field name="model">account.letter.bank</field>
+        <field name="arch" type="xml">
+            <form string="Bank Letter">
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <label for="bank_id" string="Banco" style="font-weight:bold;"/>
+                        </h2>
+                        <h2>
+                            <field name="bank_id"/>
+                        </h2>
+                    </div>
+                    <notebook>
+                        <page string="Letras" name="letter_lines">
+                            <field name="letter_line_ids">
+                                <tree string="Letras" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Guardar" name="action_confirm" type="object" class="btn-primary" />
+                    <button string="Cancelar" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Accion de ventana -->
+    <record model="ir.actions.act_window" id="account_letter_bank_action">
+        <field name="name">En Banco</field>
+        <field name="res_model">account.letter.bank</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

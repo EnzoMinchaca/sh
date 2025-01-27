@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu CRM -->
+    <menuitem
+        id="crm_not_offered_reason"
+        name="Motivos de No Ofertado"
+        parent="crm.menu_crm_config_lead"
+        action="crm_not_offered_reason_action"
+        sequence="9"/>
+    <!-- Menu de pipelines -->
+    <menuitem
+        id="crm_menu_pipelines"
+        name="Pipelines"
+        parent="crm.crm_menu_root"
+        sequence="30"/>
+        <menuitem
+            id="crm_menu_pipelines_piblic"
+            name="Público"
+            parent="crm_menu_pipelines"
+            action="action_your_pipeline_public"
+            sequence="31"/>
+        <menuitem
+            id="crm_menu_pipelines_private"
+            name="Privado"
+            parent="crm_menu_pipelines"
+            action="action_your_pipeline_private"
+            sequence="32"/>
+    <!-- Menu proyectos -->
+    <menuitem
+        id="menu_project_config_category"
+        name="Categorías de proyecto"
+        parent="project.menu_project_config"
+        action="project_category_action_form"
+        groups="project.group_project_manager"
+        sequence="10"/>
+    <menuitem
+        id="menu_project_general_view"
+        name="Informe de proyectos"
+        parent="project.menu_project_report"
+        action="project_project_action_general"
+        sequence="10"/>
+</odoo>

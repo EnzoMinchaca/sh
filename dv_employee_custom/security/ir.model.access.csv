@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_skill_report_admin,hr.employee.skill.report.admin,model_hr_employee_skill_report,base.group_system,1,1,1,1
+access_hr_employee_skill_report_user,hr.employee.skill.report.user,model_hr_employee_skill_report,base.group_user,1,1,1,1
+access_hr_employee_skill_admin,hr.employee.skill.admin,model_hr_employee_skill,base.group_system,1,1,1,1
+access_hr_employee_skill_user,hr.employee.skill.user,model_hr_employee_skill,base.group_user,1,1,1,1
+access_alerta_renovacion_admin,alerta.renovacion.admin,model_alerta_renovacion,base.group_system,1,1,1,1
+access_alerta_renovacion_user,alerta.renovacion.user,model_alerta_renovacion,base.group_user,1,1,1,1
+access_alerta_renovacion_usuario_asignado,alerta.renovacion.usuario.asignado,model_alerta_renovacion,dv_employee_custom.group_alerta_renovacion_usuario_asignado,1,1,0,0

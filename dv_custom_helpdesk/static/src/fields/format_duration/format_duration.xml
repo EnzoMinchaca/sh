@@ -1,0 +1,5 @@
+<odoo>
+    <t t-name="dv_custom_helpdesk.FieldDuration">
+        <t t-esc="props.record.data.shortTimeInStage"/>
+    </t>
+</odoo>

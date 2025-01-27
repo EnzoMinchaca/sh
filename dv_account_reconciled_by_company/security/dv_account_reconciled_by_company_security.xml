@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Define a new rule for modifying access to account.move -->
+        <record id="account_move_custom_rule" model="ir.rule">
+            <field name="name">Conciliación de Asiento contable</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('company_id', 'in', company_ids),
+                    ('company_id', 'in', user.reconcile_companies.ids)
+                ]
+            </field>
+            <field name="global" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="account_move_line_custom_rule" model="ir.rule">
+            <field name="name">Conciliación de Apunte contable</field>
+            <field name="model_id" ref="account.model_account_move_line"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('company_id', 'in', company_ids),
+                    ('company_id', 'in', user.reconcile_companies.ids)
+                ]
+            </field>
+            <field name="global" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="account_bank_statement_line_custom_rule" model="ir.rule">
+            <field name="name">Conciliación de Extracto Bancario</field>
+            <field name="model_id" ref="account_accountant.model_account_bank_statement_line"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('company_id', 'in', company_ids),
+                    ('company_id', 'in', user.reconcile_companies.ids)
+                ]
+            </field>
+            <field name="global" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="account_account_custom_rule" model="ir.rule">
+            <field name="name">Conciliación de Cuentas</field>
+            <field name="model_id" ref="account.model_account_account"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('company_id', 'in', company_ids),
+                    ('company_id', 'in', user.reconcile_companies.ids)
+                ]
+            </field>
+            <field name="global" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="account_fiscal_position_custom_rule" model="ir.rule">
+            <field name="name">Conciliación de Cuenta por posición fiscal</field>
+            <field name="model_id" ref="account.model_account_fiscal_position"/>
+            <field name="domain_force">
+                [
+                    '|',
+                    ('company_id', 'in', company_ids),
+                    ('company_id', 'in', user.reconcile_companies.ids)
+                ]
+            </field>
+            <field name="global" eval="True"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>

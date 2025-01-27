@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchaseorder_document_inherit" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//span[@t-field='line.name']" position="after">
+            <!-- Espacio y luego el código de barras si está presente -->
+            <t t-if="line.product_id.barcode">
+                <br/> <!-- Espacio debajo del nombre -->
+                <div t-attf-style="width:{{ barcode_width }}; height:{{ barcode_height }};">
+                    <!-- Widget obtenido de product.product_product_templates.xml -->
+                    <div t-out="line.product_id.barcode"
+                        t-options="{
+                            'widget': 'barcode',
+                            'symbology': 'auto',
+                            'img_style': 'width:100%;height:1cm'
+                        }"/>
+                    <!-- Número del código de barras centrado -->
+                    <div style="font-size: small; text-align:center;">
+                        <span t-esc="line.product_id.barcode"/>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,142 @@
+<odoo>
+    <record id="view_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Herencia de los grupos -->
+            <xpath expr="//group[1]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//form//sheet" position="before">
+                <header>
+                    <button name="transfer_data_to_lines" string="Transferir Datos a Líneas" type="object" class="oe_highlight"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="before">
+                <field name="class_types" widget="many2many_tags"/>
+                <field name="is_externo"/>
+                <field name="is_interno"/>
+                <field name="is_cliente"/>
+                <field name="is_proveedor"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='contact_addresses']" position="after">
+                <page string="Datos" name="datos_cliente">
+                    <field name="data_line_ids">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="razon_social" string="Razón Social"
+                                column_invisible="parent.is_interno or parent.is_externo"
+                                required="not parent.is_interno and not parent.is_externo"/>
+                            <field name="razon_social" string="Nombre y Apellido"
+                                column_invisible="parent.is_cliente or parent.is_proveedor"
+                                required="not parent.is_cliente and not parent.is_proveedor"/>
+                            <field name="tipo_documento"
+                                column_invisible="parent.is_interno"/>
+                            <field name="vat" string="Número de documento"
+                                column_invisible="parent.is_interno"
+                                required="not parent.is_interno"/>
+                            <field name="nombre_comercial"
+                                column_invisible="not parent.is_cliente"/>
+                            <field name="category_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
+                                column_invisible="parent.is_cliente or parent.is_interno"
+                                required="parent.is_externo"/>
+                            <field name="area"
+                                column_invisible="not parent.is_interno"
+                                required="parent.is_interno"/>
+                            <field name="funcion"
+                                column_invisible="not parent.is_interno"
+                                required="parent.is_interno"/>
+                            <field name="email"
+                                column_invisible="not parent.is_externo and not parent.is_interno"
+                                required="parent.is_interno"/>
+                            <field name="mobile"
+                                column_invisible="not parent.is_externo and not parent.is_interno"
+                                required="parent.is_interno or parent.is_externo"/>
+                            <field name="comentario"
+                                column_invisible="not parent.is_externo"/>
+                            <field name="tipo" readonly="1"/>
+                            <field name="tipo_id" widget="many2many_tags" options="{'no_create': True, 'no_quick_create': True, 'is_create': False}"/>
+                            <field name="partner_id" column_invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Contacto" invisible="is_interno or is_externo">
+                    <field name="contact_line_ids">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <field name="name" required="parent.is_cliente or parent.is_proveedor"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="area"/>
+                            <field name="funcion"/>
+                            <field name="comentario"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Ubicación" invisible="is_interno">
+                    <field name="ubicacion_line_ids">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <field name="tipo"  required="parent.is_cliente or parent.is_proveedor"/>
+                            <field name="contact_address" required="parent.is_cliente or parent.is_proveedor or parent.is_externo"/>
+                            <field name="ref"/>
+                            <field name="distrito" required="parent.is_cliente or parent.is_proveedor or parent.is_externo"/>
+                            <field name="ciudad" required="parent.is_cliente or parent.is_proveedor or parent.is_externo"/>
+                            <field name="pais_id" required="parent.is_cliente or parent.is_proveedor or parent.is_externo"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Accesos" invisible="is_externo or is_interno">
+                    <field name="accesos_line_ids">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle" />
+                            <field name="nombre_acceso" required="parent.is_cliente or parent.is_proveedor"/>
+                            <field name="link" required="parent.is_cliente or parent.is_proveedor"/>
+                            <field name="usuario" required="parent.is_cliente or parent.is_proveedor"/>
+                            <field name="clave" required="parent.is_cliente or parent.is_proveedor"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <!-- Herencia de la vista lista -->
+    <record id="view_partner_tree_inherit" model="ir.ui.view">
+        <field name="name">res.partner.tree.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">is_favorite desc</attribute>
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="transfer_data_to_lines" string="Transferir Datos a Líneas" type="object"/>
+                    <button name="force_update_data_line" string="Migrar tipos" type="object"/>
+                    <button name="asign_master_create_access" string="Asignar creador de usuarios" 
+                        type="object" class="oe_highlight" groups="dvl_contacts_custom.group_partner_admin"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='display_name']" position="before">
+                <field name="is_favorite" string="Favorito" nolabel="1" widget="boolean_favorite"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Herencia de la vista kanban -->
+    <record id="view_partner_kanban_inherit" model="ir.ui.view">
+        <field name="name">res.partner.kanban.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="is_favorite"/>
+            </xpath>
+            <xpath expr="//t[@t-if='!record.is_company.raw_value']" position="before">
+                <field name="is_favorite" widget="boolean_favorite" nolabel="1" force_save="1" style="margin-right: 8px;"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

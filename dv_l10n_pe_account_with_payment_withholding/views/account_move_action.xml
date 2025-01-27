@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_custom_confirm" model="ir.actions.server">
+            <field name="name">Actualizar Monto de Retención</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    if record.state == 'posted' and record.payment_state != 'paid':
+                        percent = record.percent_retention / 100
+                        if not record.status_retention_validate and record.amount_retention != (record.amount_total * percent):
+                            record.write({'amount_retention': record.amount_total * percent})
+            </field>
+        </record>
+    </data>
+</odoo>

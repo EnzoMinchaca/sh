@@ -1,0 +1,48 @@
+<odoo>
+    <!-- Vista formulario de vista previa de pago -->
+    <record id="view_preview_payment_form" model="ir.ui.view">
+        <field name="name">preview.payment.form</field>
+        <field name="model">preview.payment</field>
+        <field name="arch" type="xml">
+            <form string="Preview Payment">
+                <sheet>
+                    <group name="main_group">
+                        <group name="group1">
+                            <field name="payment_type" widget="radio" options="{'horizontal': True}" readonly="1"/>
+                            <field name="partner_id"/>
+                            <label for="amount"/>
+                            <div name="amount_div" class="o_row">
+                                <field name="amount"
+                                        />
+                                <field name="currency_id"
+                                        options="{'no_create': True, 'no_open': True}"
+                                        required="1"/>
+                            </div>
+                            <field name="commission"/>
+                            <field name="date"/>
+                            <field name="ref"/>
+                        </group>
+                        <group name="group2">
+                            <field name="journal_id"/>
+                            <field name="payment_method_line_id"/>
+                            <field name="letter_line_id" invisible="1"/>
+                            <field name="payment_method_line_ids" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirmar" name="action_create_payment" type="object" class="btn-primary" />
+                    <button string="Cancelar" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Accion de ventana -->
+    <record id="action_preview_payment" model="ir.actions.act_window">
+        <field name="name">Pagos</field>
+        <field name="res_model">preview.payment</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_preview_payment_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

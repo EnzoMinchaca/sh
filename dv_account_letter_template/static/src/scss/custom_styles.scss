@@ -1,0 +1,25 @@
+table.rounded-corners {
+    border-spacing: 0 !important;
+    border-collapse: separate !important;
+    border-radius: 10px !important;
+    border: 1px solid black !important;
+}
+
+table.rounded-corners th:not(:last-child),
+table.rounded-corners td:not(:last-child) {
+    border-right: 1px solid black !important;
+}
+
+table.rounded-corners>thead>tr:not(:last-child)>th,
+table.rounded-corners>thead>tr:not(:last-child)>td,
+table.rounded-corners>tbody>tr:not(:last-child)>th,
+table.rounded-corners>tbody>tr:not(:last-child)>td,
+table.rounded-corners>tfoot>tr:not(:last-child)>th,
+table.rounded-corners>tfoot>tr:not(:last-child)>td,
+table.rounded-corners>tr:not(:last-child)>td,
+table.rounded-corners>tr:not(:last-child)>th,
+table.rounded-corners>thead:not(:last-child),
+table.rounded-corners>tbody:not(:last-child),
+table.rounded-corners>tfoot:not(:last-child) {
+    border-bottom: 1px solid black !important;
+}

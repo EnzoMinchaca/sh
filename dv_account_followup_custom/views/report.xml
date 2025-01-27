@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="paperformat_move_line" model="report.paperformat">
+            <field name="name">Move Line Format</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10.00</field>
+            <field name="margin_bottom">10.00</field>
+            <field name="margin_left">8.0</field>
+            <field name="margin_right">8.0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">30</field>
+            <field name="dpi">125</field>
+        </record>
+
+        <record id="action_report_pdf" model="ir.actions.report">
+            <field name="name">Reporte de Seguimiento de Clientes</field>
+            <field name="model">res.partner</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">dv_account_followup_custom.report_move_line_pdf_template</field>
+            <field name="report_file">dv_account_followup_custom.report_move_line_pdf_template</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="paperformat_id" ref="dv_account_followup_custom.paperformat_move_line" />
+        </record>
+
+        <record id="action_xlsx" model="ir.actions.server">
+            <field name="name">Descargar Reporte XLSX</field>
+            <field name="model_id" ref="dv_account_followup_custom.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = {
+                    'type': 'ir.actions.act_url',
+                    'url': '/partner/move_line/%d' % record.id,
+                    'target': 'new',
+                }
+            </field>
+        </record>
+    </data>
+</odoo>

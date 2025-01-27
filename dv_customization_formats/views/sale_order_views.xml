@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- View sale.order form -->
+    <record id="view_sale_order_form" model="ir.ui.view">
+        <field name="name">view.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="placa" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_tree" model="ir.ui.view">
+        <field name="name">view.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="placa" string="Placa"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_view_move_form" model="ir.ui.view">
+        <field name="name">account_view_move_form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='delivery_date']" position="after">
+                <field name="placa" string="Placa"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="partner_view_form" model="ir.ui.view">
+        <field name="name">partner_view_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="x_placa" string="Placa"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

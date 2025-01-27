@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_mail_template_form" model="ir.ui.view">
+        <field name="name">view.mail.template.form</field>
+        <field name="model">mail.template</field>
+        <field name="inherit_id" ref="mail.email_template_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='report_template_ids']" position="after">
+                <field name="type_lead"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_email_compose_message_wizard_form" model="ir.ui.view">
+        <field name="name">view.email.compose.message.wizard</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='template_id']" position="after">
+                <field name="type_pipeline_text_wizard" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

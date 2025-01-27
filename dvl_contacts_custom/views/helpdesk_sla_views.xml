@@ -1,0 +1,93 @@
+<odoo>
+    <record id="view_helpdesk_sla_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.sla.form.inherit</field>
+        <field name="model">helpdesk.sla</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_row']" position="replace">
+                <div class="o_row">
+                    
+                    <field name="time" widget="float_time" class="oe_inline"/>
+                    <span class="o_field_widget o_readonly_modifier">Horas de trabajo</span>
+                
+                
+                    <span class="o_field_widget o_readonly_modifier oe_inline">Tiempo de primera respuesta</span> 
+                    <field name="tiempo_primera_respuesta" widget="float_time" class="oe_inline" string="Tiempo de primera respuesta"/>
+                    
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_helpdesk_sla_tree_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.sla.tree.inherit</field>
+        <field name="model">helpdesk.sla</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="tiempo_primera_respuesta"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_ticket_tree_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="tiempo_primera_respuesta_esperado" column_invisible="1"/>
+                <field name="tiempo_primera_respuesta" 
+                    widget="badge" 
+                    decoration-success="tiempo_primera_respuesta == tiempo_primera_respuesta_esperado"
+                    decoration-warning="tiempo_primera_respuesta &lt; tiempo_primera_respuesta_esperado"
+                    decoration-danger="tiempo_primera_respuesta &gt; tiempo_primera_respuesta_esperado"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_ticket_tree_inherit_timesheet" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree.inherit.timesheet</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_tree_inherit_helpdesk_timesheet"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='total_hours_spent']" position="before">
+                <field name="tiempo_resolucion_esperado" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='total_hours_spent']" position="attributes">
+                <attribute name="string">Tiempo de resolución</attribute>
+                <attribute name="widget">badge</attribute>
+            <attribute name="decoration-success">total_hours_spent == tiempo_resolucion_esperado</attribute>
+            <attribute name="decoration-warning">total_hours_spent &lt; tiempo_resolucion_esperado</attribute>
+            <attribute name="decoration-danger">total_hours_spent &gt; tiempo_resolucion_esperado</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_ticket_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='d-flex mb-4']" position="replace">
+                <div class="d-flex mb-4" invisible="not sla_status_ids" groups="helpdesk.group_use_sla">
+                    <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" invisible="not use_sla" options="{'color_field': 'color', 'no_edit_color': True}" class="mb-0" readonly="1" groups="helpdesk.group_use_sla"/>
+                    <div invisible="not sla_deadline or not use_sla" groups="helpdesk.group_use_sla" class="mx-2 text-muted d-inline-flex align-items-center h-100">
+                        <i class="fa fa-lg fa-clock-o me-2 mt-1" aria-label="Sla Deadline" title="Sla Deadline"/>
+                        <field name="sla_deadline" class="mb-0" widget="remaining_days"/>
+                    </div>
+                    <div invisible="not tiempo_primera_respuesta_esperado or not use_sla" groups="helpdesk.group_use_sla" class="mx-2 text-muted d-inline-flex align-items-center h-100">
+                        <i class="fa fa-lg fa-hourglass-half me-2 mt-1" aria-label="Tiempo Primera Respuesta" title="Tiempo Primera Respuesta"/>
+                        
+                        <field name="tiempo_primera_respuesta_esperado" invisible="1"/>
+                        <field name="tiempo_primera_respuesta" string="Tiempo de primera respuesta" class="mb-0" widget="badge"
+                            decoration-success="tiempo_primera_respuesta == tiempo_primera_respuesta_esperado"
+                        decoration-warning="tiempo_primera_respuesta &lt; tiempo_primera_respuesta_esperado"
+                        decoration-danger="tiempo_primera_respuesta &gt; tiempo_primera_respuesta_esperado"/>
+                        <span class="ms-2">Tiempo de primera respuesta</span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

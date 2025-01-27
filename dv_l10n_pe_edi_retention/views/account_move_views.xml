@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="l10n_pe_account_withholding_form" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="withholding_group_visible" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@id='other_tab']" position="inside">
+                <group id="l10n_pe_group_withholding">
+                    <group string="Retenciones Perú" name="l10n_pe_group_withholding" invisible="not withholding_group_visible">
+                        <field name="l10n_pe_is_subject_to_withholding"/>
+                        <field name="withholding_tax_table_id" invisible="not l10n_pe_is_subject_to_withholding" required="l10n_pe_is_subject_to_withholding"/>
+                        <field name="l10n_pe_withholding_code_percentage" invisible="not l10n_pe_is_subject_to_withholding" required="l10n_pe_is_subject_to_withholding"/>
+                        <field name="l10n_pe_withholding_amount" invisible="not l10n_pe_is_subject_to_withholding"/>
+                        <field name="l10n_pe_withholding_amount_currency" invisible="not l10n_pe_is_subject_to_withholding"/>
+                        <field name="withholding_tax_table_id" invisible="not l10n_pe_is_subject_to_withholding"/>
+                    </group>
+                </group>
+            </xpath>
+            <!-- Agrega el monto de retencion en soles debajo del amount_total-->
+            <xpath expr="//page[@id='invoice_tab']//field[@name='tax_totals']" position="after">
+                <field name="l10n_pe_withholding_amount_currency" invisible="not l10n_pe_is_subject_to_withholding" string="Retención (S/.)"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

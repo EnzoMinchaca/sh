@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="external_layout_price_A4">
+        <div t-attf-class="article o_report_layout_standard" t-att-data-oe-model="o and doc._name"
+             t-att-data-oe-id="o and doc.id" t-att-data-oe-lang="o and doc.env.context.get('lang')">
+            <t t-out="0"/>
+        </div>
+    </template>
+</odoo>

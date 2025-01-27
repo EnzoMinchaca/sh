@@ -1,0 +1,30 @@
+<odoo>
+    <!-- Herencia de la vista kanban público de CRM -->
+    <record id="crm_lead_kanban_public_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.public.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="dv_crm_project_custom.crm_case_kanban_view_leads_public"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="order_desc"/>
+                <field name="order_asc"/>
+                <field name="field_by_order"/>
+                <field name="field_by_order_name"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Herencia de la vista kanban privada de CRM -->
+    <record id="crm_lead_kanban_private_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.private.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="dv_crm_project_custom.crm_case_kanban_view_leads_private"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="order_desc"/>
+                <field name="order_asc"/>
+                <field name="field_by_order"/>
+                <field name="field_by_order_name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

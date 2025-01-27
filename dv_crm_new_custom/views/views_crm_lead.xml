@@ -1,0 +1,28 @@
+<odoo>
+    <!-- Vista Formulario -->
+    <!-- <record id="crm_lead_form_view_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="dv_crm_project_custom.crm_lead_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sku']" position="replace">
+                <field name="sku" string="SKU N"/>
+            </xpath>
+            <xpath expr="//field[@name='sku']" position="after">
+                <field name="sku_anterior" string="SKU Anterior" invisible="True"/>
+                <field name="sku_complete" invisible="True"/>
+            </xpath>
+        </field>
+    </record> -->
+    <!-- Vista kanban por si no se ve en tu local -->
+    <!-- <record id="inherit_quick_create_opportunity_form" model="ir.ui.view">
+        <field name="name">inherit.quick.create.opportunity.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="sku"/>
+            </xpath>
+        </field>
+    </record> -->
+</odoo>

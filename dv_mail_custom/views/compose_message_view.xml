@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_compose_message_form_inherit" model="ir.ui.view">
+        <field name="name">mail.compose.message.form.inherit</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+            <!-- remuevo el span de texto relacionado con followers -->
+            <xpath expr="//div[field[@name='partner_ids']]/span[@name='document_followers_text']" position="replace">
+                <!-- y lo reemplazo con nada para que se elimine -->
+            </xpath>
+
+            <!-- al partner le agrego el contexto nuevo asi aparece con todos los seguidores seleccionados-->
+            <xpath expr="//field[@name='partner_ids']" position="replace">
+                <field name="partner_ids" widget="many2many_tags_email" placeholder="Agregue contactos por notificar..."
+                    options="{'no_quick_create': True}" context="{'show_email':True, 'form_view_ref': 'base.view_partner_simple_form', 'default_partner_ids': partner_ids}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_ids']" position="after">
+                <field name="original_partner_ids" widget="many2many_tags_email" invisible="1" context="{'default_original_partner_ids': original_partner_ids}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

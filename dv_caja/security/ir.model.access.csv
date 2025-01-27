@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_caja_admin,caja_admin,model_caja_caja,dv_caja.group_caja_administrador,1,1,1,1
+access_caja_user,caja_responsable,model_caja_caja,dv_caja.group_caja_responsable,1,1,0,0
+access_caja_periodo_admin,caja_periodo_admin,model_caja_periodo,dv_caja.group_caja_administrador,1,1,1,1
+access_caja_periodo_responsable,caja_periodo_responsable,model_caja_periodo,dv_caja.group_caja_responsable,1,1,1,1
+access_caja_secuencia_admin,caja_secuencia_admin,model_caja_secuencia,dv_caja.group_caja_administrador,1,1,1,1
+access_caja_secuencia_responsable,caja_secuencia_responsable,model_caja_secuencia,dv_caja.group_caja_responsable,1,1,1,1
+access_caja_reporte_admin,caja_reporte_admin,model_reporte_caja,dv_caja.group_caja_administrador,1,1,1,0
+access_caja_reporte_responsable,caja_reporte_responsable,model_reporte_caja,dv_caja.group_caja_responsable,1,1,1,0

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu para Clientes -->
+    <!-- Submenu de Letras -->
+    <menuitem id="menu_account_letter_clientes" 
+    name="Letras" 
+    parent="account.menu_finance_receivables"
+    groups="dv_account_letter.group_tesorery" 
+    sequence="20"/>
+        <!-- Submenu canje de Letras -->
+        <menuitem id="menu_account_letter_canje_clientes"
+        name="Canje de Letras"
+        parent="menu_account_letter_clientes"
+        action="account_letter_action_clientes"
+        sequence="20"/>
+        <!-- Submenu de letras -->
+        <menuitem id="menu_account_letter_line_clientes"
+        name="Letras"
+        parent="menu_account_letter_clientes"
+        action="account_letter_line_action_clientes"
+        sequence="22"/>
+    
+    <!-- Menu para proveedores -->
+    <!-- Submenu de Letras -->
+    <menuitem id="menu_account_letter_proveedores"
+    name="Letras"
+    parent="account.menu_finance_payables"
+    groups="dv_account_letter.group_tesorery" 
+    sequence="20"/>
+        <!-- Submenu canje de Letras -->
+        <menuitem id="menu_dv_account_letter_canje_proveedores"
+        name="Canje de Letras"
+        parent="menu_account_letter_proveedores"
+        action="account_letter_action_proveedores"
+        sequence="20"/>
+        <!-- Submenu de letras -->
+        <menuitem id="menu_account_letter_line_proveedores"
+        name="Letras"
+        parent="menu_account_letter_proveedores"
+        action="account_letter_line_action_proveedores"
+        sequence="21"/>
+
+    <!-- Menu para configuracion de cuentas de letras -->
+    <menuitem id="menu_dv_account_letter_configuracion"
+    name="Cuentas de letras"
+    parent="account.account_account_menu"
+    action="action_account_letter_conf"
+    groups="account.group_account_manager"
+    sequence="3"/>
+
+    <!-- Menus de Facturación -->
+    <record id="account_accountant.menu_accounting" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('dv_account_letter.group_tesorery'), ref('account.group_account_readonly'), ref('account.group_account_invoice')])]"/>
+    </record>
+    <!-- Reportes -->
+    <record id="account.menu_finance_reports" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('dv_account_letter.group_tesorery'), ref('account.group_account_readonly'), ref('account.group_account_invoice')])]"/>
+    </record>
+    <!-- Reportes de auditoria -->
+    <record id="account_reports.account_reports_audit_reports_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('account.group_account_invoice')])]"/>
+    </record>
+    <!-- Reportes de contactos -->
+    <record id="account_reports.account_reports_partners_reports_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('account.group_account_invoice'), ref('dv_account_letter.group_tesorery')])]"/>
+    </record>
+    <!-- Cuenta por cobrar -->
+    <record id="account_reports.menu_action_account_report_aged_receivable" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('account.group_account_readonly'), ref('dv_account_letter.group_tesorery')])]"/>
+    </record>
+    <!-- Cuenta por pagar -->
+    <record id="account_reports.menu_action_account_report_aged_payable" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('account.group_account_readonly'), ref('dv_account_letter.group_tesorery')])]"/>
+    </record>
+    <!-- Gestión -->
+    <record id="account.account_reports_management_menu" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('account.group_account_invoice')])]"/>
+    </record>
+</odoo>

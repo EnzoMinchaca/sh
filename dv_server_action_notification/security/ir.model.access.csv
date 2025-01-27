@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dv_server_action_notification_dv_server_action_notification,dv_server_action_notification.dv_server_action_notification,model_dv_server_action_notification_dv_server_action_notification,base.group_user,1,1,1,1

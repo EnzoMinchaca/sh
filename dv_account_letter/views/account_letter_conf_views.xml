@@ -1,0 +1,24 @@
+<odoo>
+    <!-- Vista de Lista -->
+    <record id="account_letter_conf_list" model="ir.ui.view">
+        <field name="name">account.letter.conf.list</field>
+        <field name="model">account.letter.conf</field>
+        <field name="arch" type="xml">
+            <tree string="Cuentas de letras" editable="bottom">
+                <field name="document_type" required="1"/>
+                <field name="account_type" required="1"/>
+                <field name="letter_type" required="document_type == 'letter'"/>
+                <field name="group_id" required="1"/>
+                <field name="account_id" required="1"/>
+                <field name="currency_id" required="1"/>
+                <field name="company_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Accion de ventana -->
+    <record id="action_account_letter_conf" model="ir.actions.act_window">
+        <field name="name">Configuración de cuentas para letras</field>
+        <field name="res_model">account.letter.conf</field>
+        <field name="view_mode">tree</field>
+    </record>
+</odoo>

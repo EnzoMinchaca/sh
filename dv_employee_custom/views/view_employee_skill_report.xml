@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="view_employee_skill_report_list_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.skill.report.list.inherit</field>
+            <field name="model">hr.employee.skill.report</field>
+            <field name="inherit_id" ref="hr_skills.hr_employee_skill_report_view_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="replace">
+                    <tree expand="0" editable="bottom" create="0" delete="0" default_order="custom_order asc, skill_type_id asc">
+                        <field name="employee_id" widget="many2one" options="{'no_create': True, 'no_open': False}"/>
+                        <field name="puesto" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="skill_type_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="skill_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="skill_level"/>
+                        <field name="level_progress" widget="percentage"/>
+                        <field name="nombre_compania"/>
+                        <field name="fecha_inicio"/>
+                        <field name="fecha_fin"/>
+                        <field name="fecha_renovacion"/>
+                        <button name="action_download_attachment"
+                                type="object"
+                                class="oe_highlight fa fa-download"
+                                invisible="not skill_type_id"
+                                string=""/>
+                    </tree>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_employee_skill_report_search_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.skill.report.search.inherit</field>
+            <field name="model">hr.employee.skill.report</field>
+            <field name="inherit_id" ref="hr_skills.hr_employee_skill_report_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='skill_type_id']" position="after">
+                    <field name="puesto"/>
+                    <field name="skill_level"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+

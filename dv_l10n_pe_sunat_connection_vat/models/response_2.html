@@ -1,0 +1,113 @@
+'
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
+    <title>SUNAT - Consulta RUC</title>
+    <!-- Bootstrap -->
+    <link href="/a/js/libs/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn\'t work if you view the page via file:// -->
+    <!--[if lt IE 9]>      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>    <![endif]-->
+    <style type="text/css">
+        h1 {
+            font-size: 1.7em;
+
+        }
+
+
+
+        /*.list-group-item span {*/
+        .list-group-item .glyphicon {
+            margin-top: -3.0em;
+
+        }
+
+        .header div {
+            padding-left: 0 !important;
+
+        }
+
+        .imgLogo {
+            height: 2.5em;
+            margin-top: 1em;
+
+        }
+
+        .text-left-important {
+            text-align: left !important;
+
+        }
+
+        .divBotonera {
+            margin-bottom: 20px;
+
+        }
+
+        .divBotoneraArriba {
+            margin-bottom: 15px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header hidden" id="divHeader">
+            <div class="col-md-10 col-md-offset-1"> <img src="/a/imagenes/logo_2015.png" class="imgLogo"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div>
+                    <h1>Consulta RUC</h1>
+                </div>
+                <div class="divBotoneraArriba text-center"> <button type="button"
+                        class="btn btn-danger btnNuevaConsulta">Volver</button> </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Relación de contribuyentes</div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item clearfix aRucs" data-ruc="17278796167">
+                            <h4 class="list-group-item-heading">RUC: 17278796167</h4>
+                            <h4 class="list-group-item-heading">PEREZ NEGRON DOLORES</h4>
+                            <p class="list-group-item-text">Ubicaci&oacute;n: ICA</p>
+                            <p class="list-group-item-text">Estado:
+                                <strong><span class="text-danger">BAJA DE OFICIO</span></strong>
+                            </p>
+                            <span class="glyphicon glyphicon-chevron-right pull-right" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div class="panel-footer text-center"> <small>Fecha consulta: 21/10/2023
+                            23:13</small> </div><!-- fin footer del panel -->
+                </div>
+                <!--fin panel-->
+                <div class="text-center divBotonera">
+                    <a href=\'FrameCriterioBusquedaWeb.jsp\' class="hidden" id="aNuevaConsulta">Volver</a> <button
+                        type="button" class="btn btn-danger btnNuevaConsulta">Volver</button>
+                </div>
+            </div>
+            <!--fin col-->
+        </div><!--fin row-->
+        <footer class="footer text-center">
+            <div class="col-md-10 col-md-offset-1">
+                <p><small>&copy; 1997 - 2023 SUNAT Derechos
+                        Reservados</small></p>
+            </div>
+        </footer>
+    </div><!--fin container-->
+    <form action="/cl-ti-itmrconsruc/jcrS00Alias" method="post" name="selecXNroRuc">
+        <input type="hidden" name="accion" value="consPorRuc"><input type="hidden" name="actReturn" value="1"><input
+            type="hidden" name="nroRuc" value=""><input type="hidden" name="numRnd" value="-1317716850"><input
+            type="hidden" name="modo" value="1">
+    </form>
+
+    <script src="/a/js/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/a/js/libs/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script>    $(document).ready(function () { $.ajaxSetup({ scriptCharset: "utf-8", contentType: "application/json; charset=utf-8" }); jQuery.support.cors = true; iniciaVariables(); iniciaBotones(); });                   /*Funciones usadas por la aplicación*/    function iniciaBotones() {         //resetea estado inicial del formulario               aRucs.bind(\'click\',function(event){var dataRuc=$(this).attr("data-ruc");sendNroRuc(dataRuc);event.preventDefault();                event.stopImmediatePropagation();                return false;        });            $(".btnNuevaConsulta").bind(\'click\',function(event){        regresa();                        event.preventDefault();        event.stopImmediatePropagation();        return false;        });              }        function regresa(){    var href = $("#aNuevaConsulta").attr(\'href\');    window.location.href = href;    }    function irHome(){    regresa();    }        function sendNroRuc(cc){        document.selecXNroRuc.nroRuc.value = cc;    document.selecXNroRuc.submit();    }        /*Variables del app*/        /*Declarar variables*/    var aRucs=null;        /*Iniciar variables*/    function iniciaVariables(){    aRucs=$(".aRucs");    }                      </script>
+
+    <script src="/a/js/apps/workspace/ws.js"></script>
+</body>
+
+</html>'

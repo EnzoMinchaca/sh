@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+        <record id="group_partner_cliente_admin" model="res.groups">
+            <field name="name">Cliente: Administrador</field>
+
+            <field name="comment"> Grupo con permisos cliente administrador</field>
+        </record>
+        <record id="group_partner_cliente_user" model="res.groups">
+            <field name="name">Cliente: Usuario</field>
+
+            <field name="comment"> Grupo con permisos de contacto cliente usuario</field>
+        </record>
+        <record id="group_partner_proveedor" model="res.groups">
+            <field name="name">Proveedor</field>
+
+            <field name="comment"> Grupo con permisos de contacto cliente usuario</field>
+        </record>
+        <record id="group_partner_externo" model="res.groups">
+            <field name="name">Externo</field>
+
+            <field name="comment"> Grupo con permisos de contacto externo</field>
+        </record>
+        <record id="group_partner_interno" model="res.groups">
+            <field name="name">Interno</field>
+
+            <field name="comment"> Grupo con permisos de contacto interno</field>
+        </record>
+        
+        <record id="rule_partner_cliente_admin" model="ir.rule">
+            <field name="name">Rule Cliente: Administrador</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_partner_cliente_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        <record id="rule_partner_cliente_user" model="ir.rule">
+            <field name="name">Rule Cliente: Usuario</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">['|', ('data_line_ids.tipo', '=', False), ('data_line_ids.tipo', '=', 'cliente')]</field>
+            <field name="groups" eval="[(4, ref('group_partner_cliente_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="rule_partner_cliente_proveedor" model="ir.rule">
+            <field name="name">Rule Proveedor</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">['|', ('data_line_ids.tipo', '=', False), ('data_line_ids.tipo', '=', 'proveedor')]</field>
+            <field name="groups" eval="[(4, ref('group_partner_proveedor'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="rule_partner_cliente_externo" model="ir.rule">
+            <field name="name">Rule Externo</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">['|', ('data_line_ids.tipo', '=', False), ('data_line_ids.tipo', '=', 'externo')]</field>
+            <field name="groups" eval="[(4, ref('group_partner_externo'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        <record id="rule_partner_cliente_interno" model="ir.rule">
+            <field name="name">Rule Interno</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">['|', ('data_line_ids.tipo', '=', False), ('data_line_ids.tipo', '=', 'interno')]</field>
+            <field name="groups" eval="[(4, ref('group_partner_interno'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+    </data>
+</odoo>

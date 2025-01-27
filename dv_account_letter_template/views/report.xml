@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Formato de papel individual para letras -->
+    <record id="paperformat_letter_format" model="report.paperformat">
+        <field name="name">Letter Format</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">110</field> <!-- Alto en milímetros (11 cm = 110 mm) -->
+        <field name="page_width">220</field> <!-- Ancho en milímetros (22 cm = 220 mm) -->
+        <field name="orientation">Portrait</field> <!-- Orientación del papel -->
+        <field name="margin_top">2.00</field> <!-- Márgenes -->
+        <field name="margin_bottom">2.00</field>
+        <field name="margin_left">5.0</field>
+        <field name="margin_right">5.0</field>
+        <field name="header_line" eval="False" /> <!-- Línea de encabezado -->
+        <field name="header_spacing">20</field> <!-- Espaciado del encabezado -->
+        <field name="dpi">125</field> <!-- Resolución DPI -->
+        <!-- <field name="disable_shrinking" eval="True" /> -->
+    </record>
+    <!-- Formato de papel A4 para 2 letras -->
+    <record id="paperformat_two_letter_format" model="report.paperformat">
+        <field name="name">Two Letter Format</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2.00</field>
+        <field name="margin_bottom">2.00</field>
+        <field name="margin_left">5.0</field>
+        <field name="margin_right">5.0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">125</field>
+    </record>
+
+    <record id="action_report_letter" model="ir.actions.report">
+        <field name="name">Formato de letras</field>
+        <field name="model">account.letter.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dv_account_letter_template.report_letter_template</field>
+        <field name="report_file">dv_account_letter_template.report_letter_template</field>
+        <field name="print_report_name">(object.name)</field>
+        <field name="paperformat_id" ref="dv_account_letter_template.paperformat_two_letter_format" />
+    </record>
+</odoo>

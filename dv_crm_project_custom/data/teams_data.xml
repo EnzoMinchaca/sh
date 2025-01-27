@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <!-- Team for Private Pipeline -->
+        <record id="team_pipeline_private" model="crm.team">
+            <field name="name">Private Pipeline Team</field>
+        </record>
+
+        <!-- Team for Public Pipeline -->
+        <record id="team_pipeline_public" model="crm.team">
+            <field name="name">Public Pipeline Team</field>
+        </record>
+    </data>
+</odoo>

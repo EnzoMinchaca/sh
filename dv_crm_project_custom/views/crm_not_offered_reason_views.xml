@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="crm_not_offered_reason_view_search" model="ir.ui.view">
+        <field name="name">crm.not.offered.reason.view.search</field>
+        <field name="model">crm.not.offered.reason</field>
+        <field name="arch" type="xml">
+            <search string="Search Opportunities">
+                <field name="name"/>
+                <filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="crm_not_offered_reason_view_form" model="ir.ui.view">
+        <field name="name">crm.not.offered.reason.form</field>
+        <field name="model">crm.not.offered.reason</field>
+        <field name="arch" type="xml">
+            <form string="Motivos de No Ofertado">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_not_offered_leads" type="object"
+                            class="oe_stat_button" icon="fa-star">
+                            <div class="o_stat_info">
+                                <field name="leads_count" class="o_stat_value"/>
+                                <span class="o_stat_text"> Leads</span>
+                            </div>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <div>
+                            <label for="name"/>
+                        </div>
+                        <h1 class="mb32">
+                            <field name="name" placeholder="e.g. Too expensive" class="mb16"/>
+                        </h1>
+                        <field name="active" invisible="1"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="crm_not_offered_reason_view_tree" model="ir.ui.view">
+        <field name="name">crm.not.offered.reason.tree</field>
+        <field name="model">crm.not.offered.reason</field>
+        <field name="arch" type="xml">
+            <tree string="Channel" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Configuration/Lead & Opportunities/notoffered Reasons Menu -->
+    <record id="crm_not_offered_reason_action" model="ir.actions.act_window">
+        <field name="name">Motivos de No Ofertado</field>
+        <field name="res_model">crm.not.offered.reason</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Crear un Motivo de No Ofertado
+          </p><p>
+            Usar Motivos de No Ofertado para registrar por qué las oportunidades no se han ofertado (por ejemplo, "Subcotado por competidores").
+          </p>
+        </field>
+    </record>
+
+</odoo>

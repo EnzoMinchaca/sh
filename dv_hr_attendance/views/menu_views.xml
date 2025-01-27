@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_hr_employee" 
+    name="Empleados" 
+    parent="hr_attendance.menu_hr_attendance_root"
+    action="hr.open_view_employee_list_my"
+    sequence="80"/>
+</odoo>

@@ -1,0 +1,14 @@
+@font-face{
+    font-family: "Roboto";
+    src: url(/dv_invoice_reports/static/src/fonts/roboto/Roboto-Light.ttf);
+}
+
+@font-face {
+    font-family: "Oswald";
+    src: url(/dv_invoice_reports/static/src/fonts/oswald/Oswald-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Arialn";
+    src: url(/dv_invoice_reports/static/src/fonts/arial/arialn/Arialn.ttf);
+}

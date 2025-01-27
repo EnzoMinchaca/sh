@@ -1,0 +1,18 @@
+.dynamic-width {
+    width: 40%;
+}
+@media (max-width: 1024px) {
+    .dynamic-width {
+        width: 70%;
+    }
+}
+@media (max-width: 768px) {
+    .dynamic-width {
+        width: 100%;
+    }
+}
+@media (max-width: 480px) {
+    .dynamic-width {
+        width: 100%;
+    }
+}

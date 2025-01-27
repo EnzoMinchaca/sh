@@ -1,0 +1,138 @@
+<odoo>
+    <!-- Vista Formulario -->
+    <record id="crm_lead_form_view" model="ir.ui.view">
+        <field name="name">crm.lead.form.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Relación de seguidores -->
+            <xpath expr="//field[@name='lost_reason_id']" position="before">
+                <field name="project_manager_id" string="Gerente de proyecto" widget="many2one_avatar_user" optional="show"
+                        domain="[('share', '=', False)]" />
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="sku" string="SKU" /> 
+                <field name="tipo_requerimiento" />
+            </xpath>
+            <xpath expr="//field[@name='project_manager_id']" position="after">
+                <field name="contact_line_id" widget="many2one" context="{'default_partner_id': partner_id}" readonly="partner_id == False"/>
+            </xpath>
+            <xpath expr="//field[@name='contact_line_id']" position="after">
+                <field name="contact_area" invisible="contact_line_id == False"/>
+                <field name="contact_funcion" invisible="contact_line_id == False"/>
+                <field name="contact_email" invisible="contact_line_id == False"/>
+                <field name="contact_mobile" invisible="contact_line_id == False"/>
+            </xpath>
+            <!-- Motivo no ofertado -->
+            <xpath expr="//header" position="inside">
+                <button name="%(crm_lead_not_offered_action)d" string="No ofertado" data-hotkey="l" title="Mark as No Ofertado"
+                            type="action" invisible="type == 'lead' or not active and probability &lt; 100 "/>
+                <!-- En espera -->
+                <button name="action_mark_as_in_wait" string="En Espera" data-hotkey="e" title="Marcado como en espera"
+                            type="object" invisible="type == 'lead' or stage_id != 2 or not active or field_wait != False"/>
+            </xpath>
+            <xpath expr="//div[@class='o_lead_opportunity_form_inline_fields']" position="after">
+                <field name="field_wait" invisible="1"/>
+                <field name="stage_name" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@class='oe_title']" position="before">
+                <widget name="web_ribbon" title="No Ofertado" bg_color="text-bg-danger" invisible="not not_offered_reason_id"/>
+                <widget name="web_ribbon" title="EN ESPERA" bg_color="text-bg-warning" invisible="stage_id != 2 or field_wait != True"/>
+            </xpath>
+            <xpath expr="//field[@name='lost_reason_id']" position="attributes">
+                <attribute name="invisible">not lost_reason_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='lost_reason_id']" position="after">
+                <field name="not_offered_reason_id" invisible="not not_offered_reason_id"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Vista kanban -->
+    <record id="crm_case_kanban_view_leads" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.lead</field>
+        <field name="model">crm.lead</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="not_offered_reason_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@class='ribbon ribbon-top-right']" position="after">
+                <div class="ribbon ribbon-top-right"
+                    invisible="not not_offered_reason_id">
+                    <span class="text-bg-danger">No Ofertado</span>
+                </div>
+            </xpath>
+            <xpath expr="//div//span[@class='o_text_overflow']" position="replace">
+                <div class="o_kanban_record_subtitle">
+                    <span class="o_text_overflow"> SKU: </span>
+                    <field name="sku"/>
+                    <div>
+                        <span class="o_text_overflow" t-if="record.partner_id.value" t-esc="record.partner_id.value"></span>
+                    </div>
+                </div>
+            </xpath>
+            <!-- Campo de referencia -->
+            <xpath expr="//field[@name='priority']" position="before">
+                <field name="create_date"/>
+            </xpath>
+            <!-- Ordenar por fecha de apertura y luego por prioridad -->
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_order">create_date desc, priority desc</attribute>
+            </xpath>
+            <!-- Fecha de apertura -->
+            <xpath expr="//div[@class='o_kanban_record_bottom']" position="before">
+                <div>
+                    <strong>Fecha y hora de oferta:</strong>
+                    <div>
+                        <field name="create_date" widget="datetime" options="{'format': 'dd/MM/yyyy HH:mm', 'time_format': 'short'}"/>
+                    </div>
+                </div>
+            </xpath>
+            <!-- Etiqueta Ganado -->
+            <xpath expr="//div[@class='ribbon ribbon-top-right']" position="after">
+                <div class="ribbon ribbon-top-right"
+                    invisible="not (probability == 100 and active)">
+                    <span class="text-bg-success">Ganado</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <!-- Vista search -->
+    <record id="view_crm_case_opportunities_filter" model="ir.ui.view">
+            <field name="name">crm.lead.search.opportunity</field>
+            <field name="model">crm.lead</field>
+            <field name="priority">15</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <field name="not_offered_reason_id" />
+                    <field name="lost_reason_id" />
+                </xpath>
+                <xpath expr="//filter[@name='lost']" position="attributes">
+                    <attribute name="domain">['&amp;', ('active', '=', False), ('lost_reason_id', '!=', False)]</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='lost']" position="after">
+                    <filter string="No Ofertados" name="not_offered" domain="['&amp;', ('not_offered_reason_id', '!=', False), ('active', '=', False)]"/>
+                </xpath>
+                <xpath expr="//filter[@name='lostreason']" position="after">
+                    <filter string="Motivo de No Ofertado" name="notofferedreason" context="{'group_by':'not_offered_reason_id'}"/>
+                </xpath>
+            </field>
+    </record>
+    <!-- Vista de reporte -->
+    <record id="crm_opportunity_report_view_search" model="ir.ui.view">
+        <field name="name">crm.lead.search</field>
+        <field name="model">crm.lead</field>
+        <field name="priority">32</field>
+            <field name="inherit_id" ref="crm.crm_opportunity_report_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='lost']" position="after">
+                    <filter string="No Ofertados" name="No Ofertados" domain="['&amp;', ('active', '=', False), ('probability', '=', 0)]"/>
+                </xpath>
+                <xpath expr="//filter[@name='lostreason']" position="after">
+                    <filter string="Motivo de No Ofertado" name="notofferedreason" context="{'group_by':'not_offered_reason_id'}"/>
+                </xpath>
+            </field>
+    </record>
+</odoo>

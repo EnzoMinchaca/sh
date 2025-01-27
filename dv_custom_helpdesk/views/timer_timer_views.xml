@@ -1,0 +1,37 @@
+<odoo>
+    <!-- Vista lista de temporizadores -->
+    <record id="timer_timer_tree_view" model="ir.ui.view">
+        <field name="name">timer.timer.tree</field>
+        <field name="model">timer.timer</field>
+        <field name="arch" type="xml">
+            <tree string="Timers" editable="top">
+                <field name="id" optional="hide"/>
+                <field name="display_name" optional="hide"/>
+                <field name="is_timer_running"/>
+                <field name="res_id"/>
+                <field name="res_model"/>
+                <field name="timer_pause" optional="hide"/>
+                <field name="timer_start" optional="hide"/>
+                <field name="res_model"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Accion de ventana -->
+    <record id="timer_timer_action_window" model="ir.actions.act_window">
+        <field name="name">Temporizadores</field>
+        <field name="res_model">timer.timer</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="timer_timer_tree_view"/>
+        <field name="domain">[('res_model','=','helpdesk.ticket')]</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="timer_menu" 
+        name="Timer" 
+        parent="helpdesk.helpdesk_ticket_menu_main"
+        action="timer_timer_action_window" 
+        sequence="40"
+        groups="helpdesk.group_helpdesk_manager"/>
+</odoo>

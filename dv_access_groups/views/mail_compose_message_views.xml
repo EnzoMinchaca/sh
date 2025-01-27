@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Herencia de compose -->
+    <record id="email_compose_message_wizard_form_inherit" model="ir.ui.view">
+        <field name="name">email.compose.message.wizard.form.inherit</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='template_id'][1]" position="attributes">
+                <attribute name="options">{'no_create_edit': True, 'no_create': False}</attribute>
+                <attribute name="groups">
+                    dv_access_groups.group_crm_admin,
+                    dv_access_groups.group_crm_comercial,
+                    dv_access_groups.group_crm_operaciones,
+                    dv_access_groups.group_crm_preventa
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- Herencia de template -->
+    <record id="email_template_form_inherit" model="ir.ui.view">
+        <field name="name">email.template.form.inherit</field>
+        <field name="model">mail.template</field>
+        <field name="inherit_id" ref="mail.email_template_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='open_delete_confirmation_modal']" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

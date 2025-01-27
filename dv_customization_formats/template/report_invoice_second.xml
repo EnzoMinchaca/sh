@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_pe_invoice_document">
+        <t t-call="dv_customization_formats.external_layout_price_A4">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <div t-attf-class="{{'o_report_layout_background' if doc.company_id.layout_background in ['Geometric', 'Custom'] else ''}}"
+                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % doc.company_id.layout_background_image.decode('utf-8') if doc.company_id.layout_background_image and doc.company_id.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' if doc.company_id.layout_background == 'Geometric' else ''}}); background-size: cover; background-position: center;"
+                 t-att-data-oe-model="doc and doc._name"
+                 t-att-data-oe-id="doc and doc.id"
+                 style="position: relative;">
+                <!-- Encabezado (Listo) -->
+                <div class="container" style="font-size: 12px; display: flex; align-items: center;">
+
+                    <div class="row">
+
+                        <div class="text-center" style="width: 23%; max-width: 23%; flex-shrink: 0;">
+                            <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="height:150px; width: 190px;"/>
+                        </div>
+                        <div style="width: 1%;"></div>
+
+                        <div style="width: 43%; overflow-wrap: break-word; word-wrap: break-word; display: flex; align-items: start; padding: 25px 0px 0px 0px;">
+                            <div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-3 p0" style="font-weight: bold; font-size: 17px;">
+                                                <t t-out="doc.company_id.name"/>
+                                            </div>
+
+                                            <div class="mb-3 p0" style="font-size: 13px; font-weight: normal; color: #222;">
+                                                <t t-out="doc.company_id.street"/>
+                                            </div>
+
+                                            <div>
+                                                <div style="margin:0px 0px 2px 0px; padding:0px; font-size: 13px; font-weight: normal; color: #222;">
+                                                    <t t-out="doc.company_id.email"/>
+                                                </div>
+                                                <div style="margin:0px; padding:0px; font-size: 13px; color: #222;">
+                                                    <t t-out="doc.company_id.website"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="width: 1%;"></div>
+
+                        <div class="text-center" style="width: 32%; border: 2px solid black; padding: 20px 0px 0px 0px;">
+                            <p style="font-size: 15px;">
+                                <strong>R.U.C. N° </strong>
+                                <strong><span t-esc="doc.company_id.vat"/></strong>
+                            </p>
+                            <p style="font-size: 18px;">
+                                <strong>FACTURA ELECTRÓNICA</strong>
+                            </p>
+                            <p style="font-size: 15px;">
+                                <strong>
+                                    <t t-out="doc.name.replace(' ','')"/>
+                                </strong>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top:4px;">
+                        <table style="width: 100%; border-collapse: collapse; border-color: white; font-size: 13px;">
+                            <tbody>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>RAZON SOCIAL:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-out="doc.partner_id.name.upper()"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>RUC:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-out="doc.partner_id.vat"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>DIRECCIÓN:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-out="doc.partner_id.street.upper()"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>EMISIÓN:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-esc="doc.invoice_date.strftime('%d/%m/%Y')"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>MONEDA:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-out="doc.currency_id.name"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>FORMA DE PAGO:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-out="doc.invoice_payment_term_id.name.upper() if doc.invoice_payment_term_id.name else doc.invoice_date_due.strftime('%d/%m/%Y')"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>TIPO DE OPERACIÓN:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-esc="'FACTURACIÓN ELECTRÓNICA'"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" style="margin:0px 0px 1px 0px; padding:0px; text-align:end;">
+                                        <strong>PLACA:&#160;&#160;</strong>
+                                    </td>
+                                    <td width="80%" style="margin:0px 0px 1px 0px; padding:0px; text-align:start; color: #222;">
+                                        <t t-out="doc.placa"/>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+
+                <!-- Cuerpo -->
+                <div class="container" style="margin-top:6px;">
+
+                    <t t-if="len(doc.invoice_line_ids.filtered(lambda l: l.product_id.detailed_type in ['consu', 'product'])) > 0">
+                        <div class="row">
+                            <table class="table table-borderless" style="font-size:13px;">
+                                <thead>
+                                    <tr style="background-color:#3D3D3D; color:white;">
+                                        <th scope="col" style="width: 13%; text-align:center;">CANTIDAD</th>
+                                        <th scope="col" style="width: 57%; text-align:center;">DESCRIPCION DEL PRODUCTO</th>
+                                        <th scope="col" style="width: 15%; text-align:end;">PRECIO UNITARIO</th>
+                                        <th scope="col" style="width: 15%; text-align:end;">PRECIO TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.invoice_line_ids.filtered(lambda l: l.product_id.detailed_type in ['consu', 'product'])" t-as="line">
+                                        <tr>
+                                            <td style="text-align:center;"><t t-esc="line.quantity"/></td>
+                                            <td style="text-align:start;"><t t-esc="line.name.upper()"/></td>
+                                            <td style="text-align:end;"><t t-esc="line.price_unit"/></td>
+                                            <td style="text-align:end;"><t t-esc="line.price_total"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+
+                    <t t-if="len(doc.invoice_line_ids.filtered(lambda l: l.product_id.detailed_type == 'service')) > 0">
+                        <div class="row">
+                            <table class="table table-borderless" style="font-size:13px;">
+                                <thead>
+                                    <tr style="background-color:#3D3D3D; color: white;">
+                                        <th scope="col" style="width: 13%; text-align:center;">CANTIDAD</th>
+                                        <th scope="col" style="width: 57%; text-align:center;">DESCRIPCION DEL SERVICIO</th>
+                                        <th scope="col" style="width: 15%; text-align:end;">PRECIO UNITARIO</th>
+                                        <th scope="col" style="width: 15%; text-align:end;">PRECIO TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.invoice_line_ids.filtered(lambda l: l.product_id.detailed_type == 'service')" t-as="line">
+                                        <tr>
+                                            <td style="text-align:center;"><t t-esc="line.quantity"/></td>
+                                            <td style="text-align:start;"><t t-esc="line.name.upper()"/></td>
+                                            <td style="text-align:end;"><t t-esc="line.price_unit"/></td>
+                                            <td style="text-align:end;"><t t-esc="line.price_total"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+
+                </div>
+
+            </div>
+            
+            <!-- FOOTER -->
+            <div t-attf-class="footer o_standard_footer container">
+                <div class="row" style="width: 100%;">
+                    <!-- Tabla unificada con QR abarcando varias filas -->
+                    <table class="table" style="font-size: 13px; width: 100%; border: 2px solid #3D3D3D; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <!-- Encabezado para cuentas bancarias -->
+                                <th colspan="2" style="text-align: center; color: black; background-color: #F2F2F2; border: 2px solid #3D3D3D;">
+                                    CUENTAS BANCARIAS
+                                </th>
+                                <!-- Encabezado para QR -->
+                                <th style="text-align: center; color: black; background-color: #F2F2F2; border: 2px solid #3D3D3D;">
+                                    QR CODE
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-if="doc.company_id.partner_id.bank_ids">
+                                <t t-foreach="doc.company_id.partner_id.bank_ids" t-as="bank" t-key="bank.id">
+                                    <tr style="color: #222;">
+                                        <!-- Columna 1: Información del banco -->
+                                        <td style="width: 35%; text-align: start; padding: 5px; border-right: none; border-left: 2px solid #3D3D3D;">
+                                            <p style="margin: 5px 0; padding: 0;">
+                                                <strong>Banco:&#160;</strong><t t-esc="bank.bank_id.name or 'N/A'" />
+                                            </p>
+                                            <p style="margin: 5px 0; padding: 0;">
+                                                <strong>Moneda:&#160;</strong><t t-esc="bank.currency_id.name or 'N/A'" />
+                                            </p>
+                                        </td>
+                                        <!-- Columna 2: Moneda y Número -->
+                                        <td style="width: 35%; text-align: end; padding: 5px; border-right: 2px solid #3D3D3D; border-left: none;">
+                                            <p style="margin: 5px 0; padding: 0;">
+                                                <strong>Nro.&#160;</strong><t t-esc="bank.acc_number or 'N/A'" />
+                                            </p>
+                                        </td>
+
+                                        <!-- Columna 3: QR Code (solo en la primera fila, usando rowspan dinámico) -->
+                                        <t t-if="bank == doc.company_id.partner_id.bank_ids[0]">
+                                            <td style="width: 30%; text-align: center; padding: 5px; border: 2px solid #3D3D3D;" 
+                                                t-att-rowspan="len(doc.company_id.partner_id.bank_ids)">
+                                                <t t-if="doc.show_qr_code and doc.qr_code_image">
+                                                    <img t-attf-src="data:image/png;base64,{{doc.qr_code_image}}" 
+                                                        style="width: 75px; height: 75px; margin: 0px 0;" />
+                                                </t>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+    <template id="report_invoice_layout_customization_second" inherit_id="web.external_layout_standard">
+        <!-- Localiza el div que deseas eliminar -->
+        <xpath expr="//div[@class='pt-5']" position="attributes">
+            <!-- Añade una condición para mostrarlo solo si no es un reporte personalizado -->
+            <attribute name="style">padding: 0 !important;</attribute>
+        </xpath>
+        
+        <xpath expr="//div[contains(@t-attf-class, 'o_standard_footer')]//div[@class='text-center']" position="before">
+            <t t-if="doc_model == 'account.move'">
+                <t t-call="dv_customization_formats.custom_order_footer_signature"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Firma y sello en el o_standard_footer -->
+    <template id="custom_order_footer_signature">
+        <div t-attf-class="footer o_standard_footer container">
+            <div class="row" style="width: 100%;">
+                <!-- Tabla unificada con QR abarcando varias filas -->
+                <table class="table" style="font-size: 13px; width: 100%; border: 2px solid #3D3D3D; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <!-- Encabezado para cuentas bancarias -->
+                            <th colspan="2" style="text-align: center; color: black; background-color: #F2F2F2; border: 2px solid #3D3D3D;">
+                                CUENTAS BANCARIAS
+                            </th>
+                            <!-- Encabezado para QR -->
+                            <th style="text-align: center; color: black; background-color: #F2F2F2; border: 2px solid #3D3D3D;">
+                                QR CODE
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="doc.company_id.partner_id.bank_ids">
+                            <t t-foreach="doc.company_id.partner_id.bank_ids" t-as="bank" t-key="bank.id">
+                                <tr style="color: #222;">
+                                    <!-- Columna 1: Información del banco -->
+                                    <td style="width: 35%; text-align: start; padding: 5px; border-right: none; border-left: 2px solid #3D3D3D;">
+                                        <p style="margin: 5px 0; padding: 0;">
+                                            <strong>Banco:&#160;</strong><t t-esc="bank.bank_id.name or 'N/A'" />
+                                        </p>
+                                        <p style="margin: 5px 0; padding: 0;">
+                                            <strong>Moneda:&#160;</strong><t t-esc="bank.currency_id.name or 'N/A'" />
+                                        </p>
+                                    </td>
+                                    <!-- Columna 2: Moneda y Número -->
+                                    <td style="width: 35%; text-align: end; padding: 5px; border-right: 2px solid #3D3D3D; border-left: none;">
+                                        <p style="margin: 5px 0; padding: 0;">
+                                            <strong>Nro.&#160;</strong><t t-esc="bank.acc_number or 'N/A'" />
+                                        </p>
+                                    </td>
+
+                                    <!-- Columna 3: QR Code (solo en la primera fila, usando rowspan dinámico) -->
+                                    <t t-if="bank == doc.company_id.partner_id.bank_ids[0]">
+                                        <td style="width: 30%; text-align: center; padding: 5px; border: 2px solid #3D3D3D;" 
+                                            t-att-rowspan="len(doc.company_id.partner_id.bank_ids)">
+                                            <t t-if="doc.show_qr_code and doc.qr_code_image">
+                                                <img t-attf-src="data:image/png;base64,{{doc.qr_code_image}}" 
+                                                    style="width: 75px; height: 75px; margin: 0px 0;" />
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </template>
+
+    <template id="report_invoice" inherit_id="account.report_invoice">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.partner_id.lang"/>
+                    <t t-if="doc._get_name_invoice_report() == 'dv_customization_formats.report_pe_invoice_document'"
+                       t-call="dv_customization_formats.report_pe_invoice_document"
+                       t-lang="lang"/>
+                </t>
+            </t>
+
+        </xpath>
+    </template>
+
+    <record id="A4_price_format" model="report.paperformat">
+        <field name="name">A4-invoice</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5.00</field>
+        <field name="margin_bottom">30.00</field>
+        <field name="margin_left">7.0</field>
+        <field name="margin_right">7.0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+</odoo>

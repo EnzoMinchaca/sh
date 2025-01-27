@@ -1,0 +1,53 @@
+<odoo>
+    <record id="product_custom_search_view" model="ir.ui.view">
+        <field name="name">product.custom.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_search_form_view_stock"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Product" filter_domain="[('name', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//field[@name='location_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='warehouse_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="product_search_custom_form_view" model="ir.ui.view">
+        <field name="name">product.custom.search.form</field>
+        <field name="model">product.product</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Product" filter_domain="[('name', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//field[@name='product_template_attribute_value_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="product_main_custom_search_view" model="ir.ui.view">
+        <field name="name">product.main.custom.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Product" filter_domain="[('name', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//field[@name='attribute_line_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='categ_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

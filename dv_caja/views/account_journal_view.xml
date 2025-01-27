@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_account_journal_form_inherit" model="ir.ui.view">
+        <field name="name">account.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <!-- Agrega el campo al formulario -->
+            <xpath expr="//group//group[1]" position="inside">
+                <field name="es_de_caja"/>
+                <field name="usado_en_caja" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

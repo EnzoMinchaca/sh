@@ -1,0 +1,1169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="dv_invoice_reports.reporte_filtros_template_detallado">
+        <t t-call="web.html_container">
+            <meta charset="UTF-8"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="dv_invoice_reports.external_layout">
+
+                    <!-- LISTO -->
+                    <t t-if="tipo_reporte=='vendedor_marca'">
+                        <div class="page">
+
+                                <t t-set="static_height_page" t-value="166"/>
+                                <t t-set="current_height" t-value="0"/>
+
+                                <t t-set="count_vendedor" t-value="0"/>
+
+                                <!-- ITERACION DE VENDEDORES -->
+                                <t t-foreach="report_data" t-as="vendedor_data">
+
+                                    <!-- Se valida que se muestre: Vendedor + Marca + Factura -->
+
+                                    <t t-if="(current_height + 10.4) > static_height_page">
+                                        <div style="page-break-before: always;"></div>
+                                        <t t-set="current_height" t-value="0"/>
+                                    </t>
+
+                                    <t t-set="current_height" t-value="current_height + 3.70"/>
+                                    <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                            Vendedor: <t t-esc="vendedor_data['vendedor'] or 'Sin Vendedor'"/>
+                                        </div>
+                                    </div>  
+
+
+                                    <t t-set="count_vendedor" t-value="count_vendedor + 1"/>
+                                    <t t-set="count_marca" t-value="0"/>
+
+                                    <!-- ITERACION DE MARCAS -->
+                                    <t t-foreach="vendedor_data['marcas']" t-as="marca_data">
+
+                                        <!-- Se valida que se muestre: Marca + Factura + Linea-->
+                                        <t t-if="(current_height + 12.35) > static_height_page">
+                                            
+                                            <div style="page-break-before: always;"></div>
+                                            <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                    Vendedor: <t t-esc="vendedor_data['vendedor'] or 'Sin Vendedor'"/>
+                                                </div>
+                                            </div>
+                                            <t t-set="current_height" t-value="3.70"/>
+                                        </t>
+
+                                        <t t-set="current_height" t-value="current_height + 3.70"/>
+                                        <div class="row p0 m0" style="height:17px; font-size:16px; color:black;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:98%;">
+                                                Marca: <t t-esc="marca_data['marca'] or 'Sin Marca'"/>
+                                            </div>
+                                        </div>
+
+                                        <t t-set="count_marca" t-value="count_marca + 1"/>
+                                        <t t-set="count" t-value="0"/>
+
+                                        <!-- ITERANDO FACTURAS -->
+                                        <t t-foreach="marca_data['facturas']" t-as="factura_data">
+                                            <t t-set="count" t-value="int(count) + 1"/>
+
+                                            <t t-if="(current_height + 3) > static_height_page">
+                                                
+                                                <div style="page-break-before: always;"></div>
+                                                <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                        Vendedor: <t t-esc="vendedor_data['vendedor'] or 'Sin Vendedor'"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row p0 m0" style="height:17px; font-size:16px; color:black;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:98%;">
+                                                        Marca: <t t-esc="marca_data['marca'] or 'Sin Marca'"/>
+                                                    </div>
+                                                </div>
+
+                                                <t t-set="current_height" t-value="7.4"/>
+                                            </t>
+
+                                            <t t-if="count == len(marca_data['facturas'])">
+                                                <t t-if="(current_height + 8.65) > static_height_page">
+                                                    <div style="page-break-before: always;"></div>
+                                                    <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                            Vendedor: <t t-esc="vendedor_data['vendedor'] or 'Sin Vendedor'"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p0 m0" style="height:17px; font-size:16px; color:black;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:98%;">
+                                                            Marca: <t t-esc="marca_data['marca'] or 'Sin Marca'"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <t t-set="current_height" t-value="7.4"/>
+
+                                                </t>
+                                            </t>
+
+                                            <t t-if="count_marca == len(vendedor_data['marcas']) and count == len(marca_data['facturas']) and len(vendedor_data['marcas']) > 1">
+                                                <t t-if="(current_height + 14.3) > static_height_page">
+                                                    <div style="page-break-before: always;"></div>
+                                                    <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:99%;">
+                                                            Vendedor: <t t-esc="vendedor_data['vendedor'] or 'Sin Vendedor'"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row p0 m0" style="height:17px; font-size:16px; color:black;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:98%;">
+                                                            Marca: <t t-esc="marca_data['marca'] or 'Sin Marca'"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <t t-set="current_height" t-value="7.4"/>
+                                                </t>
+                                            </t>
+
+                                            <t t-set="current_height" t-value="current_height + 3"/>
+
+                                            <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white; border-spacing: 0; line-height: 1;">
+                                                <tbody>
+                                                    <tr style="margin:0px; padding:0px;">
+                                                        <td width="6.5%" style="margin:0px; padding:0px; text-align:start;">
+                                                            <t t-out="factura_data['fecha_creacion_factura'].strftime('%d/%m/%Y')"/>
+                                                        </td>
+                                                        <td width="9%" style="margin:0px; padding:0px; text-align:start;">
+                                                            <t t-out="str(factura_data['factura']).upper()"/>
+                                                        </td>
+                                                        <td width="12%" style="margin:0px; padding:0px; text-align:start;">
+                                                            <t t-out="str(factura_data['cliente']).upper()[:17]"/>
+                                                        </td>
+                                                        <td width="43.5%" style="margin:0px; padding:0px; text-align:start;">
+                                                            <t t-out="str(factura_data['producto']).upper()[:65]"/>
+                                                        </td>
+                                                        <td width="3%" style="text-align:center ;margin:0px; padding:0px;">
+                                                            <t t-out="factura_data['cantidad']"/>
+                                                        </td>
+                                                        <td width="2%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-out="str(factura_data['unidad']).upper()[:3]"/>
+                                                        </td>
+                                                        <td width="6%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-out="factura_data['precio']"/>
+                                                        </td>
+                                                        <td width="6%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-out="'{:.2f}'.format(factura_data['total_pen'])"/>
+                                                        </td>
+                                                        <td width="6%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-out="'{:.2f}'.format(factura_data['total_dolar'])"/>
+                                                        </td>
+                                                        <td width="6%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-out="'{:.2f}'.format(factura_data['valor_impuesto_dolar'] if round(factura_data['valor_impuesto_dolar']) != 0  else factura_data['valor_impuesto_pen'])"/>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr t-if="count == len(marca_data['facturas'])" style="font-weight: normal;">
+                                                        <t t-set="current_height" t-value="current_height + 5.65"/>
+
+                                                        <td colspan="6"></td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 75%;" />
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(marca_data['total_pen'])"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(marca_data['total_usd'])"/></strong>
+                                                        </td>   
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 90%;"/>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr t-if="count_marca == len(vendedor_data['marcas']) and count == len(marca_data['facturas']) and len(vendedor_data['marcas']) > 1" style="font-weight: normal;">
+                                                        <t t-set="current_height" t-value="current_height + 5.65"/> 
+
+                                                        <td colspan="6"></td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 75%;" />
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(vendedor_data['total_pen_vendedor'])"/></strong>
+                                                            
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(vendedor_data['total_usd_vendedor'])"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 90%;"/>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr t-if="count_vendedor == len(report_data) and count_marca == len(vendedor_data['marcas']) and count == len(marca_data['facturas'])" style="font-weight: normal;">
+                                                        <t t-set="current_height" t-value="current_height + 5.65"/> 
+
+                                                        <td colspan="4" style="padding: 4px 0px 0px 0px; position: relative;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 100%;"/>
+                                                        </td>
+                                                        <td colspan="3" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                            <strong>Total Reporte:</strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                            <strong><t t-out="'{:.2f}'.format(total_pen_reporte)"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(total_usd_reporte)"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 90%;" />
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </t>
+
+                                    </t>
+                                </t>
+                        </div>
+                    </t>
+
+                    <!-- LISTO -->
+                    <t t-elif="tipo_reporte=='cliente_producto'">
+
+                        <div class="page">
+                            <t t-set="static_height_page" t-value="166"/>
+                            <t t-set="current_height" t-value="0"/>
+                            <t t-set="count_cliente" t-value="0"/>
+
+                            <!-- ITERACION DE CLIENTE -->
+                            <t t-foreach="report_data" t-as="cliente_data">
+                                <!-- Cliente + Producto + Factura + Linea secundaria -->
+                                <t t-if="(current_height + 21.6) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <t t-set="current_height" t-value="current_height + 3.70"/>
+
+                                <div class="row p0 m0" style="height:17px; font-size:16px; font-weight: bold;">
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:74%;">
+                                        Cliente: <t t-out="str(cliente_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                </div>
+
+
+                                <t t-set="count_cliente" t-value="count_cliente + 1"/>
+                                <t t-set="count_articulo" t-value="0"/>
+
+                                <!-- ITERACION DE ITEM -->
+                                <t t-foreach="cliente_data['productos']" t-as="producto_data">
+                                    <!--  Producto + Factura + L. Secundaria -->
+                                    <t t-if="(current_height + 17) > static_height_page">
+                                        <div style="page-break-before: always;"></div>
+                                        <div class="row p0 m0" style="height:17px; font-size:16px; font-weight: bold;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:74%;">
+                                                Cliente: <t t-out="str(cliente_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                            </div>
+
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                        </div>
+
+                                        <t t-set="current_height" t-value="3.7"/>
+                                    </t>
+
+                                    <t t-set="current_height" t-value="current_height + 3.7"/>
+
+                                    <div class="row p0 m0" style="height:18px; font-size:16px; font-weight: bold;">
+                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:4%;"></div>
+                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:72%;">
+                                            <t t-out="str(producto_data['producto'].upper())[:85] or 'Sin Item'"/>
+                                        </div>
+
+                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                            <t t-out="'{:.2f}'.format(producto_data['total_pen'])"/>
+                                        </div>
+                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                            <t t-out="'{:.2f}'.format(producto_data['total_usd'])"/>
+                                        </div>
+                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                    </div>
+                                        
+                                    <t t-set="count_articulo" t-value="count_articulo + 1"/>
+                                    <t t-set="count" t-value="0"/>
+
+                                    <!-- ITERACION DE FACTURA -->
+                                    <t t-foreach="producto_data['facturas']" t-as="factura_data">
+                                        <t t-set="count" t-value="int(count) + 1"/>
+
+                                        <t t-if="(current_height + 3) > static_height_page">
+                                            
+                                            <div style="page-break-before: always;"></div>
+
+                                            <div class="row p0 m0" style="height:17px; font-size:16px; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:74%;">
+                                                    Cliente: <t t-out="str(cliente_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                                </div>
+
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                            </div>
+
+                                            <div class="row p0 m0" style="height:18px; font-size:16px; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:4%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:72%;">
+                                                    <t t-out="str(producto_data['producto'].upper())[:85] or 'Sin Item'"/>
+                                                </div>
+
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    <t t-out="'{:.2f}'.format(producto_data['total_pen'])"/>
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    <t t-out="'{:.2f}'.format(producto_data['total_usd'])"/>
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                            </div>
+                                            
+                                            <t t-set="current_height" t-value="7.4"/>
+                                        </t>
+
+                                        <!-- Esto valida que la ultimo producto y en la ultima factura, se tenga espacio para mostrar su subtotal -->
+                                        <t t-if="count_articulo == len(cliente_data['productos']) and count == len(producto_data['facturas'])">
+                                            <t t-if="(current_height + 8.65) > static_height_page">
+                                                
+                                                <div style="page-break-before: always;"></div>
+
+                                                <div class="row p0 m0" style="height:17px; font-size:16px; font-weight: bold;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:74%;">
+                                                        Cliente: <t t-out="str(cliente_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                                    </div>
+
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                                </div>
+
+                                                <div class="row p0 m0" style="height:18px; font-size:16px; font-weight: bold;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:4%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:72%;">
+                                                        <t t-out="str(producto_data['producto'].upper())[:85] or 'Sin Item'"/>
+                                                    </div>
+
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        <t t-out="'{:.2f}'.format(producto_data['total_pen'])"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        <t t-out="'{:.2f}'.format(producto_data['total_usd'])"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                                </div>
+                                                
+                                                <t t-set="current_height" t-value="7.4"/>
+                                            </t>
+                                        </t>
+
+                                        <!-- Si la longitud de las facturas es mayor a uno  -->
+                                        <t t-if="len(producto_data['facturas']) > 1">
+                                            <t t-if="(current_height + 8.65) > static_height_page">
+                                                <div style="page-break-before: always;"></div>
+
+                                                <div class="row p0 m0" style="height:17px; font-size:16px; font-weight: bold;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:2%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:74%;">
+                                                        Cliente: <t t-out="str(cliente_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                                    </div>
+
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                                </div>
+
+                                                <div class="row p0 m0" style="height:18px; font-size:16px; font-weight: bold;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:4%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:72%;">
+                                                        <t t-out="str(producto_data['producto'].upper())[:85] or 'Sin Item'"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        <t t-out="'{:.2f}'.format(producto_data['total_pen'])"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        <t t-out="'{:.2f}'.format(producto_data['total_usd'])"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;"></div>
+                                                </div>
+                                                
+                                                <t t-set="current_height" t-value="7.4"/>
+                                            </t>
+                                        </t>
+
+                                        <t t-set="current_height" t-value="current_height + 3"/>
+                                        
+                                        <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white;line-height: 1;">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="12%" style="margin:0px; padding:0px;"></td>
+                                                    <td width="6%" style="margin:0px; padding:0px;">
+                                                    </td>
+                                                    <td width="14%" style="margin:0px; padding:0px;">
+                                                        <t t-esc="str(factura_data['factura']).upper()" style="text-align:start;"/>
+                                                    </td>
+                                                    <td width="14%" style="margin:0px; padding:0px;">
+                                                        <t t-esc="factura_data['fecha_creacion_factura'].strftime('%d/%m/%Y')" style="text-align:start;"/>
+                                                    </td>
+                                                    <td width="5%" style="margin:0px; padding:0px;">
+                                                        <t t-out="int(factura_data['cantidad'])" style="text-align:center;"/>
+                                                    </td>
+                                                    <td width="7%" style="text-align:center; margin:0px; padding:0px;">
+                                                        <t t-esc="str(factura_data['unidad'])[:3].upper()"/>
+                                                    </td>
+                                                    <td width="18%" style="text-align:center; margin:0px; padding:0px;">
+                                                        <t t-esc="'{:.2f}'.format(factura_data['precio'])"/>
+                                                    </td>
+                                                    <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                        <t t-esc="'{:.2f}'.format(factura_data['total_pen'])"/>
+                                                    </td>
+                                                    <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                        <t t-esc="'{:.2f}'.format(factura_data['total_dolar'])"/>
+                                                    </td>
+                                                    <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                        <t t-esc="'{:.2f}'.format(factura_data['valor_impuesto_dolar'] if round(factura_data['valor_impuesto_dolar']) != 0  else factura_data['valor_impuesto_pen'])"/>
+                                                    </td>
+                                                </tr>
+
+                                                <tr t-if="count_articulo == len(cliente_data['productos']) and count == len(producto_data['facturas'])" style="font-weight: normal;">
+                                                    <t t-set="current_height" t-value="current_height + 5.65"/>
+                                                    <td colspan="5" style="padding: 4px 0px 0px 0px; position: relative;">
+                                                        <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 95%;"/>
+                                                    </td>
+                                                    <td colspan="2" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    </td>
+                                                    <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                        <strong>
+                                                            <t t-out="'{:.2f}'.format(cliente_data['total_pen_cliente'])"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                        <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                        <strong>
+                                                            <t t-out="'{:.2f}'.format(cliente_data['total_usd_cliente'])"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                        <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 90%;" />
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr t-if="count_cliente == len(report_data) and count_articulo == len(cliente_data['productos']) and count == len(producto_data['facturas'])" style="font-weight: normal;">
+                                                    <td colspan="5" style="padding: 4px 0px 0px 0px; position: relative;">
+                                                        <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 95%;"/>
+                                                    </td>
+                                                    <td colspan="2" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                        <strong>Total Reporte:</strong>
+                                                    </td>
+                                                    <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                        <strong>
+                                                            <t t-out="'{:.2f}'.format(total_pen_reporte)"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                        <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                        <strong>
+                                                            <t t-out="'{:.2f}'.format(total_usd_reporte)"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                        <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 90%;" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </t>
+                                </t>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- LISTO -->
+                    <t t-elif="tipo_reporte=='ventas_vendedor'">
+
+                        <div class="page">
+
+                            <t t-set="static_height_page" t-value="170"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_vendedor" t-value="0"/>
+                            
+                            <!-- ITERACION DE VENDEDORES -->
+                            <!-- Obtiene longitud real -->
+                            <t t-set="count_valie_more_zero" t-value="0"/>
+                            <t t-foreach="report_data" t-as="vendedor_data">
+                                <t t-if="round(vendedor_data['total_usd_vendedor_con_impuestos']) > 0 or round(vendedor_data['total_pen_vendedor_con_impuestos']) > 0">
+                                    <t t-set="count_valie_more_zero" t-value="count_valie_more_zero + 1"/>
+                                </t>
+                            </t>
+
+                            <t t-foreach="report_data" t-as="vendedor_data">
+
+                                <t t-set="count_vendedor" t-value="count_vendedor + 1"/>
+
+                                <t t-if="round(vendedor_data['total_usd_vendedor_con_impuestos']) > 0 or round(vendedor_data['total_pen_vendedor_con_impuestos']) > 0">
+                                        <!-- Vendedor - Tipo de pago - Factura - Linea Secundaria -->
+                                    <t t-if="(current_height + 16.05) > static_height_page">
+                                        <div style="page-break-before: always;"></div>
+                                        <t t-set="current_height" t-value="0"/>
+                                    </t>
+
+                                    <t t-set="current_height" t-value="current_height + 3.7"/>
+
+                                    <div class="row p0 m0" style="height:17px; font-size:16px; color:black; font-weight: bold;">
+                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:83%;">
+                                            Vendedor: <t t-out="str(vendedor_data['vendedor'].upper())[:80] or 'Sin Cliente'"/>
+                                        </div>
+                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                        </div>
+                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                        </div>
+                                    </div>
+
+                                    <t t-set="count_termino" t-value="0"/>
+
+                                    <t t-foreach="vendedor_data['terminos_de_pago']" t-as="termino_data">
+                                        <!-- Tipo de pago - Factura - Linea Secundaria -->
+                                        <t t-if="(current_height + 12.35) > static_height_page">
+                                            <div style="page-break-before: always;"></div>
+                                            
+                                            <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:83%;">
+                                                    Vendedor: <t t-out="str(vendedor_data['vendedor'].upper())[:80] or 'Sin Cliente'"/>
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                </div>
+                                            </div>
+                                            <t t-set="current_height" t-value="3.7"/>
+                                        </t>
+
+                                        <t t-set="current_height" t-value="current_height + 3.7"/>
+
+                                        <div class="row p0 m0" style="min-height:18px; font-size:16px; color:black; font-weight: bold; margin: 0px;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:10%;">
+                                                <t t-out="str(termino_data['nombre_principal_termino_pago'].upper())[:80] or 'Sin termino'"/>
+                                            </div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:69%;">
+                                                <t t-out="termino_data['nombre_secundario_termino_pago']"/>
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                <t t-out="'{:.2f}'.format(termino_data['total_pen_termino_sin_impuestos'])"/>
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                <t t-out="'{:.2f}'.format(termino_data['total_usd_termino_sin_impuestos'])"/>
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:4%;">
+                                            </div>
+                                        </div>
+
+                                        <t t-set="count_termino" t-value="count_termino + 1"/>
+                                        <t t-set="count" t-value="0"/>
+
+                                        <t t-foreach="termino_data['facturas']" t-as="factura_data">  
+                                            <t t-set="count" t-value="int(count) + 1"/>      
+
+                                            <t t-if="(current_height + 3) > static_height_page">
+
+                                                <div style="page-break-before: always;"></div>
+
+                                                <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:83%;">
+                                                        Vendedor: <t t-out="str(vendedor_data['vendedor'].upper())[:80] or 'Sin Cliente'"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row p0 m0" style="min-height:18px; font-size:16px; color:black; font-weight: bold; margin:0px;">
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:10%;">
+                                                        <t t-out="str(termino_data['nombre_principal_termino_pago'].upper())[:80] or 'Sin termino'"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:69%;">
+                                                        <t t-out="termino_data['nombre_secundario_termino_pago']"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        <t t-out="'{:.2f}'.format(termino_data['total_pen_termino_sin_impuestos'])"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        <t t-out="'{:.2f}'.format(termino_data['total_usd_termino_sin_impuestos'])"/>
+                                                    </div>
+                                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:4%;">
+                                                    </div>
+                                                </div>
+
+                                                <t t-set="current_height" t-value="7.4"/>
+                                            </t>
+                                            
+                                            <!-- Factura + linea secundaria  -->
+                                            <t t-if="len(termino_data['facturas']) > 1">
+                                                <t t-if="(current_height + 8.65) > static_height_page">
+                                                    <div style="page-break-before: always;"></div>
+
+                                                    <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:83%;">
+                                                            Vendedor: <t t-out="str(vendedor_data['vendedor'].upper())[:80] or 'Sin Cliente'"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row p0 m0" style="min-height:18px; font-size:16px; color:black; font-weight: bold; margin:0px;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:10%;">
+                                                            <t t-out="str(termino_data['nombre_principal_termino_pago'].upper())[:80] or 'Sin termino'"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:69%;">
+                                                            <t t-out="termino_data['nombre_secundario_termino_pago']"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                            <t t-out="'{:.2f}'.format(termino_data['total_pen_termino_sin_impuestos'])"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                            <t t-out="'{:.2f}'.format(termino_data['total_usd_termino_sin_impuestos'])"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:4%;">
+                                                        </div>
+                                                    </div>
+
+                                                    <t t-set="current_height" t-value="7.4"/>
+                                                </t>
+                                            </t>
+
+                                            <t t-if="count == len(termino_data['facturas']) and count_termino == len(vendedor_data['terminos_de_pago'])">
+                                                <t t-if="(current_height + 8.65) > static_height_page">
+
+                                                    <div style="page-break-before: always;"></div>
+
+                                                    <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:83%;">
+                                                            Vendedor: <t t-out="str(vendedor_data['vendedor'].upper())[:80] or 'Sin Cliente'"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row p0 m0" style="min-height:18px; font-size:16px; color:black; font-weight: bold; margin: 0px;">
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:10%;">
+                                                            <t t-out="str(termino_data['nombre_principal_termino_pago'].upper())[:80] or 'Sin termino'"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-start" style="font-size:16px; width:69%;">
+                                                            <t t-out="termino_data['nombre_secundario_termino_pago']"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                            <t t-out="'{:.2f}'.format(termino_data['total_pen_termino_sin_impuestos'])"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                            <t t-out="'{:.2f}'.format(termino_data['total_usd_termino_sin_impuestos'])"/>
+                                                        </div>
+                                                        <div class="col-auto mp p0 text-center" style="font-size:16px; width:4%;">
+                                                        </div>
+                                                    </div>
+
+                                                    <t t-set="current_height" t-value="7.4"/>
+                                                </t>
+                                            </t>
+
+                                            <t t-set="current_height" t-value="current_height + 3"/>
+                                            
+                                            <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white; line-height: 1;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="2%" style="margin:0px; padding:0px;">
+                                                        </td>
+                                                        <td width="37%" style="margin:0px; padding:0px;">
+                                                            <t t-out="str(factura_data['cliente']).upper()[:52]" style="text-align:start;"/>
+                                                        </td>
+                                                        
+                                                        <td width="10%" style="margin:0px; padding:0px;">
+                                                            <t t-esc="factura_data['fecha_creacion_factura'].strftime('%d/%m/%Y')" style="text-align:start;"/>
+                                                        </td>
+
+                                                        <td width="11%" style="margin:0px; padding:0px;">
+                                                            <t t-esc="str(factura_data['factura']).upper()[:17]" style="text-align:start;"/>
+                                                        </td>
+                                                        
+                                                        <td width="8%" style="margin:0px; padding:0px;">
+                                                            <t t-out="factura_data['fecha_vencimiento_factura'].strftime('%d/%m/%Y')" style="text-align:start;"/>
+                                                        </td>
+                                                        <td width="12%" style="text-align:center ;margin:0px; padding:0px;">
+                                                            <t t-esc="factura_data['estado'].upper()"/>
+                                                        </td>
+                                                        <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-esc="'{:.2f}'.format(factura_data['total_pen_sin_impuesto'])"/>
+                                                        </td>
+                                                        <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-esc="'{:.2f}'.format(factura_data['total_dolar_sin_impuesto'])"/>
+                                                        </td>
+                                                        <td width="4%" style="text-align:center; margin:0px; padding:0px;">
+                                                            <t t-esc="'{:.2f}'.format(factura_data['valor_impuesto_dolar']) if round(factura_data['valor_impuesto_dolar']) != 0 else '{:.2f}'.format(factura_data['valor_impuesto_pen'])"/>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- Si es el ultimo tipo de pago y es la ultima factura -->
+                                                    <tr t-if="count == len(termino_data['facturas']) and count_termino == len(vendedor_data['terminos_de_pago'])" style="height:7px; font-weight: normal;">
+                                                        <t t-set="current_height" t-value="current_height + 5.65"/>
+                                                        <td colspan="6" style="padding: 4px 0px; position: relative;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 98.5%;" />
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                            <strong><t t-out="'{:.2f}'.format(vendedor_data['total_pen_vendedor_sin_impuestos'])"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(vendedor_data['total_usd_vendedor_sin_impuestos'])"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;" />
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    <tr t-if="count_vendedor == count_valie_more_zero and count_termino == len(vendedor_data['terminos_de_pago']) and count == len(termino_data['facturas'])" style="height:7px; font-weight: normal;">
+                                                        <t t-set="current_height" t-value="current_height + 5.65"/>
+                                                        <td colspan="6" style="padding: 4px 0px; position: relative;">
+                                                            <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 98.5%;" />
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                            <strong><t t-out="'{:.2f}'.format(total_pen_reporte)"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                            <strong><t t-out="'{:.2f}'.format(total_usd_reporte)"/></strong>
+                                                        </td>
+                                                        <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                            <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;" />
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </t>
+                                    
+                                    </t>
+                                </t>
+
+                            </t>
+
+                        </div>
+                    </t>
+                    
+                    <!-- LISTO -->
+                    <t t-elif="tipo_reporte=='ventas_cliente'">
+                        <div class="page">
+
+                            <t t-set="static_height_page" t-value="166"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_vendedor" t-value="0"/>
+                            
+                            <!-- ITERACION DE CLIENTES -->
+                            <t t-foreach="report_data" t-as="vendedor_data">
+                                <!-- Cliente + Factura + L.Secundaria  -->
+                                <t t-if="(current_height + 13) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <t t-set="current_height" t-value="current_height + 3.7"/>
+
+                                <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:84%;">
+                                        Cliente: <t t-out="str(vendedor_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:7%;">
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                    </div>
+                                </div>
+
+                                <t t-set="count_vendedor" t-value="count_vendedor + 1"/>
+                                <t t-set="count" t-value="0"/>
+
+                                <!-- ITERACION DE FACTURAS -->
+                                <t t-set="count" t-value="0"/>
+                                <t t-foreach="vendedor_data['facturas']" t-as="factura_data">  
+                                    <t t-set="count" t-value="int(count) + 1"/>                                
+
+                                    <t t-if="(current_height + 3) > static_height_page">
+    
+                                        <div style="page-break-before: always;"></div>
+
+                                        <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:84%;">
+                                                Cliente: <t t-out="str(vendedor_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:7%;">
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                            </div>
+                                        </div>
+
+                                        <t t-set="current_height" t-value="3.7"/>
+                                    </t>
+
+                                    <t t-if="count == len(vendedor_data['facturas'])">
+                                        <t t-if="(current_height + 8.65) > static_height_page">
+        
+                                            <div style="page-break-before: always;"></div>
+
+                                            <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:84%;">
+                                                    Cliente: <t t-out="str(vendedor_data['cliente'].upper())[:80] or 'Sin Cliente'"/>
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:7%;">
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                </div>
+                                            </div>
+
+                                            <t t-set="current_height" t-value="3.7"/>
+                                        </t>
+                                    </t>
+
+                                    <t t-set="current_height" t-value="current_height + 3"/>
+                                    
+                                    <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white; line-height: 1;">
+                                        <tbody>
+
+                                            <tr>
+                                                <td width="2%" style="margin:0px; padding:0px;">
+                                                </td>
+                                                <td width="7%" style="margin:0px; padding:0px;">
+                                                    <t t-out="factura_data['fecha_creacion_factura'].strftime('%d/%m/%Y')" style="text-align:start;"/>
+                                                </td>
+                                                <td width="4%" style="margin:0px; padding:0px;">
+                                                </td>
+                                                <td width="14%" style="margin:0px; padding:0px;">
+                                                    <t t-out="str(factura_data['factura']).upper()[:20]" style="text-align:start;"/>
+                                                </td>
+                                                <td width="10%" style="margin:0px; padding:0px;">
+                                                    <t t-esc="factura_data['fecha_vencimiento_factura'].strftime('%d/%m/%Y')" style="text-align:start;"/>
+                                                </td>
+                                                <td width="25%" style="text-align:center; margin:0px; padding:0px;">
+                                                    <t t-esc="factura_data['vendedor'].upper()" style="text-align:start;"/>
+                                                </td>
+                                                <td width="14%" style="text-align:center; margin:0px; padding:0px;">
+                                                    <t t-esc="factura_data['estado'].upper()"/>
+                                                </td>
+                                                <td width="8%" style="text-align:center; margin:0px px; padding:0px;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['total_pen_sin_impuesto'])"/>
+                                                </td>
+                                                <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['total_dolar_sin_impuesto'])"/>
+                                                </td>
+                                                <td width="8%" style="text-align:center; margin:0px; padding:0px;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['valor_impuesto_pen']) if factura_data['valor_impuesto_pen'] else '{:.2f}'.format(factura_data['valor_impuesto_dolar'])"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr t-if="count == len(vendedor_data['facturas'])" style="height:7px;">
+                                                <t t-set="current_height" t-value="current_height + 5.65"/>
+                                                <td colspan="6" style="padding: 4px 0px; position: relative;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 98.5%;" />
+                                                </td>
+                                                <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 100%;" />
+                                                </td>
+                                                <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(vendedor_data['total_pen_cliente_sin_impuestos'])"/></strong>
+                                                </td>
+                                                <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(vendedor_data['total_usd_cliente_sin_impuestos'])"/></strong>
+                                                </td>
+                                                <td colspan="1" style="padding: 4px 0px; position: relative; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;"/>
+                                                </td>
+
+                                            </tr>
+                                            
+                                            <tr t-if="count_vendedor == len(report_data) and count == len(vendedor_data['facturas'])" style="height:7px;">
+                                                
+                                                <td colspan="6" style="padding: 4px 0px; position: relative;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 98.5%;" />
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong>Total Reporte:</strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(total_pen_reporte)"/></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(total_usd_reporte)"/></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px; position: relative;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 98%;" />
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </t>
+
+                            </t>
+
+                        </div>
+                    </t>
+                    
+                    <!-- LISTO -->
+                    <t t-elif="tipo_reporte=='compras'">
+                        <div class="page">
+
+                            <t t-set="static_height_page" t-value="169"/>
+                            <t t-set="current_height" t-value="0"/>
+
+                            <t t-set="count_vendedor" t-value="0"/>
+                            
+                            <!-- ITERACION DE PROVEEDORES -->
+                            <t t-foreach="report_data" t-as="vendedor_data">
+                                <!-- Proveedores + Producto + Linea Secundaria -->
+                                <t t-if="(current_height + 12.35) > static_height_page">
+                                    <div style="page-break-before: always;"></div>
+                                    <t t-set="current_height" t-value="0"/>
+                                </t>
+
+                                <t t-set="current_height" t-value="current_height + 3.7"/>
+
+                                <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                    <div class="col-auto mp p0 text-start" style="font-size:16px; width:84%;">
+                                        Proveedor: <t t-out="str(vendedor_data['proveedor'].upper())[:80] or 'Sin Cliente'"/>
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:7%;">
+                                    </div>
+                                    <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                    </div>
+                                </div>
+
+                                <t t-set="count_vendedor" t-value="count_vendedor + 1"/>
+                                <t t-set="count" t-value="0"/>
+
+                                <!-- ITERACION DE PRODUCTOS -->
+                                <t t-foreach="vendedor_data['facturas']" t-as="factura_data">                                  
+                                    <t t-set="count" t-value="int(count) + 1"/>
+
+                                    <t t-if="(current_height + 3) > static_height_page">
+    
+                                        <div style="page-break-before: always;"></div>
+
+                                        <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                            <div class="col-auto mp p0 text-start" style="font-size:16px; width:84%;">
+                                                Proveedor: <t t-out="str(vendedor_data['proveedor'].upper())[:80] or 'Sin Cliente'"/>
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:7%;">
+                                            </div>
+                                            <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                            </div>
+                                        </div>
+
+                                        <t t-set="current_height" t-value="3.7"/>
+                                    </t>
+
+                                    <t t-if="count == len(vendedor_data['facturas'])">
+                                        <t t-if="(current_height + 8.65) > static_height_page">
+        
+                                            <div style="page-break-before: always;"></div>
+
+                                            <div class="row p0 m0" style="min-height:17px; font-size:16px; color:black; font-weight: bold;">
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:1%;"></div>
+                                                <div class="col-auto mp p0 text-start" style="font-size:16px; width:84%;">
+                                                    Proveedor: <t t-out="str(vendedor_data['proveedor'].upper())[:80] or 'Sin Cliente'"/>
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:7%;">
+                                                </div>
+                                                <div class="col-auto mp p0 text-center" style="font-size:16px; width:8%;">
+                                                </div>
+                                            </div>
+
+                                            <t t-set="current_height" t-value="3.7"/>
+                                        </t>
+                                    </t>
+
+                                    <t t-set="current_height" t-value="current_height + 3"/>
+                                    
+                                    <table style="width: 100%; font-size:13px; color: #333333; border-collapse: collapse; border-color: white; line-height: 1;">
+                                        <tbody>
+                                            <tr>
+                                                <td width="2%" style="margin:0px; padding:0px;">
+                                                </td>
+
+                                                <!-- Fecha fatura-->
+                                                <td width="7%" style="margin:0px; padding:0px;text-align:start;">
+                                                    <t t-out="factura_data['fecha_creacion_factura'].strftime('%d/%m/%Y')"/>
+                                                </td>
+
+                                                <!-- Documento(Factura) -->
+                                                <td width="17%" style="margin:0px; padding:0px;text-align:start;">
+                                                    <t t-out="factura_data['factura'] or '000000000'"/>
+                                                </td>
+
+                                                <!-- Articulo -->
+                                                <td width="40%" style="margin:0px; padding:0px;">
+                                                    <t t-out="str(factura_data['producto']).upper()[:55]" style="text-align:start;"/>
+                                                </td>
+
+                                                <!-- Cantidad -->
+                                                <td width="5%" style="margin:0px; padding:0px; text-align:center;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['cantidad'])"/>
+                                                </td>
+
+                                                <!-- Unidad -->
+                                                <td width="3%" style="margin:0px; padding:0px; text-align:center;">
+                                                    <!-- <t t-out="str(factura_data['producto']).upper()[:80]" style="text-align:start;"/> -->
+                                                    <t t-esc="str(factura_data['unidad'] or 'N/D').upper()[:3]"/>
+                                                </td>
+
+                                                <!-- PU -->
+                                                <td width="5%" style="margin:0px; padding:0px; text-align:center;">
+                                                    <t t-out="'{:.2f}'.format(factura_data['precio'])"/>
+                                                </td>
+
+                                                <!-- Soles -->
+                                                <td width="7%" style="margin:0px; padding:0px; text-align:center;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['total_pen'])"/>
+                                                </td>
+
+                                                <!-- Dolares -->
+                                                <td width="7%" style="margin:0px; padding:0px; text-align:center;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['total_dolar'])"/>
+                                                </td>
+
+                                                <!-- IGV -->
+                                                <td width="7%" style="margin:0px; padding:0px; text-align:center;">
+                                                    <t t-esc="'{:.2f}'.format(factura_data['valor_impuesto_dolar']) if factura_data['valor_impuesto_dolar'] != 0 else '{:.2f}'.format(factura_data['valor_impuesto_pen'])"/>
+                                                </td>
+                                                
+                                            </tr>
+
+                                            <tr t-if="count == len(vendedor_data['facturas'])" style="height:7px;">
+
+                                                <t t-set="current_height" t-value="current_height + 5.65"/>
+
+                                                <td colspan="7" style="padding: 4px 0px; position: relative;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 98.5%;" />
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(vendedor_data['total_pen_cliente'])"/></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(vendedor_data['total_usd_cliente'])"/></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 95%;" />
+                                                </td>
+
+                                            </tr>
+
+                                            <tr t-if="count_vendedor == len(report_data) and count == len(vendedor_data['facturas'])" style="height:7px;">
+
+                                                <td colspan="5" style="padding: 4px 0px; position: relative;">
+                                                    <div style="position: absolute; top: 0; right: 0; border-top: 1px solid black; width: 98.5%;" />
+                                                </td>
+
+                                                <td colspan="2" style="padding: 4px 0px; border-top: 1px solid black; text-align: center; font-size:14px;">
+                                                    <strong>Total Reporte:</strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(total_pen_reporte or 0)"/></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 100%;" />
+                                                    <strong><t t-out="'{:.2f}'.format(total_usd_reporte or 0)"/></strong>
+                                                </td>
+
+                                                <td colspan="1" style="padding: 4px 0px 0px 0px; position: relative; font-size:14px; text-align:center;">
+                                                    <div style="position: absolute; top: 0; left: 0; border-top: 1px solid black; width: 95%;" />
+                                                </td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </t>
+
+                            </t>
+
+                        </div>
+                    </t>
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

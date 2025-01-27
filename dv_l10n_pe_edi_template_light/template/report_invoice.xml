@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_pe_invoice_document">
+        <t t-call="dv_l10n_pe_edi_template_light.external_layout_invoice_A4">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-set="extra_edi_vals" t-value="o._l10n_pe_edi_get_extra_report_values()"/>
+            <t t-set="spot" t-value="o._l10n_pe_edi_get_spot()"/>
+            <t t-set="invoice_dues" t-value="o._l10n_pe_edi_get_dues()"/>
+            <t t-set="invoice_data" t-value="o.get_pe_tax_totals()"/>
+            <div t-attf-class="{{'o_report_layout_background' if o.company_id.layout_background in ['Geometric', 'Custom'] else ''}}"
+                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % o.company_id.layout_background_image.decode('utf-8') if o.company_id.layout_background_image and o.company_id.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' if o.company_id.layout_background == 'Geometric' else ''}}); background-size: cover; background-position: center;"
+                 t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id">
+                <!-- Encabezado -->
+                <div class="container" style="font-size: 12px; display: flex; align-items: center;">
+                    <div class="row">
+                        <div class="text-center" style="width: 30%; max-width: 30%; flex-shrink: 0;">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-width: 100%;"/>
+                            <div class="row">
+                                <!-- <span class="fw-bold" style="font-size: 16px;" t-esc="o.company_id.name"/> -->
+                            </div>
+                        </div>
+                        <div style="width: 36%; text-align: center; overflow-wrap: break-word; word-wrap: break-word; display: flex; align-items: center;">
+                            <!-- <div>
+                                <span class="fw-bold" style="font-size: 16px;" t-esc="o.company_id.name"/>
+                            </div> -->
+                            <div>
+                                <span t-esc="o.company_id.report_header"/>
+                            </div>
+                            <!-- <div>
+                                <span t-esc="o.company_id.street"/>
+                            </div>
+                            <div>Movil:
+                                <span t-esc="o.company_id.mobile"/>
+                            </div>
+                            <div>
+                                <span t-esc="o.company_id.partner_id.website"/>
+                            </div> -->
+                        </div>
+                        <div style="width: 2%">
+                        </div>
+                        <div class="border border-secondary fw-bold text-center" style="width: 32%; border-radius: 10px; border: 1px solid #a1a4ab;">
+                            <p>RUC:
+                                <span t-esc="o.company_id.vat"/>
+                            </p>
+                            <p style="font-size: 15px;" t-esc="o.l10n_latam_document_type_id.report_name.upper()"/>
+                            <p style="font-size: 14px;">Nro.
+                                <span style="font-size: 14px;" t-esc="o.name.replace(' ','')"/>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- <div class="row"> -->
+                        <div>
+                            <span t-esc="o.company_id.street"/>-
+                            <span t-esc="o.company_id.partner_id.l10n_pe_district.name"/>-
+                            <span t-esc="o.company_id.city"/>-
+                            <span t-esc="o.company_id.state_id.name"/>
+                        </div>
+                    <!-- </div> -->
+                    <!-- <div class="row"> -->
+                        <div>
+                            Telf.:&#160;&#160; <span t-esc="o.company_id.phone">Phone</span>&#160;&#160;&#160;
+                            Cel.:&#160;&#160; <span t-esc="o.company_id.mobile">Mobile</span>
+                        </div>
+                    <!-- </div> -->
+                    <div class="row" >
+                        <div style="width: 40%;">
+                        <span t-esc="o.company_id.partner_id.website"/>
+                        </div>
+                        <div style="width: 40%;">
+                            Correo: <span t-esc="o.company_id.email"/>
+                        </div>
+                    </div>
+                </div>
+                <!-- Cuerpo -->
+                <div class="container" style="font-size: 12px;">
+                    <!-- Datos del cliente -->
+                    <div class="row">
+                        <div class="border border-secondary p-2" style="border-radius: 11px; margin-top: 25px; border: 1px solid #a1a4ab;">
+                            <table class="table table-borderless" style="margin-bottom: unset;">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold p-0" width="10%">Razon Social:</td>
+                                        <td class="p-0" width="50%">
+                                            <t t-esc="o.partner_id.name"/>
+                                        </td>
+                                        <td class="fw-bold p-0" width="10%">F.Emisión:</td>
+                                        <td class="p-0" width="10%">
+                                            <span t-field="o.invoice_date">FECHA DE EMISION</span>
+                                        </td>
+                                        <!-- <td class="fw-bold p-0" width="10%">Moneda:</td>
+                                        <td class="p-0" width="10%">
+                                            <t t-esc="o.currency_id.name"/>
+                                        </td> -->
+                                        <!-- <td class="fw-bold p-0" width="10%">IGV:</td>
+                                        <td class="p-0" width="10%">
+                                            <span>18%</span>
+                                        </td> -->
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold p-0">RUC:</td>
+                                        <td class="p-0">
+                                            <t t-esc="o.partner_id.vat"/>
+                                        </td>
+                                        <!-- <td class="fw-bold p-0">Condición de Pago:</td>
+                                        <td class="p-0">
+                                            <t t-esc="o.invoice_payment_term_id.name"/>
+                                        </td> -->
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold p-0">Dirección:</td>
+                                        <td class="p-0">
+                                            <t t-esc="o.partner_id.street"/>&#160;
+                                            <span t-esc="o.partner_id.l10n_pe_district.name"/> -
+                                            <span t-esc="o.partner_id.city"/> -
+                                            <span t-esc="o.partner_id.state_id.name"/>
+                                        </td>
+                                        <td class="fw-bold p-0" width="10%">Moneda:</td>
+                                        <td class="p-0" width="10%">
+                                            <t t-esc="o.currency_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="o.letter_line_id">
+                                        <td></td>
+                                        <td></td>
+                                        <td class="fw-bold p-0" width="10%">Letra:</td>
+                                        <td class="p-0" width="10%">
+                                            <t t-esc="o.letter_line_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td class="fw-bold p-0">Ciudad:</td>
+                                        <td class="p-0">
+                                            <span t-esc="o.partner_id.l10n_pe_district.name"/> -
+                                            <span t-esc="o.partner_id.city"/> -
+                                            <span t-esc="o.partner_id.state_id.name"/>
+                                        </td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <!-- Datos de pago -->
+                    <div class="border border-secondary p-2" style="border-radius: 11px; border: 1px solid #a1a4ab;">
+                        <table class="table table-borderless" style="margin-bottom: unset;">
+                            <tbody class="text-center">
+                                <tr>
+                                    <td class="fw-bold p-0" width="20%">Forma de Pago</td>
+                                    <td class="fw-bold p-0" width="20%">Vendedor</td>
+                                    <td class="fw-bold p-0" width="20%">
+                                        <t t-if="o.reversed_entry_id or o.debit_origin_id">
+                                            Motivo
+                                        </t>
+                                        <t t-else="">
+                                            Orden de Compra
+                                        </t>
+                                    </td>
+                                    <td class="fw-bold p-0" width="20%">Fecha de Vencimiento</td>
+                                    <t t-if="o.guia_remision or o.reversed_entry_id or o.debit_origin_id">
+                                        <td class="fw-bold p-0" width="20%">
+                                            <t t-if="o.guia_remision and not o.debit_origin_id">N° Guía de Remisión</t>
+                                            <t t-else="">Factura Relacionada</t>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <tr>
+                                    <td class="p-0" width="20%">
+                                        <t t-esc="o._l10n_pe_edi_get_payment_means()"/>&#160;
+                                        <span t-esc="o.invoice_payment_term_id.name"/>
+                                    </td>
+                                    <td class="p-0" width="20%">
+                                        <t t-esc="o.invoice_user_id.name"/>
+                                    </td>
+                                    <td class="p-0" width="20%">
+                                        <t t-if="o.orden_compra and o.move_type in ['out_invoice', 'in_invoice']">
+                                            <t t-esc="o.orden_compra"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-esc="o.ref"/>
+                                        </t>
+                                    </td>
+                                    <td class="p-0" width="20%">
+                                        <!-- <t t-esc="o.invoice_date_due"/> -->
+                                        <span t-field="o.invoice_date_due">FECHA DE VENCIMIENTO</span>
+                                    </td>
+                                    <t t-if="o.guia_remision or o.reversed_entry_id or o.debit_origin_id">
+                                        <td class="p-0" width="20%">
+                                            <t t-if="o.guia_remision and not o.debit_origin_id">
+                                                <span t-esc="o.guia_remision"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-if="o.reversed_entry_id">
+                                                    <span t-esc="o.reversed_entry_id.name"/>
+                                                </t>
+                                                <t t-if="o.debit_origin_id">
+                                                    <span t-esc="o.debit_origin_id.name"/>
+                                                </t>
+                                                <t t-else="">
+                                                    &#160; <!-- Espacio en blanco si no hay valor -->
+                                                </t>
+                                            </t>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                    <!-- Tabla de productos -->
+                    <table class="table border-secondary text-center">
+                        <tr style="color: #111827; background-color: #e7e9ed;">
+                            <th width="5%">Item</th>
+                            <th width="6%">Cant.</th>
+                            <th width="8%">Unid.Med.</th>
+                            <th width="49%">Descripción</th>
+                            <th width="8%">Precio Unit.</th>
+                            <th width="8%">Dscto.</th>
+                            <th width="8%">Total</th>
+                        </tr>
+                        <t t-set="row_num" t-value="0"/>
+                        <t t-foreach="o.invoice_line_ids" t-as="line">
+                            <t t-set="row_num" t-value="row_num + 1"/>
+                            <tr>
+                                <td>
+                                    <t t-esc="row_num"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.quantity"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.product_uom_id.name"/>
+                                </td>
+                                <td class="text-start">
+                                    <t t-esc="line.product_id.name"/>
+                                </td>
+                                <td class="text-end">
+                                    <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.discount"/>
+                                </td>
+                                <td class="text-end">
+                                    <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                    <!-- Datos de banco e importes -->
+                    <div class="row">
+                        <!-- Datos bancarios y pie de página-->
+                        <div style="width: 60%;">
+                            <!-- <div class="fw-bold">Observaciones:</div> -->
+                            <div class="border border-secondary p-2" style="font-size: smaller;">
+                                <span t-field="o.company_id.report_footer"/> 
+                            </div>
+                            <br/>
+                            <table class="table table-sm table-bordered boder-light text-center" style="page-break-inside: avoid">
+                                <!-- <thead>
+                                    <tr class="hidden-header" style="color: #111827; background-color: #e7e9ed;">
+                                        <th>ENTIDAD FINANCIERA</th>
+                                        <th>NUMERO DE CUENTA</th>
+                                    </tr>
+                                </thead> -->
+                               <!--  <tbody style="border-top: 1px solid currentColor;"> -->
+                                    <t t-foreach="o.company_id.partner_id.bank_ids" t-as="bank">
+                                        <tr class="text-left" style="border: 1px solid #a1a4ab;">
+                                            <td style="font-weight: bold;">
+                                                <span t-field="bank.bank_id.name"/>
+                                            </td>
+                                            <td style="font-weight: bold;">
+                                                <span t-field="bank.acc_number"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                <!-- </tbody> -->
+                            </table>
+                        </div>
+                        <!-- Separación -->
+                        <div style="width: 3%;">
+                        </div>
+                        <!-- Datos de importes -->
+                        <div style="width: 37%; align-content: flex-end;">
+                            <table class="table table-borderless" style="border: 1px solid #a1a4ab;">
+                                <tr t-if="invoice_data[0]['base_igv'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">OP. GRAVADAS</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_igv']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="p-10" t-if="invoice_data[0]['base_ina'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">OP. INAFECTAS</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_ina']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="invoice_data[0]['base_exo'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">OP. EXONERADAS</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_exo']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="invoice_data[0]['base_exp'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">OP. EXPORTACIÓN</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_exp']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="invoice_data[0]['base_free'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">TOTAL OP. GRATUITAS</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_free']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="o.amount_untaxed - invoice_data[0]['base_free'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">SUB TOTAL</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="o.amount_untaxed - invoice_data[0]['base_free']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="invoice_data[0]['base_icbper'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">ICBPER</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_icbper']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="invoice_data[0]['base_icbper'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">ISC</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['base_icbper']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="invoice_data[0]['vat_igv'] != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">IGV 18%</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="invoice_data[0]['vat_igv']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="font-size: 17px;padding: 3px;vertical-align: middle;text-align-last: left;">IMPORTE TOTAL</td>
+                                    <td class="text-end fw-bold" style="font-size: 17px;padding: 3px;vertical-align: middle;">
+                                        <span t-esc="o.amount_total - invoice_data[0]['base_free']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Importe en texto -->
+                    <div class="row" style="width: 60%; margin-top: 12px;">
+                        <div class="fw-bold">SON:
+                            <span t-esc="o.amount_total_text"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <!-- Detracción -->
+                    <div class="row">
+                        <table t-if="spot" class="table table-sm table-bordered boder-light text-center" style="page-break-inside: avoid; border: 1px solid #a1a4ab;">
+                            <!-- <tr style="color: #111827; background-color: #e7e9ed;">
+                                <th colspan="2">Detalle Detracción</th>
+                            </tr> -->
+                            <tr style="color: #111827; background-color: #e7e9ed;">
+                                <th style="width: 30%;">IMPORTE</th>
+                                <th style="width: 40%;">PORCNTAJE DE DETRACCIÓN</th>
+                                <th style="width: 30%;">CUENTA BANCO DE LA NACIÓN</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span t-esc="spot['spot_amount']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                                </td>
+                                <td>
+                                    <t t-esc="spot['payment_percent']"/>%
+                                </td>
+                                <td>
+                                    <t t-esc="spot['payee_financial_account']"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    OPERACIÓN SUJETA A DETRACCIÓN CUENTA BANCO DE LA NACIÓN
+                                    <span class="fw-bold">
+                                        <t t-esc="spot['payee_financial_account']"/>
+                                    </span>
+                                    EXCEPTO NO OPERADORES DE COMERCIO EXTERIOR IMPORTADOR/EXPORTADOR(RS 158-2012)
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Información de crédito -->
+                    <div t-if="(invoice_dues and any(due['amount'] > 0 for due in invoice_dues)) and o._l10n_pe_edi_get_payment_means() == 'Credito'">
+                        <table class="table table-sm table-bordered boder-light text-center" style="page-break-inside: avoid; border: 1px solid #a1a4ab;">
+                            <thead>
+                                <!-- <tr style="color: #111827; background-color: #e7e9ed;">
+                                    <th colspan="3">Información del Crédito</th>
+                                </tr> -->
+                                <tr style="color: #111827; background-color: #e7e9ed;">
+                                    <th style="width: 30%;">CUOTA</th>
+                                    <th style="width: 40%;">IMPORTE</th>
+                                    <th style="width: 30%;">VCMTO</th>
+                                </tr>
+                            </thead>
+                            <tbody style="border-top: 1px solid currentColor;">
+                                <t t-set="i" t-value="0"/>
+                                <tr t-foreach="invoice_dues" t-as="due">
+                                    <t t-set="i" t-value="i+1"/>
+                                    <td>
+                                        <t t-esc="i"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="due['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.env['ir.qweb.field.date'].value_to_html(due['date_maturity'], {'format': 'dd / MM / yyyy'})"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Observaciones -->
+                    <div style="width: 60%;">
+                        <div colspan="3" style="padding:5px;" >
+                            <b>Observaciones:</b>
+                        </div>
+                        <div t-if="o.narration" style="padding: 5px;">
+                            <t t-esc="o.narration"/>
+                        </div>
+                    </div>
+                    <!-- <br/>
+                    <div>
+                        <table class="table table-sm table-bordered boder-light text-center" style="page-break-inside: avoid">
+                            <tr style="color: #ffffff; background-color: #ADADAD;">
+                                <th colspan="3">Cuentas Bancarias</th>
+                            </tr>
+                            <tr>
+                                <th>Entidad financiera</th>
+                                <th>Número de cuenta</th>
+                                <th>Código de cuenta interbancario</th>
+                            </tr>
+                            <t t-foreach="o.company_id.partner_id.bank_ids" t-as="bank">
+                                <tr class="text-left">
+                                    <td>
+                                        <span t-field="bank.bank_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="bank.acc_number"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="bank.acc_number"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div> -->
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="report_invoice" inherit_id="account.report_invoice">
+        <xpath expr="//t[@t-call='account.report_invoice_document']" position="after">
+            <t t-if="o._get_name_invoice_report() == 'dv_l10n_pe_edi_template_light.report_pe_invoice_document'">
+                <t t-call="dv_l10n_pe_edi_template_light.report_pe_invoice_document" t-lang="lang"/>
+            </t>
+        </xpath>
+    </template>
+    <!-- <template id="report_invoice_with_payments" inherit_id="account.report_invoice_with_payments">
+        <xpath expr="//t[@t-call='account.report_invoice']" position="after">
+            <t t-if="o._get_name_invoice_report() == 'dv_l10n_pe_edi_template_light.report_pe_invoice_document'">
+                <t t-call="dv_l10n_pe_edi_template_light.report_pe_invoice_document" t-lang="lang"/>
+            </t>
+        </xpath>
+    </template> -->
+    <!-- Formato A4 para facturas -->
+    <record id="A4_invoice_format" model="report.paperformat">
+        <field name="name">A4-invoice</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5.00</field>
+        <field name="margin_bottom">5.00</field>
+        <field name="margin_left">7.0</field>
+        <field name="margin_right">7.0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+</odoo>

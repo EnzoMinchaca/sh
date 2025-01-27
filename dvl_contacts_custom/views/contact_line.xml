@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="view_contact_line_form" model="ir.ui.view">
+            <field name="name">contact.line.form</field>
+            <field name="model">contact.line</field>
+            <field name="arch" type="xml">
+                <form string="Contacto">
+                    <group>
+                        <field name="sequence" invisible="1"/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="name"/>
+                        <field name="email"/>
+                        <field name="phone"/>
+                        <field name="mobile"/>
+                        <field name="area"/>
+                        <field name="funcion"/>
+                        <field name="comentario"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+

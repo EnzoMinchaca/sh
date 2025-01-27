@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_your_pipeline_private" model="ir.actions.server">
+        <field name="name">Pipeline Privado</field>
+        <field name="model_id" ref="model_crm_team"/>
+        <field name="state">code</field>
+        <field name="groups_id"  eval="[(4, ref('base.group_user'))]"/>
+        <field name="code">action = model.action_your_pipeline_private()</field>
+    </record>
+    <record id="action_your_pipeline_public" model="ir.actions.server">
+        <field name="name">Pipeline Publico</field>
+        <field name="model_id" ref="model_crm_team"/>
+        <field name="state">code</field>
+        <field name="groups_id"  eval="[(4, ref('base.group_user'))]"/>
+        <field name="code">action = model.action_your_pipeline_public()</field>
+    </record>
+
+</odoo>

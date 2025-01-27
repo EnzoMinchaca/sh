@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_sunnat_connection_vat" model="ir.actions.server">
+        <field name="name">Consulta RUC/DNI</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="binding_model_id" ref="model_res_partner"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">records.action_sunnat_connection_vat()</field>
+    </record>
+</odoo>

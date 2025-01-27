@@ -1,0 +1,36 @@
+<odoo>
+    <!-- Vista lista -->
+    <record id="hr_shifts_tree" model="ir.ui.view">
+        <field name="name">hr.shifts.tree</field>
+        <field name="model">hr.shifts</field>
+        <field name="arch" type="xml">
+            <tree string="Turnos" editable="top">
+                <field name="name"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="end_time" widget="float_time"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Vista formulario -->
+    <record id="hr_shifts_form" model="ir.ui.view">
+        <field name="name">hr.shifts.form</field>
+        <field name="model">hr.shifts</field>
+        <field name="arch" type="xml">
+            <form string="Turnos">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="start_time" widget="float_time"/>
+                        <field name="end_time" widget="float_time"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Acciones -->
+    <record id="hr_shifts_action" model="ir.actions.act_window">
+        <field name="name">Turnos</field>
+        <field name="res_model">hr.shifts</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

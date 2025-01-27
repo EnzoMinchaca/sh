@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_company_form" model="ir.ui.view">
+        <field name="name">res.company.inherit.view.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]" position="after">
+                <field name="l10n_pe_is_retention_agent" invisible="country_code != 'PE'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

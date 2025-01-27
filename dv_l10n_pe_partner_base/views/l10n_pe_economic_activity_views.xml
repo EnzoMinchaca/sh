@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_l10n_pe_economic_activity" model="ir.actions.act_window">
+        <field name="name">Actividades Económicas</field>
+        <field name="res_model">l10n_pe.economic.activity</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

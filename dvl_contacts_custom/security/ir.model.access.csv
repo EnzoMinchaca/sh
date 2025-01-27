@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contact_line,access.contact.line,model_contact_line,base.group_user,1,1,1,1
+access_data_line,access.data.line,model_data_line,base.group_user,1,1,1,1
+access_ubicacion_line,access.ubicacion.line,model_ubicacion_line,base.group_user,1,1,1,1
+access_accesos_line,access.accesos.line,model_accesos_line,base.group_user,1,1,1,1
+access_contact_cliente_admin,access.contact.cliente_admin,base.model_res_partner,dvl_contacts_custom.group_partner_admin,1,1,1,1
+access_contact_cliente_user,access.contact.cliente_user,base.model_res_partner,dvl_contacts_custom.group_partner_cliente,1,0,0,0
+access_contact_proveedor,access.contact.proveedor,base.model_res_partner,dvl_contacts_custom.group_partner_proveedor,1,0,0,0
+access_contact_externo,access.contact.externo,base.model_res_partner,dvl_contacts_custom.group_partner_externo,1,0,0,0
+access_contact_interno,access.contact.interno,base.model_res_partner,dvl_contacts_custom.group_partner_interno,1,0,0,0
+access_contact_types_admin,access.contact.types.admin,dvl_contacts_custom.model_contact_types,dvl_contacts_custom.group_partner_admin,1,1,1,1
+access_contact_types_cliente,access.contact.types.cliente,dvl_contacts_custom.model_contact_types,dvl_contacts_custom.group_partner_cliente,1,0,0,0
+access_contact_types_proveedor,access.contact.types.proveedor,dvl_contacts_custom.model_contact_types,dvl_contacts_custom.group_partner_proveedor,1,0,0,0
+access_contact_types_externo,access.contact.types.externo,dvl_contacts_custom.model_contact_types,dvl_contacts_custom.group_partner_externo,1,0,0,0
+access_contact_types_interno,access.contact.types.interno,dvl_contacts_custom.model_contact_types,dvl_contacts_custom.group_partner_interno,1,0,0,0
+access_contact_types_system,access.contact.types,dvl_contacts_custom.model_contact_types,base.group_system,1,1,1,1

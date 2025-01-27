@@ -1,0 +1,30 @@
+<odoo>
+  <!-- Herencia de la vista formulario -->
+  <record id="crm_stage_form_inherit" model="ir.ui.view">
+    <field name="name">crm.stage.form.inherit</field>
+    <field name="model">crm.stage</field>
+    <field name="inherit_id" ref="crm.crm_stage_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//group[1]" position="inside">
+        <group string="Orden de Columna">
+          <field name="order_desc" />
+          <field name="order_asc" />
+          <field name="field_by_order" options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+  <!-- Herencia de la vista lista -->
+  <record id="crm_stage_tree_inherit" model="ir.ui.view">
+    <field name="name">crm.stage.tree.inherit</field>
+    <field name="model">crm.stage</field>
+    <field name="inherit_id" ref="crm.crm_stage_tree"/>
+    <field name="arch" type="xml">
+      <xpath expr="//tree" position="inside">
+        <field name="order_desc"/>
+        <field name="order_asc"/>
+        <field name="field_by_order" options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

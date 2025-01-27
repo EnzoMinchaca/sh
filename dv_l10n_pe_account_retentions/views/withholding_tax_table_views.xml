@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="withholding_tax_table_view_form" model="ir.ui.view">
+        <field name="name">withholding.tax.table.view.form</field>
+        <field name="model">withholding.tax.table</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="percent"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="withholding_tax_table_view_tree" model="ir.ui.view">
+        <field name="name">withholding.tax.table.view.tree</field>
+        <field name="model">withholding.tax.table</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="percent"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="withholding_tax_table_action">
+        <field name="name">Tabla de retenciones</field>
+        <field name="res_model">withholding.tax.table</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

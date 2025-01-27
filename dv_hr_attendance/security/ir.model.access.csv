@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_group_admin,hr.group.admin,model_hr_group,hr_attendance.group_hr_attendance_manager,1,1,1,1
+
+access_hr_equip_admin,hr.equip.admin,model_hr_equip,hr_attendance.group_hr_attendance_manager,1,1,1,1
+
+access_hr_shifts_admin,hr.shifts.admin,model_hr_shifts,hr_attendance.group_hr_attendance_manager,1,1,1,1
+
+access_hr_attendance_state_admin,hr.attendance_state.admin,model_hr_attendance_state,hr_attendance.group_hr_attendance_manager,1,1,1,1

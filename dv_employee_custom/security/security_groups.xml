@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_alerta_renovacion_usuario_asignado" model="res.groups">
+        <field name="name">Permisos: Alerta de Renovación</field>
+        <field name="comment">Grupo con permisos para poder ver y editar el formulario de Alerta de Renovación </field>
+    </record>
+</odoo>

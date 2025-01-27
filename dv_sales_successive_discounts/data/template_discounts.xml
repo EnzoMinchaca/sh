@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Plantilla de correo -->
+        <record id="email_template_discounts" model="mail.template">
+            <field name="name">Aprobación de Descuentos Sucesivos</field>
+            <field name="model_id" ref="dv_sales_successive_discounts.model_sale_order"/> <!-- Referencia al modelo sale.order.line -->
+            <field name="subject">Solicitud de aprobación para descuentos sucesivos</field>
+            <field name="email_from">{{ (object.user_id.company_id.email_formatted) }}</field>
+            <field name="email_to">
+                77269474mario@gmail.com
+            </field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Estimado Administrador de Ventas,</p>
+
+                    <p>
+                        Se requiere tu acción para aprobar o rechazar los <strong>descuentos sucesivos</strong> en la línea de pedido <t t-out="object.name or ''"/>
+                        para el cliente <t t-out="object.partner_id.name"/>.
+                    </p>
+
+                    <p>Detalles de los descuentos solicitados:</p>
+
+                    <table class="table table-bordered o_table" style="margin: 0px; table-layout: fixed; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-top: 1px solid; border-bottom: 1px solid;">
+                                <th style="padding: 8px; border: 1px solid; margin: 0px;">Producto</th>
+                                <th style="padding: 8px; border: 1px solid; margin: 0px;">Precio Lista</th>
+                                <th style="padding: 8px; border: 1px solid; margin: 0px;">D1</th>
+                                <th style="padding: 8px; border: 1px solid; margin: 0px;">D2</th>
+                                <th style="padding: 8px; border: 1px solid; margin: 0px;">D3</th>
+                                <th style="padding: 8px; border: 1px solid; margin: 0px;">Precio Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="count" t-value="0"/>
+
+                            <t t-foreach="object.sale_successive_discounts" t-as="line_discount">
+                                <t t-set="count" t-value="count + 1"/>
+                                <tr style="border-top: 1px solid; border-bottom: 1px solid;">
+                                    <td style="padding: 8px; border: 1px solid; margin: 0px;"><t t-esc="line_discount.sale_order_line_id.product_template_id.name"/></td>
+                                    <td style="padding: 8px; border: 1px solid; margin: 0px;"><t t-esc="line_discount.original_price"/></td>
+                                    <td style="padding: 8px; border: 1px solid; margin: 0px;"><t t-esc="line_discount.first_discount"/></td>
+                                    <td style="padding: 8px; border: 1px solid; margin: 0px;"><t t-esc="line_discount.second_discount"/></td>
+                                    <td style="padding: 8px; border: 1px solid; margin: 0px;"><t t-esc="line_discount.third_discount"/></td>
+                                    <td style="padding: 8px; border: 1px solid; margin: 0px;"><t t-esc="line_discount.final_price"/></td>                                    
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <p>Por favor selecciona una acción:</p>
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a type="button" class="btn btn-primary" t-att-href="'/discount/reject/%d' %(object.id)" style="background-color: #d9534f; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" target="_blank">Rechazar Descuento</a> 
+                        <a type="button" class="btn btn-primary" t-att-href="'/discount/approve/%d' %(object.id)" style="background-color: #5cb85c; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" target="_blank">Aprobar Descuento</a> 
+                        <br/><br/>
+                    </div>
+
+                    <p>Saludos cordiales,</p>
+                    <p><strong>El equipo de <t t-out="object.user_id.company_id.name or ''">Ventas</t></strong></p>
+                    
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

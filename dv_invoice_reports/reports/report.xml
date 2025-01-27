@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Configuración de dimensiones del pdf vertical-->
+    <record id="paperformat_a4_custom" model="report.paperformat">
+        <field name="name">A4 Report Invoice</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="margin_top">34</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="orientation">Portrait</field>
+        <field name="header_line" eval="True" />
+        <field name="dpi">90</field>
+    </record>
+    <!-- Configuración de dimensiones del pdf horizontal-->
+    <record id="paperformat_a4_horizontal_custom" model="report.paperformat">
+        <field name="name">A4 Report Invoice Horizontal</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="margin_top">34</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="orientation">Landscape</field>
+        <field name="header_line" eval="True" />
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- Configuración de propiedades del formato pdf General-->
+    <record id="action_reporte_filtros" model="ir.actions.report">
+        <field name="name">Reporte Filtros</field>
+        <field name="model">invoice.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dv_invoice_reports.reporte_filtros_template</field>
+        <field name="report_file">dv_invoice_reports.reporte_filtros_template</field>
+        <field name="print_report_name">"Reporte Filtros"</field>
+        <field name="paperformat_id" ref="dv_invoice_reports.paperformat_a4_custom"/>
+        <field name="binding_model_id" ref="dv_invoice_reports.model_invoice_report"/>
+        <field name="binding_type">report</field>
+    </record>
+    <!-- Configuración de propiedades del formato pdf Detallado-->
+    <record id="action_reporte_filtros_general" model="ir.actions.report">
+        <field name="name">Reporte Filtros Detallado</field>
+        <field name="model">invoice.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dv_invoice_reports.reporte_filtros_template_detallado</field>
+        <field name="report_file">dv_invoice_reports.reporte_filtros_template_detallado</field>
+        <field name="print_report_name">"Reporte Filtros General"</field>
+        <field name="paperformat_id" ref="dv_invoice_reports.paperformat_a4_horizontal_custom"/>
+        <field name="binding_model_id" ref="dv_invoice_reports.model_invoice_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,51 @@
+<odoo>
+
+    <record id="sale_quotation_form_custom" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//field[@name='company_id']" position="after">
+                <button name="open_wizard_successive_discounts" string="Aplicar %" class="oe_highlight" type="object" invisible="state == 'sale' and invoice_status == 'invoiced'"/>
+            </xpath>
+
+            <xpath expr="//tree//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='locked']" position="after">
+                <field name="state_invoice" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <button string="Solicitar Aprobación" name="action_send_request_discounts" type="object" class="oe_highlight" invisible="state_invoice not in ('draft')"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm' and not(@id)]" position="attributes">
+                <attribute name="invisible">
+                    (state != 'draft') or (state_invoice in ('draft','pending','rejected'))
+                </attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_button_box']" position="before">
+                <div class="ribbon ribbon-top-right"
+                    invisible="state_invoice not in ('rejected')">
+                    <span class="text-bg-danger">% Rechazado</span>
+                </div>
+            </xpath>
+            <xpath expr="//div[@class='oe_button_box']" position="before">
+                <div class="ribbon ribbon-top-right"
+                    invisible="state_invoice not in ('approved')">
+                    <span class="text-bg-success">% Confirmado</span>
+                </div>
+            </xpath>
+            <xpath expr="//div[@class='oe_button_box']" position="before">
+                <div class="ribbon ribbon-top-right"
+                    invisible="state_invoice not in ('pending')">
+                    <span class="text-bg-info">% En Espera</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

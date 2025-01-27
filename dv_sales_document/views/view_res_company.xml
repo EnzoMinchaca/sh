@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="view_company_form_inherit_custom" model="ir.ui.view">
+            <field name="name">res.company.form.inherit.custom</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="description_bomberos"/>
+                    <field name="description_interior"/>
+                    <field name="description_ambiente"/>
+                </xpath> -->
+                <xpath expr="//field[@name='color']" position="after">
+                    <field name="firma_image" widget="image" class="oe_avatar"
+                        options="{'preview_image': 'firma_image'}" style="padding-right: 80%;"/>
+                    <field name="sello" widget="image" class="oe_avatar"
+                        options="{'preview_image': 'sello'}" style="padding-right: 80%;"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

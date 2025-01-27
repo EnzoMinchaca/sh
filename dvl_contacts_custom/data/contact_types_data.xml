@@ -1,0 +1,23 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Registro para Cliente -->
+        <record id="contact_type_cliente" model="contact.types">
+            <field name="name">Cliente</field>
+        </record>
+
+        <!-- Registro para Proveedor -->
+        <record id="contact_type_proveedor" model="contact.types">
+            <field name="name">Proveedor</field>
+        </record>
+
+        <!-- Registro para Externo -->
+        <record id="contact_type_externo" model="contact.types">
+            <field name="name">Externo</field>
+        </record>
+
+        <!-- Registro para Interno -->
+        <record id="contact_type_interno" model="contact.types">
+            <field name="name">Interno</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,88 @@
+<odoo>
+    <!-- Herencia de la vista lista de hr_attendance -->
+    <record id="hr_attendance_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="editable">top</attribute>
+            </xpath>
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="generate_excel" string="Generar Xlsx" type="object" class="oe_highlight"/>
+                </header>
+            </xpath>
+            <field name="check_out" position="after">
+                <field name="break_in"/>
+                <field name="break_out"/>
+                <field name="equip_id" string="Equipo"/>
+                <field name="group_id" string="Voulebard"/>
+                <field name="state_id" string="Estado"/>
+                <field name="description" string="Descripción"/>
+                <field name="shift_id" string="Turno" optional="hide"/>
+                <field name="guardia_id" string="Guardia" optional="hide"/>
+                <field name="vendor" string="Vendor" optional="hide"/>
+                <button name="action_start_break" string="Iniciar Refrigerio" type="object" class="oe_highlight" invisible="check_out or break_in"/>
+                <button name="action_end_break" string="Finalizar Refrigerio" type="object" class="oe_highlight" invisible="check_out or break_out or not break_in"/>
+            </field>
+        </field>
+    </record>
+    <!-- Herencia de la vista formulario de hr_attendance -->
+    <record id="hr_attendance_form_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.form.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <field name="check_out" position="after">
+                <field name="equip_id" string="Equipo"/>
+                <field name="group_id" string="Voulebard"/>
+                <field name="description" string="Descripción"/>
+                <field name="shift_id" string="Turno"/>
+                <field name="guardia_id" string="Guardia"/>
+                <field name="vendor" string="Vendor"/>
+                <field name="break_in"/>
+                <field name="break_out"/>
+            </field>
+        </field>
+    </record>
+    <!-- Herencia de hr_attendance_view_filter -->
+    <record id="hr_attendance_filter_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.filter.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="after">
+                <field name="equip_id"/>
+                <field name="shift_id"/>
+                <field name="group_id"/>
+                <field name="vendor"/>
+            </field>
+            <xpath expr="//group" position="inside">
+                <filter string="Hoy" name="today" domain="[('check_in', '&gt;=', context_today().strftime('%Y-%m-%d')), ('check_in', '&lt;', (context_today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- actions -->
+
+    <record id="hr_attendance_action" model="ir.actions.act_window">
+        <field name="name">Asistencias</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="hr_attendance.hr_attendance_view_filter"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No attendance records found
+            </p><p>
+                The attendance records of your employees will be displayed here.
+            </p>
+        </field>
+    </record>
+    <menuitem id="hr_attendance.menu_hr_attendance_view_attendances" 
+        name="Overview" 
+        parent="hr_attendance.menu_hr_attendance_root" 
+        sequence="5" 
+        groups="hr_attendance.group_hr_attendance_officer" 
+        action="dv_hr_attendance.hr_attendance_action"/>
+</odoo>

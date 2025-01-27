@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="l10n_pe_withholding_code_menu" action="l10n_pe_withholding_code_action" parent="account.menu_finance_configuration"/>
+</odoo>

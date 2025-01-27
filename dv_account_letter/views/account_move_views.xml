@@ -1,0 +1,69 @@
+<odoo>
+    <!-- Herencia de la vista de formulario de facturas-->
+    <record id="view_account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_set_checked']" position="after">
+                <button name="create_account_letter" string="Canjear" type="object" class="oe_highlight"
+                    invisible="state == 'draft' or payment_state == 'paid' or move_type not in ('out_invoice', 'in_invoice')"
+                    groups="dv_account_letter.group_tesorery"/>
+            </xpath>
+            <xpath expr="//field[@name='edi_state']" position="after">
+                <field name="letter_id" readonly="1" invisible="not letter_id"/>
+                <field name="letter_line_id" readonly="1" invisible="not letter_line_id"/>
+            </xpath>
+            <xpath expr="//button[@name='action_register_payment']" position="attributes">
+                <attribute name="groups">account.group_account_invoice,dv_account_letter.group_tesorery</attribute>
+            </xpath>
+            <xpath expr="//form[1]/header[1]/button[@name='action_invoice_sent']" position="attributes">
+                <attribute name="groups">account.group_account_invoice</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_process_edi_web_services']" position="attributes">
+                <attribute name="groups">account.group_account_invoice</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_payments_widget']" position="attributes">
+                <attribute name="groups">account.group_account_invoice,account.group_account_readonly,dv_account_letter.group_tesorery</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_retry_edi_documents_error']" position="attributes">
+                <attribute name="groups">account.group_account_invoice</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- Herencia de la vista de lista de facturas clientes-->
+    <record id="view_account_out_invoice_tree_inherit" model="ir.ui.view">
+        <field name="name">account.out.invoice.tree.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//header" position="inside">
+                <button name="create_account_letter" string="Canjear" type="object" class="oe_highlight"
+                    groups="dv_account_letter.group_tesorery"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Herencia de la vista de lista de facturas proveedores-->
+    <record id="view_in_invoice_bill_tree_inherit" model="ir.ui.view">
+        <field name="name">account.in.invoice.bill.tree.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree//header" position="inside">
+                <button name="create_account_letter" string="Canjear" type="object" class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Herencia de contabilidad edi -->
+    <record id="account_edi_view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.edi.view.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="l10n_pe_edi.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page//group//field[@name='l10n_pe_edi_charge_reason']" position="attributes">
+                <attribute name="invisible">not (l10n_pe_edi_charge_reason or letter_line_id)</attribute>
+                <attribute name="required">letter_line_id</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

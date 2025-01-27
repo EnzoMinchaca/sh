@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_account_payment_register_form" model="ir.ui.view">
+        <field name="name">account.payment.register.inherit.view.form</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='communication']" position="after">
+                <field name="l10n_pe_pay_withholding"/>
+                <field name="l10n_pe_withholding_document_number" invisible="l10n_pe_withholding_amount &lt;= 0" required="l10n_pe_withholding_amount &gt; 0"/>
+            </xpath>
+            <xpath expr="//group[@name='group3']" position="after">
+                <notebook>
+                    <page string="Facturas afectas a retención" invisible="l10n_pe_withholding_amount &lt;= 0">
+                        <field name="l10n_pe_withholding_subject_invoice_ids" readonly="1" nolabel="1">
+                            <tree>
+                                <field name="name"/>
+                                <field name="amount_total"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="l10n_pe_withholding_amount_currency"/>
+                            <field name="l10n_pe_withholding_amount"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

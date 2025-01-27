@@ -1,0 +1,127 @@
+# Obtener la ubicación de origen y destino de la regla principal
+        rule_src_location = rule.location_src_id
+        rule_dest_location = rule.location_dest_id
+
+        sale_order_name = procurement.origin
+        org_rule = rule.id
+
+        if sale_order_name:
+            # Buscar el sale.order relacionado usando el campo name
+            sale_order = self.env['sale.order'].search([('name', '=', sale_order_name)], limit=1)
+
+            # Buscar en las líneas de pedido (order_line) aquella que tenga un product_id con pack_product_ids
+            sale_line = sale_order.order_line.filtered(lambda line: line.product_id.pack_product_ids)
+
+            if sale_line:
+                product_index_map = {}
+                product_ids = sale_line.product_id.pack_product_ids
+
+                # Crear un conjunto de nombres de productos para la comparación
+                product_names = set(product_id.display_name for product_id in product_ids)
+                # Agregar el nombre del producto en sale_line a product_names
+                product_names.add(sale_line.product_id.display_name)
+
+                index = 0
+                for product_id in product_ids:
+                    for route in product_id.route_ids:
+                        for product_rule in route.rule_ids:
+                            if (product_rule.location_src_id == rule_src_location and
+                                    product_rule.location_dest_id == rule_dest_location):
+                                product_index_map[index] = product_id.id
+                                index += 1
+                                break  # Salir del for product_rule si se encuentra coincidencia
+                        if index in product_index_map:
+                            break  # Salir del for route si se encuentra coincidencia
+
+            # Ahora procesamos moves_values_by_company usando product_index_map
+            for company_id, moves_values in moves_values_by_company.items():
+                if sale_line:
+                    move = moves_values[0]  # Asumimos que moves_values ya está definido en el contexto
+
+                    # Filtrar moves_values para eliminar los movimientos no deseados
+                    filtered_moves_values = []
+                    for mv in moves_values:
+                        # Verificar si el 'name' del movimiento contiene el nombre de algún producto en product_names
+                        if any(product_name in mv['name'] for product_name in product_names):
+                            filtered_moves_values.append(mv)
+
+                    moves_values = filtered_moves_values
+                    
+                    # Nueva lista para almacenar los movimientos generados
+                    new_moves_values = []
+
+                    # Iterar sobre los índices y productos en product_index_map
+                    for idx, product_id in product_index_map.items():
+                        product_template = self.env['product.template'].search([('id', '=', product_id)], limit=1)
+
+                        # Crear un nuevo movimiento basado en el movimiento original
+                        new_move = move.copy()
+                        
+                        # Modificar los datos del nuevo movimiento
+                        new_move.update({
+                            'name': product_template.display_name,
+                            'product_id': product_template.product_variant_ids[0].id,
+                            'description_picking': product_template.description_picking,
+                        })
+
+                        # Agregar el nuevo movimiento a new_moves_values
+                        new_moves_values.append(new_move)
+                    moves_values = new_moves_values
+                # Crear los movimientos con privilegios de superusuario
+                moves = self.env['stock.move'].with_user(SUPERUSER_ID).sudo().with_company(company_id).create(moves_values)
+                moves._action_confirm()
+                break  # Esto se asume que es intencional, si no es necesario, se debería eliminar.
+                
+        return True
+
+#Solo un picking
+def action_confirm(self):
+    # Llamar al método original para mantener su funcionalidad
+    super(SaleOrderInherit, self).action_confirm()
+
+    for order in self:
+        for line in order.order_line:
+            product = line.product_id
+            if product.pack_product_ids:
+                for pack_product in product.pack_product_ids:
+                    product_name_values = re.findall(r'\((.*?)\)', product.display_name)
+                    if product_name_values:
+                        # Dividir los valores por coma y eliminar espacios en blanco
+                        product_name_values = [value.strip() for value in product_name_values[0].split(',')]
+                    if pack_product.attribute_line_ids:
+                        product_attribute_line_ids = pack_product.attribute_line_ids
+                    else:
+                        product_attribute_line_ids = product.attribute_line_ids
+                    for attribute_line in product_attribute_line_ids:
+                        if attribute_line.attribute_id.boolean_stock:
+                            for value in attribute_line.value_ids:
+                                # Verificar si el value está en producto seleccionado
+                                if value.name in product_name_values:
+                                    if value.stock < line.product_uom_qty:
+                                        raise UserError(_("No hay suficiente stock para el producto %s en el paquete.") % pack_product.display_name)
+                                    # Restar el stock
+                                    value.stock -= line.product_uom_qty
+
+    for picking in self.picking_ids:
+        if len(self.picking_ids) == 1:
+            # Añadir el pack al picking si solo hay un picking
+            for line in self.order_line:
+                if line.product_id.pack_product_ids:
+                    for pack_product in line.product_id.pack_product_ids:
+                        line_values = {
+                            'name': line.name,
+                            'display_name': line.product_id.display_name,
+                            'product_id': pack_product.id,
+                            'location_id': picking.location_id.id,
+                            'location_dest_id': picking.location_dest_id.id,
+                            'product_uom_qty': line.product_uom_qty,
+                        }
+                        picking.write({
+                            'move_ids_without_package': [(0, 0, line_values)],
+                        })
+
+        else:        
+            # Ejecutar la lógica existente si hay más de un picking
+            picking.modified_pack_product_move()
+    
+    return True

@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <!-- Inherit the res.config.settings view -->
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.invoice</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='invoicing_settings']//setting[@id='default_setting_options']" position="before">
+                    <div class="col-12 col-lg-6 o_setting_box" id="link_qr_code_settings">
+                        <div class="o_setting_left_pane">
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Link QR Code</span>
+                            <div class="text-muted">
+                                Choose the type of QR code you want to configure
+                            </div>
+                            <div class="mt16">
+                                <div class="content-group">
+                                    <div class="row">
+                                        <div class="col-lg-1 ml16">
+                                            <field name="custom" />
+                                        </div>
+                                        <label for="custom" class="col-lg-2">Custom</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1 ml16">
+                                            <field name="static" />
+                                        </div>
+                                        <label for="static" class="col-lg-2">Static</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1 ml16">
+                                            <field name="downloadable" />
+                                        </div>
+                                        <label for="downloadable" class="col-lg-2">Downloadable</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

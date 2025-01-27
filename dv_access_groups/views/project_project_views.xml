@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Herencia de la vista formulario -->
+    <record id="project_project_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_close_project']" position="attributes">
+                <attribute name="groups">
+                    dv_access_groups.group_project_preventa,
+                    dv_access_groups.group_project_administration
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

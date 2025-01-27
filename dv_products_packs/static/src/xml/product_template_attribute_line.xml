@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve"> 
+    <t t-name="dv_products_packs.saleProductConfigurator.ptal" t-inherit-mode="extension" t-inherit="sale_product_configurator.saleProductConfigurator.ptal">
+        <!-- Herencia de la vista saleProductConfigurator.ptal -->
+        <xpath expr="//div[@name='ptal']" position="replace">
+            <div name="ptal" t-attf-class="#{this.props.attribute_values.length === 1 &amp;&amp; hasPTAVCustom() ? 'd-flex' : ''}">
+                <div class="d-flex flex-column flex-lg-row gap-2 mb-2">
+                    <label
+                        t-if="this.props.attribute_values.length === 1 &amp;&amp; isSelectedPTAVCustom() || this.props.attribute_values.length &gt; 1"
+                        t-out="this.props.attribute_values[0].res_product_name ? this.props.attribute.name + ' / ' + this.props.attribute_values[0].res_product_name : this.props.attribute.name"
+                        t-attf-class="fw-bold text-break #{this.props.attribute_values.length === 1 &amp;&amp; hasPTAVCustom() ? '' : 'w-lg-25'}"/>
+                    <t t-if="this.props.attribute_values.length > 1" t-call="{{getPTAVTemplate()}}"/>
+                </div>
+                <input
+                    class="o_input w-75 mb-4 ms-lg-auto"
+                    type="text"
+                    placeholder="Enter a customized value"
+                    t-if="hasPTAVCustom &amp;&amp; isSelectedPTAVCustom()"
+                    t-att-value="this.props.customValue"
+                    t-on-change="updateCustomValue"
+                />
+            </div>
+        </xpath>
+    </t>
+</templates>

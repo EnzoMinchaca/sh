@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="l10n_pe_res_bank_account_bn" model="res.partner.bank">
+        <field name="bank_id" ref="l10n_pe_edi.peruvian_national_bank"/>
+        <field name="acc_number">04774171210</field>
+        <field name="currency_id" ref="base.PEN"/>
+        <field name="company_id" ref="l10n_pe.demo_company_pe"/>
+    </record>
+</odoo>

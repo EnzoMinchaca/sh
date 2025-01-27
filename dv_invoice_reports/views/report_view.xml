@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record id="invoice_report_view_form" model="ir.ui.view">
+            <field name="name">report.view.form</field>
+            <field name="model">invoice.report</field>
+            <field name="arch" type="xml">
+                <form string="Reporte" create="false" delete="false" edit="true">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="is_user_vendedor" invisible="1"/>
+                                <field name="tipo_reporte" widget="radio"/>
+                                <field name="fecha_desde" invisible="tipo_reporte == False" required="1"/>
+                                <field name="fecha_hasta" invisible="tipo_reporte == False" required="1"/>
+                            </group>
+                            <group>
+                                <field name="cliente" invisible="tipo_reporte in ('ventas_vendedor','compras') or tipo_reporte == False"/>
+                                <field name="prod" invisible="tipo_reporte in ('ventas_vendedor','ventas_cliente') or tipo_reporte == False"/>
+                                <field name="usuario_vendedor" readonly="is_user_vendedor" options="{'no_open': True}" invisible="tipo_reporte in ('ventas_cliente','compras') or tipo_reporte == False"/>
+                                <field name="marca_categoria" invisible="tipo_reporte in ('ventas_vendedor','ventas_cliente','compras') or tipo_reporte == False"/>
+                                <field name="proveedor" invisible="tipo_reporte in ('cliente_producto','vendedor_marca','ventas_vendedor', 'ventas_cliente', 'ranking_productos') or tipo_reporte == False"/>
+                                <field name="origen" invisible="tipo_reporte in ('cliente_producto','vendedor_marca','ventas_vendedor', 'ventas_cliente', 'ranking_productos') or tipo_reporte == False"/>
+                            </group>
+                        </group>
+                        <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                            <button name="export_report" string="Reporte General" type="object" class="btn-primary" invisible="tipo_reporte == False" context="{'tipo': 'General'}"/>
+                            <button name="export_report" string="Reporte Detallado" type="object" class="btn-primary" invisible="tipo_reporte == False or tipo_reporte in ('ranking_productos')" context="{'tipo': 'Detallado'}"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="invoice_report_action" model="ir.actions.act_window">
+            <field name="name">Reportes</field>
+            <field name="res_model">invoice.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="invoice_report_view_form"/>
+        </record>
+
+        <menuitem id="invoice_report" name="Reportes" action="invoice_report_action" web_icon="dv_invoice_reports,static/src/img/icon.png"/>
+
+    </data>
+</odoo>
+
+

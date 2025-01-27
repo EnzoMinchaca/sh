@@ -1,0 +1,118 @@
+<odoo>
+  <!-- Vista lista de solicitudes de compra -->
+  <record id="view_purchase_request_tree" model="ir.ui.view">
+    <field name="name">purchase.request.tree</field>
+    <field name="model">purchase.request</field>
+    <field name="arch" type="xml">
+      <tree string="Purchase Request">
+        <field name="priority" optional="show" widget="priority" nolabel="1"/>
+        <field name="name" string="Referencia" readonly="1" decoration-bf="1"/>
+        <field name="confirmation_date"/>
+        <field name="user_id"/>
+        <field name="date_order"/>
+        <field name="area_id" optional="hide"/>
+        <field name="currency_id"/>
+        <field name="state" widget="badge"
+                    decoration-info="state == 'pending'"
+                    decoration-warning="state == 'process'"
+                    decoration-success="state == 'done'"
+                    decoration-danger="state == 'cancel'"/>
+        <field name="company_id" column_invisible="1"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Vista formulario de solicitudes de compra -->
+  <record id="view_purchase_request_form" model="ir.ui.view">
+    <field name="name">purchase.request.form</field>
+    <field name="model">purchase.request</field>
+    <field name="arch" type="xml">
+      <form string="Purchase Request">
+        <header>
+          <button name="create_purchase_orders" string="Aprobar" type="object" invisible="state != 'pending'"/>
+          <button name="action_cancel" string="Rechazar" type="object" invisible="state != 'pending'"/>
+          <field name="state" widget="statusbar" readonly="1"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_open_related_orders"
+              type="object"
+              class="oe_stat_button"
+              icon="fa-shopping-cart"
+              invisible="count_purchase_order == 0">
+              <field name="count_purchase_order" widget="statinfo" string="Órdenes"/>
+            </button>
+          </div>
+          <div class="oe_title">
+            <span class="o_form_label">Solicitud de compra</span>
+            <h1 class="d-flex">
+              <field name="priority" widget="priority" class="me-3"/>
+              <field name="name" readonly="1"/>
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="company_id" invisible="1"/>
+              <field name="partner_id" invisible="1"/>
+              <field name="area_id"/>
+              <field name="currency_id" groups="base.group_multi_currency" force_save="1"/>
+            </group>
+            <group>
+              <field name="date_order"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Productos">
+              <field name="request_line" widget="section_and_note_one2many">
+                <tree string="Purchase Request Lines" editable="bottom">
+                  <field name="product_id" options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}"/>
+                  <field name="name"/>
+                  <field name="product_qty"/>
+                  <field name="product_uom" readonly="state != 'pending'"/>
+                  <field name="product_uom_category_id" column_invisible="1"/>
+                  <field name="price_unit" optional="hide"/>
+                  <field name="partner_id" options="{'no_create': True, 'no_create_edit': True, 'no_quick_create': True}" domain="[
+                    ('is_proveedor', '=', 'True'),
+                  ]"/>
+                  <field name="account_analytic_id"/>
+                  <field name="account_id" required="1"/>
+                  <field name="date_order" required="1"/>
+                  <field name="date_planned" required="1"/>
+                  <field name="taxes_id" widget="many2many_tags"/>
+                  <field name="price_subtotal"/>
+                  <field name="price_total"/>
+                  <field name="currency_id" column_invisible="1"/>
+                  <field name="user_id" optional="hide"/>
+                  <field name="state" column_invisible="1"/>
+                  <field name="purchase_id" column_invisible="1"/>
+                  <!-- <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase'), ('company_id', 'parent_of', parent.company_id), ('country_id', '=', parent.tax_country_id), ('active', '=', True)]" context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'account.account_tax_view_search'}" options="{'no_create': True}"/> -->
+                </tree>
+              </field>
+              <group>
+                <group>
+                  <field colspan="2" name="notes" nolabel="1" placeholder="Define your terms and conditions ..."/>
+                </group>
+                <group class="oe_subtotal_footer">
+                  <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids"/>
+          <field name="activity_ids"/>
+          <field name="message_ids"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <!-- Acción de lista de solicitudes de compra -->
+  <record id="action_purchase_request" model="ir.actions.act_window">
+    <field name="name">Solicitud de compra</field>
+    <field name="res_model">purchase.request</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+</odoo>

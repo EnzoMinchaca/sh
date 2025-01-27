@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="dv_sales_document.report_sale_order_template">
+        <!-- Agregar el estilo para la fuente aquí -->
+        <t t-call="web.html_container">
+            <meta charset="UTF-8"/>
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;display=swap');
+                body {
+                    font-family: 'Source Sans 3', sans-serif;
+                    padding: 0;
+                    margin: 0;
+                    font-size: 14px;
+                    line-height: 1.4;
+                }
+                .page {
+                    display: flex;
+                    padding: 0;
+                    margin: 0;
+                }
+                .header-logo {
+                    width: 100px;
+                    height: 100px;
+                }
+                .fot {
+                    right: 40;
+                    left: 40;
+                    text-align: center;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+                .page-break {
+                    page-break-before: always;
+                    margin: 0;
+                    padding: 0;
+                }
+                table {
+                    font-size: 14px;
+                    line-height: 1.4;
+                }
+            </style>
+
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="margin: 0; padding: 0">
+                    <div style="display: flex; flex-direction: colum; align-items: center; text-align: center">
+                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Company Logo" style="width: 60px; height: 60px; padding-top: 20px"/>
+                        <h3><strong><u>Año de la recuperación y del cambio nacional, de la Republica Dominicana</u></strong></h3>
+                    </div>
+                    <div style="padding-left: 70px; padding-right: 70px">
+                        <div style="padding: 0;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="text-align: left">
+                                        <p style="padding: 0; margin: 0">Santo Domingo, Dn</p>
+                                        <p style="padding: 0; margin: 0"><span t-esc="doc.date_order.strftime('%d/%m/%Y')"/></p>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <p>Solicitud Nro: <span t-field="doc.name"/></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br/>
+                        <p><t t-esc="text"/></p>
+                        <div t-if="description_field" style="padding: 0; margin: 0">
+                            <t t-foreach="description_field.split('\n')" t-as="line">
+                                <p t-esc="line" style="padding: 0; margin: 0;"/>
+                            </t>
+                        </div>
+                        <div>
+                            <p>Muy cordialmente le saludamos para solicitar un permiso Fuegos Artificiales, le enviaremos toda la información del evento.</p>
+                        </div>
+                        <div>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="text-align: left; vertical-align: top; padding: 0 20 0 0; margin: 0; white-space: nowrap;">
+                                        <p style="padding: 0; margin: 0"><strong>Empresa Solicitante: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Fecha y Hora Evento: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Tipo Celebración: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Duración: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Zona Lanzamiento: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Ubicación: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Técnico Asignado: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Vehículo Placa: </strong></p>
+                                        <p style="padding: 0; margin: 0"><strong>Nota Adicional: </strong></p>
+                                    </td>
+                                    <td style="text-align: left; vertical-align: top; padding: 0; margin: 0; word-wrap: break-word;">
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.applicant_company"/></p>
+                                        <p style="padding: 0; margin: 0">
+                                            <span t-field="doc.date_event"/>
+                                            <span style="margin-left: 20px;"></span>
+                                            <strong>Hora Evento: </strong>
+                                            De <span t-field="doc.time_start"/> Hasta <span t-field="doc.time_finish"/>
+                                        </p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.celebration"/></p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.duration"/></p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.zone_launch"/></p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.ubication_event"/></p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.technical"/></p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.vehicle"/></p>
+                                        <p style="padding: 0; margin: 0"><span t-field="doc.note_custom"/></p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <p>Anexamos debajo los productos que utilizaremos en el evento, parte atras.</p>
+                        </div>
+                        <div>
+                            <p>Dándole las gracias anticipadas y esperando de su colaboración. Sin otro particular, reciba un cordial saludo de nuestra parte.</p>
+                        </div>
+                        <div style="padding: 0; margin-top: 20px">
+                            <div style="margin-left: 5px">
+                                <img t-if="doc.company_id.firma_image" t-att-src="image_data_uri(doc.company_id.firma_image)" alt="Firma" style="width: 100px; height: 40px"/>
+                            </div>
+                            <table style="width: 50%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="text-align: left; padding-right: 5px; margin-right: 5px">
+                                        <p style="padding: 0; margin: 0">Luis Lugo Pimentel</p>
+                                        <p style="padding: 0; margin: 0">Gerente General</p>
+                                        <p style="padding: 0; margin: 0">Wizard Group Srl</p>
+                                        <p style="padding: 0; margin: 0">809-703-8109</p>
+                                    </td>
+                                    <td style="text-align: left">
+                                        <img t-if="doc.company_id.sello" t-att-src="image_data_uri(doc.company_id.sello)" alt="SelloWizardGroup" style="width: 100px; height: 100px"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="fot" style="position: absolute; top: 995px">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="text-align: left">
+                                    <img t-if="doc.company_id.sello" t-att-src="image_data_uri(doc.company_id.sello)" alt="SelloWizardGroup" style="width: 70px; height: 70px;"/>
+                                </td>
+                                <td style="text-align: center">
+                                    <h3 style="padding: 0; margin: 0">Wizard Group Srl Rnc:130456496</h3>
+                                    <p style="padding: 0; margin: 0"><strong>Av. Charles Summer Nro.3-A, Los Prados, Sto.Dgo, Rep.Dom</strong></p>
+                                    <p style="padding: 0; margin: 0">
+                                        <strong>
+                                            Email: 
+                                            <a href="mailto:info@wizardrd.com" style="text-decoration: none; color: inherit;">wfireworks@gmail.com</a>
+                                            Tels: 809-703-8109
+                                        </strong>
+                                    </p>
+                                    <p style="padding: 0; margin: 0">
+                                        <strong>
+                                            <a href="mailto:info@wizardrd.com" style="text-decoration: none; color: inherit;"><u>info@wizardrd.com</u></a> 
+                                            website: 
+                                            <a href="http://www.wizard-fireworks.com" target="_blank" style="text-decoration: none; color: inherit;"><u>www.wizard-fireworks.com</u></a>
+                                        </strong>
+                                    </p>
+                                </td>
+                                <td style="text-align: right">
+                                    <img t-if="doc.company_id.sello" t-att-src="image_data_uri(doc.company_id.sello)" alt="SelloWizardGroup" style="width: 70px; height: 70px;"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- Salto de página -->
+                <div class="page-break">
+                </div>
+                <div class="page" style="margin: 0; padding: 0">
+                    <div style="display: flex; flex-direction: colum; align-items: center; text-align: center; padding-top: 20px">
+                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Company Logo" style="width: 60px; height: 60px;"/>
+                    </div>
+                    <div style="padding-left: 70px; padding-right: 70px; margin-top: 10px;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="text-align: left; vertical-align: top; padding: 0 20 0 0; margin: 0; white-space: nowrap;">
+                                    <p style="padding: 0; margin: 0"><strong>Empresa Solicitante: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Fecha y Hora Evento: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Tipo Celebración: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Duración: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Zona Lanzamiento: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Ubicación: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Técnico Asignado: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Vehículo Placa: </strong></p>
+                                    <p style="padding: 0; margin: 0"><strong>Nota Adicional: </strong></p>
+                                </td>
+                                <td style="text-align: left; vertical-align: top; padding: 0; margin: 0; word-wrap: break-word;">
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.applicant_company"/></p>
+                                    <p style="padding: 0; margin: 0">
+                                        <span t-field="doc.date_event"/>
+                                        <span style="margin-left: 20px;"></span>
+                                        <strong>Hora Evento: </strong>
+                                        De <span t-field="doc.time_start"/> Hasta <span t-field="doc.time_finish"/>
+                                    </p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.celebration"/></p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.duration"/></p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.zone_launch"/></p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.ubication_event"/></p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.technical"/></p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.vehicle"/></p>
+                                    <p style="padding: 0; margin: 0"><span t-field="doc.note_custom"/></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Tabla de productos y cantidades -->
+                    <div style="padding-left: 70px; padding-right: 70px; margin-top: 10px;">
+                        <p style="margin-bottom: 2px"><strong>Productos a Utilizar</strong></p>
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; margin-top:0">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #000; padding: 1px 3px; background-color: #f2f2f2;">Cantidad Unidades</th>
+                                    <th style="border: 1px solid #000; padding: 1px 3px; background-color: #f2f2f2;">Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.order_line" t-as="line">
+                                    <t t-if="line.product_uom_qty > 0">
+                                        <tr>
+                                            <td style="border: 1px solid #000; padding: 1px 3px;">
+                                                <span t-field="line.product_uom_qty" t-options="{'widget': 'float', 'precision': 0}"/>
+                                                <t t-if="line.product_uom_qty == 1"> Ud</t>
+                                                <t t-elif="line.product_uom_qty > 1"> Uds</t>
+                                            </td>
+                                            <td style="border: 1px solid #000; padding: 1px 3px;">
+                                                <span t-field="line.product_id.name"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="padding-left: 70px; padding-right: 70px; margin-top: 20px">
+                        <div style="margin-left: 5px">
+                            <img t-if="doc.company_id.firma_image" t-att-src="image_data_uri(doc.company_id.firma_image)" alt="Firma" style="width: 100px; height: 40px"/>
+                        </div>
+                        <table style="width: 50%; border-collapse: collapse;">
+                            <tr>
+                                <td style="text-align: left; padding-right: 5px; margin-right: 5px">
+                                    <p style="padding: 0; margin: 0">Luis Lugo Pimentel</p>
+                                    <p style="padding: 0; margin: 0">Gerente General</p>
+                                    <p style="padding: 0; margin: 0">Wizard Group Srl</p>
+                                    <p style="padding: 0; margin: 0">809-703-8109</p>
+                                </td>
+                                <td style="text-align: left">
+                                    <img t-if="doc.company_id.sello" t-att-src="image_data_uri(doc.company_id.sello)" alt="SelloWizardGroup" style="width: 100px; height: 100px"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="fot" style="position: absolute; top: 2125px">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr style="display: flex; align-items: center;">
+                                <td style="text-align: left">
+                                    <img t-if="doc.company_id.sello" t-att-src="image_data_uri(doc.company_id.sello)" alt="SelloWizardGroup" style="width: 70px; height: 70px;"/>
+                                </td>
+                                <td style="text-align: center">
+                                    <h3 style="padding: 0; margin: 0">Wizard Group Srl Rnc:130456496</h3>
+                                    <p style="padding: 0; margin: 0"><strong>Av. Charles Summer Nro.3-A, Los Prados, Sto.Dgo, Rep.Dom</strong></p>
+                                    <p style="padding: 0; margin: 0">
+                                        <strong>
+                                            Email: 
+                                            <a href="mailto:info@wizardrd.com" style="text-decoration: none; color: inherit;">wfireworks@gmail.com</a>
+                                            Tels: 809-703-8109
+                                        </strong>
+                                    </p>
+                                    <p style="padding: 0; margin: 0">
+                                        <strong>
+                                            <a href="mailto:info@wizardrd.com" style="text-decoration: none; color: inherit;"><u>info@wizardrd.com</u></a> 
+                                            website: 
+                                            <a href="http://www.wizard-fireworks.com" target="_blank" style="text-decoration: none; color: inherit;"><u>www.wizard-fireworks.com</u></a>
+                                        </strong>
+                                    </p>
+                                </td>
+                                <td style="text-align: right">
+                                    <img t-if="doc.company_id.sello" t-att-src="image_data_uri(doc.company_id.sello)" alt="SelloWizardGroup" style="width: 70px; height: 70px;"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

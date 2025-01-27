@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reports_system,invoice_reports_system,model_invoice_report,base.group_system,1,1,1,1
+access_reports_user,invoice_reports_user,model_invoice_report,base.group_user,1,1,1,1
+access_reports_vendedor,invoice_reports_vendedor,model_invoice_report,dv_invoice_reports.group_vendedor_reportes,1,1,1,0
+access_reports_comprador,invoice_reports_comprador,model_invoice_report,dv_invoice_reports.group_comprador_reportes,1,1,1,0
+access_reports_user_administrador,invoice_reports_usuario_administrador,model_invoice_report,dv_invoice_reports.group_user_admin_reportes,1,1,1,1

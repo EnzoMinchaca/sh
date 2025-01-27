@@ -1,0 +1,19 @@
+<odoo>
+    <!-- Herencia de dv_l10n_pe_partner_base.res_config_settings_view_form -->
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.vat_sunat</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="dv_l10n_pe_partner_base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='contacts_setting_container']/setting[field[@name='get_data_from_dni']]" position="replace">
+                <setting documentation="https://apis.net.pe/app/account/signup" help="Encuentra tu token en la página de registro de APIS.net" id="get_data_from_dni_setting">
+                    <field name="get_data_from_dni"/>
+                    <div>
+                        <label for="api_dni_token" string="Token"/>
+                        <field name="api_dni_token" id="api_dni_token"/>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

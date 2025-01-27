@@ -1,0 +1,13 @@
+<odoo>
+  <!-- Herencia de la vista fromulario de usuarios -->
+  <record id="view_users_form_inherit" model="ir.ui.view">
+    <field name="name">res.users.form.inherit</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="base.view_users_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='notification_type']" position="after">
+        <field name="active_server_notification"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

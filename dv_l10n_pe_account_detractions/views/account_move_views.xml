@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="l10n_pe_account_move_spot_form" model="ir.ui.view">
+        <field name="name">account.move.inherit.view.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="l10n_pe_spot_group_visible" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@id='other_tab']" position="inside">
+                <group id="l10n_pe_group_withholding">
+                    <group string="Detracciones Peru" name="l10n_pe_group_spot" invisible="not l10n_pe_spot_group_visible">
+                        <field name="l10n_pe_is_subject_to_spot"/>
+                        <field name="l10n_pe_spot_move_id" invisible="not l10n_pe_spot_move_id"/>
+                        <field name="l10n_pe_spot_code_id"/>
+                        <field name="l10n_pe_spot_code_percentage" invisible="not l10n_pe_is_subject_to_spot"/>
+                        <field name="l10n_pe_spot_amount" invisible="not l10n_pe_is_subject_to_spot"/>
+                        <field name="l10n_pe_spot_amount_currency" invisible="not l10n_pe_is_subject_to_spot"/>
+                    </group>
+                </group>
+            </xpath>
+            <!-- Agrega el monto de detracción en soles debajo del amount_total-->
+            <xpath expr="//page[@id='invoice_tab']//field[@name='tax_totals']" position="after">
+                <field name="l10n_pe_spot_amount_currency" invisible="not l10n_pe_is_subject_to_spot" string="Monto de detracción"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

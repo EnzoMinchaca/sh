@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_not_offered_manager,crm.not.offered.manager,model_crm_not_offered_reason,sales_team.group_sale_manager,1,1,1,1
+access_crm_not_offered_salesman,crm.not.offered.salesman,model_crm_not_offered_reason,sales_team.group_sale_salesman,1,1,1,0
+
+access_crm_lead_not_offered_manager,crm.lead.not.offered.manager,model_crm_lead_not_offered,sales_team.group_sale_manager,1,1,1,1
+access_crm_lead_not_offered_salesman,crm.lead.not.offered.salesman,model_crm_lead_not_offered,sales_team.group_sale_salesman,1,1,1,0
+
+access_project_category_manager,project.category.manager,model_project_category,project.group_project_manager,1,1,1,1
+access_project_category_user,project.category.user,model_project_category,project.group_project_user,1,0,0,0
+
+access_project_generate_task_manager,project.generate.task.manager,model_project_generate_task,project.group_project_manager,1,1,1,1
+access_project_generate_task_salesman,project.generate.task.salesman,model_project_generate_task,project.group_project_user,1,1,1,1

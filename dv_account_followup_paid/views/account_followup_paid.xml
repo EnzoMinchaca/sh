@@ -1,0 +1,58 @@
+<odoo>
+
+    <data>
+        <record id="customer_account_followup_paid_list_view" model="ir.ui.view">
+            <field name="name">customer.account.followup.paid.tree</field>
+            <field name="model">account.followup.paid</field>
+            <field name="arch" type="xml">
+                <tree string="Reporte de Cobranza Efectiva" create="false" import="false" delete="false" sample="1" js_class="button_pdf_tree" default_order="account_payment_date desc">
+                    <field name="currency_usd_id" column_invisible="True"/>
+                    <field name="currency_pen_id" column_invisible="True"/>
+                    <field name="related_move_id" column_invisible="False" optional="hide"/>
+                    <field name="account_letter_id" column_invisible="True"/>
+                    <field name="date" string="Fecha de Emisión"/>
+                    <field name="document_number" string="N° de Documento" widget="open_move_line_related_widget"/>
+                    <field name="partner_id" string="Cliente"/>
+                    <field name="account_payment_date" string="Fecha de Pago"/>
+                    <field name="seller_account" string="Vendedor" widget="many2one_avatar_user"/>
+                    <field name="amount_no_sign_usd" string="Importe en $" widget="monetary" options="{'currency_field': 'currency_usd_id'}" sum="Total en $"/>
+                    <field name="amount_no_sign_pen" string="Importe en S/" widget="monetary" options="{'currency_field': 'currency_pen_id'}" sum="Total en S/"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="account_followup_paid_search_view" model="ir.ui.view">
+            <field name="name">account.followup.paid.search</field>
+            <field name="model">account.followup.paid</field>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="document_number" filter_domain="['|', ('document_number','ilike',self), ('partner_id','ilike',self)]"/>
+                    <field name="partner_id"/>
+                    <filter name="account_payment_date" string="Fecha de Pago" date="account_payment_date"/>
+                    <group expand="0" name="group_by" string="Group By">
+                        <filter name="group_client" string="Cliente" domain="[]" context="{'group_by' : 'partner_id'}" />
+                        <filter name="group_seller" string="Vendedor" domain="[]" context="{'group_by': 'seller_account'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_view_customer_account_followup_paid" model="ir.actions.act_window">
+            <field name="name">Reporte de Cobranza Efectiva</field>
+            <field name="res_model">account.followup.paid</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="account_followup_paid_search_view"/>
+            <field name="view_id" ref="customer_account_followup_paid_list_view"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No hay comprobantes pagados
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="account_followup_paid_menuitem" name="Reporte de Cobranza Efectiva" parent="account.menu_finance_receivables" groups="account.group_account_invoice"
+                action="action_view_customer_account_followup_paid" sequence="22"/>
+    </data>
+
+</odoo>

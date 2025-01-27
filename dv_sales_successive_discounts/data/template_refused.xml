@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+
+        <template id="template_refused">
+            <t t-call="website.layout">
+                <div class="container">
+                    <h2>El descuento ha sido rechazado con éxito.</h2>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

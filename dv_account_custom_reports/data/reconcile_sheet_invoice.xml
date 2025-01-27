@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="reconcile_sheet_invoice" model="account.report">
+        <field name="name">Conciliación Invoice</field>
+        <field name="root_report_id" ref="account_reports.general_ledger_report" />
+        <field name="filter_journals" eval="True"/>
+        <field name="filter_analytic" eval="True"/>
+        <field name="filter_period_comparison" eval="False"/>
+        <field name="filter_multi_company">selector</field>
+        <field name="filter_unfold_all" eval="True"/>
+        <field name="filter_hide_0_lines">never</field>
+        <field name="default_opening_date_filter">this_month</field>
+        <field name="search_bar" eval="True"/>
+        <field name="load_more_limit" eval="80"/>
+        <field name="custom_handler_model_id" ref="model_account_reconcile_invoice_ledger_report_handler"/>
+        <field name="column_ids">
+            <record id="reconcile_invoice_report_account_code" model="account.report.column">
+                <field name="name">Código de cuenta</field>
+                <field name="expression_label">account_code</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="reconcile_invoice_report_td_invoice" model="account.report.column">
+                <field name="name">Factura</field>
+                <field name="expression_label">td_invoice</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="reconcile_invoice_report_td_partner_ref" model="account.report.column">
+                <field name="name">IC</field>
+                <field name="expression_label">td_partner_ref</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="reconcile_invoice_report_partner_name" model="account.report.column">
+                <field name="name">Nombre</field>
+                <field name="expression_label">partner_name</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="reconcile_invoice_report_balance" model="account.report.column">
+                <field name="name">Resultado Divisa</field>
+                <field name="expression_label">balance</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record id="reconcile_invoice_report_balance_usd" model="account.report.column">
+                <field name="name">Resultado USD</field>
+                <field name="expression_label">balance_usd</field>
+                <field name="figure_type">monetary</field>
+            </record>
+            <record id="reconcile_invoice_report_date" model="account.report.column">
+                <field name="name">Fecha</field>
+                <field name="expression_label">date</field>
+                <field name="figure_type">date</field>
+            </record>
+        </field>
+    </record>
+</odoo>

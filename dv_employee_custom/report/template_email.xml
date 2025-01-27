@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="email_template_renovacion" model="mail.template">
+        <field name="name">Notificación de Renovación</field>
+        <field name="model_id" ref="model_hr_employee_skill"/>
+        <field name="subject">Renovación de habilidad próxima</field>
+        <field name="email_to">{{ (object.employee_id.work_email) }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Estimado Equipo,</p>
+                <p>Se informa que el colaborador <strong><t t-out="object.employee_id.name or ''"></t></strong> tiene una habilidad
+                próxima a vencer con <strong>fecha <t t-out="object.fecha_renovacion or ''"></t></strong>, favor de gestionar la 
+                renovación oportuna de la habilidad <strong><t t-out="object.skill_id.name or ''"></t></strong>.
+                </p>
+            </div>
+        </field>
+    </record>
+    
+    <record id="ir_cron_skill_renewal_notification" model="ir.cron">
+        <field name="name">Enviar Notificaciones de Renovación</field>
+        <field name="model_id" ref="model_hr_employee_skill"/>
+        <field name="state">code</field>
+        <field name="code">model.send_renewal_notification()</field>
+        <field name="active">True</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+    </record>
+</odoo>

@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="view_stock_move_line_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.move.line.tree.inherit</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_move_line_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="default_order">date desc, id desc</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='reference']" position="after">
+                    <field name="guia_remision"/>
+                </xpath>
+                <xpath expr="//tree/field[@name='quantity']" position="after">
+                    <field name="saldo_total"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

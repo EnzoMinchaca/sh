@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_pe_price_document">
+        <t t-call="dv_l10n_pe_edi_template_price.external_layout_price_A4">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <div t-attf-class="{{'o_report_layout_background' if doc.company_id.layout_background in ['Geometric', 'Custom'] else ''}}"
+                 t-attf-style="background-image: url({{ 'data:image/png;base64,%s' % doc.company_id.layout_background_image.decode('utf-8') if doc.company_id.layout_background_image and doc.company_id.layout_background == 'Custom' else '/base/static/img/bg_background_template.jpg' if doc.company_id.layout_background == 'Geometric' else ''}}); background-size: cover; background-position: center;"
+                 t-att-data-oe-model="doc and doc._name"
+                 t-att-data-oe-id="doc and doc.id">
+                <!-- Encabezado (Listo) -->
+                <div class="container" style="font-size: 12px; display: flex; align-items: center;">
+                    <div class="row">
+                        <div class="text-center" style="width: 30%; max-width: 30%; flex-shrink: 0;">
+                            <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-width: 100%;"/>
+                            <div class="row">
+                                <!-- <span class="fw-bold" style="font-size: 16px;" t-esc="doc.company_id.name"/> -->
+                            </div>
+                        </div>
+                        <div style="width: 1%;"></div>
+
+                        <div style="width: 36%; text-align: center; overflow-wrap: break-word; word-wrap: break-word; display: flex; align-items: center;">
+                            <div>
+                                <strong><span t-esc="doc.company_id.report_header"/></strong>
+                            </div>
+                        </div>
+
+                        <div style="width: 1%;"></div>
+                        <div class="border border-secondary text-center" style="width: 32%; border-radius: 10px; border: 1px solid #a1a4ab;">
+                            <p class="fw-bold" style="font-weight: bold;"><strong>RUC:</strong>
+                                <strong><span t-esc="doc.company_id.vat"/></strong>
+                            </p>
+                            <p style="font-size: 20px; font-weight: bold;"><strong>COTIZACIÓN</strong></p>
+                            <p style="font-size: 14px; font-weight: bold;" class="fw-bold"><strong>Nro.</strong>
+                                <strong><span style="font-size: 14px; font-weight: bold;" t-esc="doc.name.replace(' ','')"/></strong>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong>
+                            <span t-esc="doc.company_id.street"/> -
+                            <span t-esc="doc.company_id.partner_id.l10n_pe_district.name"/> -
+                            <span t-esc="doc.company_id.city"/> -
+                            <span t-esc="doc.company_id.state_id.name"/>
+                        </strong>
+                    </div>
+
+                    <div>
+                        <strong>Telf.:&#160;&#160; <span t-esc="doc.company_id.phone">Phone</span>&#160;&#160;&#160;
+                        Cel.:&#160;&#160; <span t-esc="doc.company_id.mobile">Mobile</span></strong>
+                    </div>
+
+                    <div class="row">
+                        <div style="width: 40%;">
+                            <strong>
+                                <span t-esc="doc.company_id.partner_id.website"/>
+                            </strong>
+                        </div>
+                        <div style="width: 40%;">
+                            <strong>Correo: <span t-esc="doc.company_id.email"/></strong>
+                        </div>
+                    </div>
+                </div>
+                <!-- Cuerpo -->
+                <div class="container" style="font-size: 12px;">
+                    <!-- Datos del cliente (Listo)-->
+                    <div class="row">
+                        <div class=" border-secondary p-2" style="border-radius: 11px; margin-top: 25px; border: 1px solid #a1a4ab;">
+                            <table class="table table-borderless" style="margin-bottom: 0;">
+                                <tbody>
+
+                                    <tr>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">Razon Social:</span></strong></td>
+                                        <td class="p-0" width="50%">
+                                            <t t-esc="doc.partner_id.name"/>
+                                        </td>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">F.Emisión:</span></strong></td>
+                                        <td class="p-0" width="10%">
+                                            <t t-esc="doc.date_order_custom"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">RUC:</span></strong></td>
+                                        <td class="p-0" width="50%">
+                                            <t t-esc="doc.partner_id.vat"/>
+                                        </td>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">F.Vencimiento:</span></strong></td>
+                                        <td class="p-0" width="10%">
+                                            <strong><span style="text:black; font-weigth:900;" t-esc="doc.validity_date"/></strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">Dirección:</span></strong></td>
+                                        <td class="p-0" width="50%">
+                                            <t t-esc="doc.partner_id.street"/>&#160;
+                                            <span t-esc="doc.partner_id.l10n_pe_district.name"/> -
+                                            <span t-esc="doc.partner_id.city"/> -
+                                            <span t-esc="doc.partner_id.state_id.name"/>
+                                        </td>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">Moneda:</span></strong></td>
+                                        <td class="p-0" width="10%">
+                                            <t t-esc="doc.currency_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">Forma de pago:</span></strong></td>
+                                        <td class="p-0 m-0" width="50%">
+                                            <strong><span style="text:black; font-weigth:900;" t-esc="doc.payment_term_id.name"/></strong>
+                                        </td>
+                                        <td class="fw-bold p-0" width="10%"><strong><span style="text:black; font-weigth:900;">Vendedor:</span></strong></td>
+                                        <td class="p-0 m-0" width="10%">
+                                            <strong><span style="text:black; font-weigth:900;" t-esc="doc.user_id.name"/></strong>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br/>
+                    
+                    <br/>
+
+                    <!-- Tabla de productos (Listo)-->
+                    <table class="table border-secondary text-center" style="margin-bottom:0px">
+                        <tr style="color: #000000; background-color: #e7e9ed; font-weight: bold;">
+                            <th width="5%">Item</th>
+                            <th width="6%">Cant.</th>
+                            <th width="8%">Unid.Med.</th>
+                            <th width="57%">Descripción</th>
+                            <th width="8%">Precio Unit.</th>
+                            <th width="8%">Total</th>
+                        </tr>
+                        <t t-set="row_num" t-value="0"/>
+                        <t t-foreach="doc.order_line[:17]" t-as="line">
+                            <t t-set="row_num" t-value="row_num + 1"/>
+                            <tr>
+                                <td><t t-esc="row_num"/></td>
+                                <td><t t-esc="line.product_uom_qty"/></td>
+                                <td><t t-esc="line.product_uom.name"/></td>
+                                <td class="text-start"><t t-esc="line.product_template_id.name"/></td>
+                                <td class="text-end">
+                                    <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                </td>
+                                <td class="text-end">
+                                    <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                </td>
+                            </tr>
+                        </t> <!-- Cierre del bucle t-foreach -->
+                    </table>
+
+                    <!-- Espacio entre tablas sin borde -->
+                    <t t-if="doc.order_line[17:42]">
+                        <div style="height: 140px;" />
+                    </t>
+
+                    <!-- Segunda tabla, después de la fila 19 -->
+                    <table class="table border-secondary text-center" style="margin-bottom:0px">
+                        <t t-if="doc.order_line[17:42]">
+                            <t t-foreach="doc.order_line[17:42]" t-as="line">
+                                <t t-set="row_num" t-value="row_num + 1"/>
+                                <tr>
+                                    <td style="width: 5%;"><t t-esc="row_num"/></td>
+                                    <td style="width: 6%;"><t t-esc="line.product_uom_qty"/></td>
+                                    <td style="width: 8%;"><t t-esc="line.product_uom.name"/></td>
+                                    <td style="width: 57%;" class="text-start"><t t-esc="line.name"/></td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+
+                    <t t-if="doc.order_line[42:68]">
+                        <div style="height: 140px;" />
+                    </t>
+
+                    <table class="table border-secondary text-center" style="margin-bottom:0px">
+                        <t t-if="doc.order_line[42:68]">
+                            <t t-foreach="doc.order_line[42:68]" t-as="line">
+                                <t t-set="row_num" t-value="row_num + 1"/>
+                                <tr>
+                                    <td style="width: 5%;"><t t-esc="row_num"/></td>
+                                    <td style="width: 6%;"><t t-esc="line.product_uom_qty"/></td>
+                                    <td style="width: 8%;"><t t-esc="line.product_uom.name"/></td>
+                                    <td style="width: 57%;" class="text-start"><t t-esc="line.name"/></td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+
+                    <t t-if="doc.order_line[68:94]">
+                        <div style="height: 140px;" />
+                    </t>
+
+                    <table class="table border-secondary text-center" style="margin-bottom:0px">
+                        <t t-if="doc.order_line[68:94]">
+                            <t t-foreach="doc.order_line[68:94]" t-as="line">
+                                <t t-set="row_num" t-value="row_num + 1"/>
+                                <tr>
+                                    <td style="width: 5%;"><t t-esc="row_num"/></td>
+                                    <td style="width: 6%;"><t t-esc="line.product_uom_qty"/></td>
+                                    <td style="width: 8%;"><t t-esc="line.product_uom.name"/></td>
+                                    <td style="width: 57%;" class="text-start"><t t-esc="line.name"/></td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+
+                    <t t-if="doc.order_line[94:]">
+                        <div style="height: 140px;" />
+                    </t>
+
+                    <table class="table border-secondary text-center" style="margin-bottom:0px">
+                        <t t-if="doc.order_line[94:]">
+                            <t t-foreach="doc.order_line[94:]" t-as="line">
+                                <t t-set="row_num" t-value="row_num + 1"/>
+                                <tr>
+                                    <td style="width: 5%;"><t t-esc="row_num"/></td>
+                                    <td style="width: 6%;"><t t-esc="line.product_uom_qty"/></td>
+                                    <td style="width: 8%;"><t t-esc="line.product_uom.name"/></td>
+                                    <td style="width: 57%;" class="text-start"><t t-esc="line.name"/></td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                    <td style="width: 8%;" class="text-end">
+                                        <span t-esc="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+
+                    <!-- Sub_total, Total y igv (LISTO) -->
+                    <div class="row" style="margin-top:10px">
+                        <!-- Datos bancarios y pie de página-->
+                        <div style="width: 60%;">
+                        </div>
+                        <!-- Separación -->
+                        <div style="width: 3%;">
+                        </div>
+                        <div style="width: 37%; align-content: flex-end;">
+                            <table class="table table-borderless" style="border: 1px solid #a1a4ab;">
+                                <tr t-if="doc.amount_untaxed != 0">
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">SUB TOTAL</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 3px;vertical-align: middle;text-align-last: left;font-size: 12px;">IGV 18%</td>
+                                    <td class="text-end" style="padding: 3px;vertical-align: middle;font-size: 12px;">
+                                        <span t-esc="doc.amount_total - doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr t-if="doc.amount_total != 0">
+                                    <td class="fw-bold" style="font-size: 17px;padding: 3px;vertical-align: middle;text-align-last: left;"><strong>IMPORTE TOTAL</strong></td>
+                                    <td class="text-end fw-bold" style="font-size: 17px;padding: 3px;vertical-align: middle;">
+                                        <strong><t t-esc="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></strong>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <!-- FOOTER -->
+            <div t-attf-class="footer o_standard_footer container">
+
+                            
+                                <div class="row" width="100%">
+                                    <div style="font-weight: normal; font-size:12px">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SON:
+                                        <span t-esc="doc.amount_total_text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row" width="100%">
+                                    <table class="table-bordered" style="page-break-inside: avoid; border-bottom: none; border-color: #a1a4ab; font-weight: normal;">
+                                        <t t-if="doc.company_id.partner_id.bank_ids">
+                                            <t t-foreach="doc.company_id.partner_id.bank_ids" t-as="bank">
+                                                <t t-set="is_last" t-value="bank == doc.company_id.partner_id.bank_ids[-1]"/>
+                                                    <tr class="text-left"
+                                                        t-att-style="'border-bottom: none;' if is_last else 'border-color: #a1a4ab;'">
+                                                        <td style="border-color: #a1a4ab; font-size:12px">
+                                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span t-esc="bank.bank_id.name"/>
+                                                        </td>
+                                                        <td style="border-color: #a1a4ab; font-size:12px">
+                                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span t-esc="bank.acc_number"/>
+                                                        </td>
+                                                    </tr>
+                                            </t>
+                                        </t>
+                                    </table>
+                                </div>
+
+                                <div class="row" width="100%">
+                                    <div class="column" style="width: 50%; max-height: 140px; border: 1px solid #a1a4ab; padding: 5px; color: #4d4d4d;">
+                                        <div style="padding: 5px;">
+                                            <p style="color: #4d4d4d; font-size:12px">Observaciones</p>
+                                        </div>
+                                        <div style="padding: 1px 5px 1px 5px;">
+                                            <div style="font-size:12px">
+                                                <t t-out="doc.note or ' '"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="column" style="width: 50%; max-height: 140px; border: 1px solid #a1a4ab; border-left: none; padding: 5px;">
+                                        <div style="padding: 5px;">
+                                            <p style="color: #4d4d4d; font-size:12px">Representante de Ventas</p>
+                                        </div>
+                                        <div style="padding-top: 1px; margin-top: 0px; text-align: center;">
+                                            <div style="text-align: center;">
+                                                <p style="margin: 0; color: #4d4d4d; font-size:12px">OFICINA</p>
+                                            </div>
+                                            <div style="text-align: center;">
+                                                <span style="font-weight: normal; color: #4d4d4d; font-size:12px">
+                                                    Cel: <t t-esc="doc.user_id.work_phone or '----'"/> 
+                                                    Correo: <t t-esc="doc.user_id.email or '----'"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            </div>
+
+
+        </t>
+    </template>
+
+    <template id="report_invoice_layout_customization" inherit_id="web.external_layout_standard">
+        <!-- Localiza el div que deseas eliminar -->
+        <xpath expr="//div[@class='pt-5']" position="attributes">
+            <!-- Añade una condición para mostrarlo solo si no es un reporte personalizado -->
+            <attribute name="style">padding: 0 !important;</attribute>
+        </xpath>
+        
+        <xpath expr="//div[contains(@t-attf-class, 'o_standard_footer')]//div[@class='text-center']" position="before">
+            <t t-if="doc_model == 'sale.order'">
+                <t t-call="dv_l10n_pe_edi_template_price.custom_order_footer_signature"/>
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- Firma y sello en el o_standard_footer -->
+    <template id="custom_order_footer_signature">
+                    <div t-attf-class="footer o_standard_footer container">
+                                
+                                <div class="row" width="100%">
+                                    <div style="font-weight: normal; font-size:12px">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;SON:
+                                        <span t-esc="doc.amount_total_text"/>
+                                    </div>
+                                </div>
+
+                                <div class="row" width="100%">
+                                    <table class="table-bordered" style="page-break-inside: avoid; border-bottom: none; border-color: #a1a4ab; font-weight: normal;">
+                                        <t t-if="doc.company_id.partner_id.bank_ids">
+                                            <t t-foreach="doc.company_id.partner_id.bank_ids" t-as="bank">
+                                                <t t-set="is_last" t-value="bank == doc.company_id.partner_id.bank_ids[-1]"/>
+                                                    <tr class="text-left"
+                                                        t-att-style="'border-bottom: none;' if is_last else 'border-color: #a1a4ab;'">
+                                                        <td style="border-color: #a1a4ab; font-size:12px">
+                                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span t-esc="bank.bank_id.name"/>
+                                                        </td>
+                                                        <td style="border-color: #a1a4ab; font-size:12px">
+                                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span t-esc="bank.acc_number"/>
+                                                        </td>
+                                                    </tr>
+                                            </t>
+                                        </t>
+                                    </table>
+                                </div>
+
+                                <div class="row" width="100%">
+                                    <div class="column" style="width: 50%; max-height: 140px; border: 1px solid #a1a4ab; padding: 5px; color: #4d4d4d;">
+                                        <div style="padding: 5px;">
+                                            <p style="color: #4d4d4d; font-size:12px">Observaciones</p>
+                                        </div>
+                                        <div style="padding: 1px 5px 1px 5px;">
+                                            <div style="font-size:12px">
+                                                <t t-out="doc.note or ' '"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="column" style="width: 50%; max-height: 140px; border: 1px solid #a1a4ab; border-left: none; padding: 5px;">
+                                        <div style="padding: 5px;">
+                                            <p style="color: #4d4d4d; font-size:12px">Representante de Ventas</p>
+                                        </div>
+                                        <div style="padding-top: 1px; margin-top: 0px; text-align: center;">
+                                            <div style="text-align: center;">
+                                                <p style="margin: 0; color: #4d4d4d; font-size:12px">OFICINA</p>
+                                            </div>
+                                            <div style="text-align: center;">
+                                                <span style="font-weight: normal; color: #4d4d4d; font-size:12px">
+                                                    Cel: <t t-esc="doc.user_id.work_phone or '----'"/> 
+                                                    Correo: <t t-esc="doc.user_id.email or '----'"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                    </div>
+    </template>
+
+
+    <template id="report_saleorder" inherit_id="sale.report_saleorder_raw">
+        <xpath expr="//t[@t-call='sale.report_saleorder_document']" position="replace">
+            <t t-if="doc._get_report_base_filename() == 'dv_l10n_pe_edi_template_price.report_pe_price_document'">
+                <t t-call="dv_l10n_pe_edi_template_price.report_pe_price_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </xpath>
+    </template>
+        
+    <record id="A4_price_format" model="report.paperformat">
+        <field name="name">A4-sales</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5.00</field>
+        <field name="margin_bottom">40.00</field>
+        <field name="margin_left">7.0</field>
+        <field name="margin_right">7.0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+    </record>
+
+</odoo>

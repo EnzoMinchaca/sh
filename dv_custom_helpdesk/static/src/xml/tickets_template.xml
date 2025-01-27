@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<t t-name="tickets_data_row">
+    <tr class="o_data_row cursor-default" t-attf-class="o_data_row #{is_last? 'o_data_row_last' : ''}" t-att-data-id="id">
+        <td class="o_ticket_timeline_cell position-relative pe-lg-2">
+            <div class="rounded-circle bg-info position-relative"/>
+        </td>
+        <td class="o_data_cell pt-0 w-100">
+            <div class="o_ticket_line" t-att-data-id="id">
+                <small class="o_ticket_line_dates">
+                    <b t-esc="formatDateTime(data.create_date)"/>
+                </small>
+                <div class="d-flex align-items-center">
+                    <!-- Condicional para mostrar un ícono según el valor de ticket_origin -->
+                    <t t-if="data.ticket_origin == 'web'">
+                        <i class="fa fa-globe me-2"/> <!-- Ícono para origen 'web' -->
+                    </t>
+                    <t t-if="data.ticket_origin == 'email'">
+                        <i class="fa fa-envelope me-2"/> <!-- Ícono para origen 'email' -->
+                    </t>
+                    <t t-if="data.ticket_origin == 'manual'">
+                        <i class="fa fa-pencil me-2"/> <!-- Ícono para origen 'manual' -->
+                    </t>
+                    <h4 class="o_ticket_line_title mt-2" t-esc="data.name"/>
+                </div>
+                <small>
+                    <span t-esc="priorityMap[data.priority] || ''"/> - Estado:
+                    <t t-if="data.kanban_state">
+                        <span t-esc="stateMap[data.kanban_state] || ''"/> 
+                    </t>
+                    <t t-if="data.team_id">
+                        <span> - Grupo: <t t-esc="data.team_id[1]"/> </span>
+                    </t>
+                    <t t-if="data.user_id">
+                        <span> - Agente: <t t-esc="data.user_id[1]"/></span>
+                    </t>
+                </small>
+                <small>
+                    <span t-esc="data.stage_id[1]"/> hace 
+                    <span t-esc="record.shortTimeInStage"/>
+                </small>
+            </div>
+        </td>
+    </tr>
+</t>
+
+<t t-name="ticket_trash_button">
+    <td class="o_list_record_remove pe-3">
+        <button name="delete" arial-label="Delete row" class="btn btn-link text-danger">
+            <i class="fa fa-trash"/>
+        </button>
+    </td>
+</t>
+
+<t t-name="ticket_group_row">
+    <tr class="o_ticket_group_header">
+        <td class="o_group_name" colspan="100%"><span class="o_horizontal_separator my-0" t-esc="display_name"/></td>
+    </tr>
+</t>
+
+<t t-name="ticket_group_add_item">
+    <t t-set="empty" t-value="Object.keys(context).length == 2"/>
+</t>
+
+
+</templates>

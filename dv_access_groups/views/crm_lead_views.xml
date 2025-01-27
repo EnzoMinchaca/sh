@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Herencia de la vista formulario -->
+    <record id="crm_lead_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//label[@for='email_from']" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin</attribute>
+            </xpath> -->
+            <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d'][1]" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin,dv_access_groups.group_crm_comercial</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d'][2]" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin,dv_access_groups.group_crm_comercial</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_sale_quotations_new']" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin,dv_access_groups.group_crm_comercial</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(dv_crm_project_custom.crm_lead_not_offered_action)d']" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin,dv_access_groups.group_crm_preventa,dv_access_groups.group_crm_comercial,dv_access_groups.group_crm_operaciones</attribute>
+            </xpath>
+            <xpath expr="//div[@class='col-auto pb-2 pb-md-0']" position="attributes">
+                <attribute name="groups">dv_access_groups.group_crm_admin,dv_access_groups.group_crm_comercial</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="groups" widget="many2many_tags" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

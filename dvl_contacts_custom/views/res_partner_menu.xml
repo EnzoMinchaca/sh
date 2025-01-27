@@ -1,0 +1,127 @@
+<odoo>
+    <!-- Acción para General -->
+    <record id="contacts.action_contacts" model="ir.actions.act_window">
+        <field name="name">Contacts</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="groups_id" eval="[(4, ref('dvl_contacts_custom.group_partner_admin'))]"/>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'default_is_company': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Contact in your address book
+            </p>
+            <p>
+                Odoo helps you track all activities related to your contacts.
+            </p>
+        </field>
+    </record>
+    <!-- Acción para Clientes -->
+    <record id="action_clients" model="ir.actions.act_window">
+        <field name="name">Clientes</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="domain">[('is_cliente', '=', True)]</field>
+        <field name="context">{'default_is_company': True,'default_is_cliente': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un Cliente en tu libreta de direcciones
+            </p>
+            <p>
+                Odoo te ayuda a seguir todas las actividades relacionadas con tus clientes.
+            </p>
+        </field>
+        <field name="groups_id" eval="[(6, 0, [ref('dvl_contacts_custom.group_partner_cliente'), ref('dvl_contacts_custom.group_partner_admin')])]"/>
+    </record>
+
+    <!-- Acción para Proveedores -->
+    <record id="action_proveedores" model="ir.actions.act_window">
+        <field name="name">Proveedores</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="domain">[('is_proveedor', '=', True)]</field>
+        <field name="context">{'default_is_company': True,'default_is_proveedor': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un Proveedor en tu libreta de direcciones
+            </p>
+            <p>
+                Odoo te ayuda a seguir todas las actividades relacionadas con tus proveedores.
+            </p>
+        <field name="groups_id" eval="[(6, 0, [ref('dvl_contacts_custom.group_partner_proveedor'), ref('dvl_contacts_custom.group_partner_admin')])]"/>
+        </field>
+    </record>
+
+    <!-- Acción para Internos -->
+    <record id="action_internos" model="ir.actions.act_window">
+        <field name="name">Internos</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="domain">[('is_interno', '=', True)]</field>
+        <field name="context">{'default_is_company': True,'default_is_interno': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un Contacto Interno en tu libreta de direcciones
+            </p>
+            <p>
+                Odoo te ayuda a seguir todas las actividades relacionadas con tus contactos internos.
+            </p>
+        <field name="groups_id" eval="[(6, 0, [ref('dvl_contacts_custom.group_partner_interno'), ref('dvl_contacts_custom.group_partner_admin')])]"/>
+        </field>
+    </record>
+
+    <!-- Acción para Externos -->
+    <record id="action_externos" model="ir.actions.act_window">
+        <field name="name">Externos</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="domain">[('is_externo', '=', True)]</field>
+        <field name="context">{'default_is_company': True,'default_is_externo': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crear un Contacto Externo en tu libreta de direcciones
+            </p>
+            <p>
+                Odoo te ayuda a seguir todas las actividades relacionadas con tus contactos externos.
+            </p>
+        <field name="groups_id" eval="[(6, 0, [ref('dvl_contacts_custom.group_partner_externo'), ref('dvl_contacts_custom.group_partner_admin')])]"/>
+        </field>
+    </record>
+
+
+    <!-- Menú de Clientes -->
+    <menuitem id="menu_clients"
+              name="Clientes" 
+              parent="contacts.res_partner_menu_contacts" 
+              action="action_clients" 
+              sequence="2"
+              groups="group_partner_admin,group_partner_cliente"/>
+
+    <!-- Menú de Proveedores -->
+    <menuitem id="menu_proveedores" 
+              name="Proveedores" 
+              parent="contacts.res_partner_menu_contacts" 
+              action="action_proveedores" 
+              sequence="3"
+              groups="group_partner_admin,group_partner_proveedor"/>
+
+    <!-- Menú de Internos -->
+    <menuitem id="menu_internos" 
+              name="Internos" 
+              parent="contacts.res_partner_menu_contacts" 
+              action="action_internos" 
+              sequence="4"
+              groups="group_partner_admin,group_partner_interno"/>
+
+    <!-- Menú de Externos -->
+    <menuitem id="menu_externos" 
+              name="Externos" 
+              parent="contacts.res_partner_menu_contacts" 
+              action="action_externos" 
+              sequence="5"
+              groups="group_partner_admin,group_partner_externo"/>
+</odoo>

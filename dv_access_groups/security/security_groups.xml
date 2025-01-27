@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Grupos de CRM -->
+    <record id="group_crm_admin" model="res.groups">
+        <field name="name">Administrador CRM</field>
+        <field name="comment"> Grupo de permiso CRM Administrador</field>
+        <field name="category_id" ref="base.module_category_sales_crm"/>
+    </record>
+
+    <record id="group_crm_preventa" model="res.groups">
+        <field name="name">Preventa CRM</field>
+        <field name="comment"> Grupo de permiso CRM Preventa</field>
+        <field name="category_id" ref="base.module_category_sales_crm"/>
+    </record>
+
+    <record id="group_crm_comercial" model="res.groups">
+        <field name="name">Comercial CRM</field>
+        <field name="comment"> Grupo de permiso CRM Comercial</field>
+        <field name="category_id" ref="base.module_category_sales_crm"/>
+    </record>
+
+    <record id="group_crm_operaciones" model="res.groups">
+        <field name="name">Operaciones CRM</field>
+        <field name="comment"> Grupo de permiso CRM Operaciones</field>
+        <field name="category_id" ref="base.module_category_sales_crm"/>
+    </record>
+
+    <!-- Grupos de proyectos -->
+    <record id="group_project_preventa" model="res.groups">
+        <field name="name">Preventa Proyectos</field>
+        <field name="comment"> Grupo de permiso Preventa en proyectos</field>
+        <field name="category_id" ref="base.module_category_services_project"/>
+    </record>
+    <record id="group_project_administration" model="res.groups">
+        <field name="name">Administración Proyectos</field>
+        <field name="comment"> Grupo de permiso Administración en proyectos</field>
+        <field name="category_id" ref="base.module_category_services_project"/>
+    </record>
+    <!-- Regla de etapa en CRM -->
+    <record id="crm_lead_stage_recepcion_admin_rule" model="ir.rule">
+        <field name="name">Admin: All permissions on 'Recepción'</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_admin'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="crm_lead_stage_recepcion_preventa_rule" model="ir.rule">
+        <field name="name">Preventa: No permissions on 'Recepción'</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">['&amp;', ('stage_id.name', '!=', 'Recepcion'), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_preventa'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="crm_lead_stage_recepcion_comercial_rule" model="ir.rule">
+        <field name="name">Comercial: Read and write on 'Recepción'</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_comercial'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="crm_lead_stage_recepcion_operaciones_rule" model="ir.rule">
+        <field name="name">Operaciones: Read only on 'Recepción'</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="domain_force">[('stage_id.name', '!=', 'Recepcion')]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_operaciones'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <!-- Regla de etiquetas -->
+    <record id="crm_tag_rule" model="ir.rule">
+        <field name="name">Solo lectura de tags</field>
+        <field name="model_id" ref="sales_team.model_crm_tag"/>
+        <field name="domain_force">[('name', '!=', 'No ofertado')]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_preventa')), (4, ref('dv_access_groups.group_crm_comercial')), (4, ref('dv_access_groups.group_crm_operaciones'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+    <record id="crm_tag_no_offered" model="ir.rule">
+        <field name="name">Edición de no ofertados</field>
+        <field name="model_id" ref="sales_team.model_crm_tag"/>
+        <field name="domain_force">[('name', '=', 'No ofertado')]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_preventa')), (4, ref('dv_access_groups.group_crm_comercial'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+    <record id="crm_tag_operations_edit_specific_tags" model="ir.rule">
+        <field name="name">Operaciones: Edit 'Perdidos' y 'No ofertado' tags</field>
+        <field name="model_id" ref="sales_team.model_crm_tag"/>
+        <field name="domain_force">[('name', 'in', ['Perdido', 'No ofertado'])]</field>
+        <field name="groups" eval="[(4, ref('dv_access_groups.group_crm_operaciones'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+</odoo>

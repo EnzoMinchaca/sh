@@ -1,0 +1,309 @@
+<odoo>
+    <!-- Herencia de la vista lista -->
+    <record id="project_project_view_tree_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.tree.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//field[@name='user_id']" position="after">
+                <button name="action_download_attachments" type="object" class="oe_highlight" icon="fa-cloud-download"/>
+            </xpath> -->
+            <xpath expr="//field[@name='date_start']" position="replace">
+                <field name="date_start" string="Fecha de Inicio" optional="show"/>
+                <field name="date" string="Fecha de Fin" optional="show"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="categ_id"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Herencia de la vista form -->
+    <record id="project_project_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header " position="inside">
+                <field name="all_tasks_ready" invisible="1"/>
+                <field name="open" invisible="1"/>
+                <field name="read_only_close" invisible="1"/>
+                <button name="action_close_project" string="Cierre" type="object"
+                    class="oe_highlight"
+                    groups="project.group_project_manager"
+                    invisible="all_tasks_ready == False or open == False"
+                    context="{'default_access_mode': 'edit', 'dialog_size': 'medium'}"
+                    data-hotkey="e"/>
+                <button name="action_open_project" string="Apertura" type="object"
+                    class="oe_highlight"
+                    groups="base.group_system"
+                    invisible="open == True"
+                    context="{'default_access_mode': 'edit', 'dialog_size': 'medium'}"
+                    data-hotkey="e"/>
+                <button name="update_sku" string="Actualizar SKU"
+                    type="object" 
+                    class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date_start']" position="replace">
+                <field name="date_start" string="Fecha de Inicio"/>
+                <field name="date" string="Fecha de Fin"/>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="categ_id"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="sku" />
+            </xpath>
+            <xpath expr="//div[@class='oe_title']" position="before">
+                <widget name="web_ribbon" title="Cerrado" bg_color="text-bg-danger" invisible="open and active"/>
+                <field name="open" invisible="1"/>
+                <field name="active" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='label_tasks']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sku']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='categ_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia de la vista kanban -->
+    <record id="project_project_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.kanban.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="categ_id"/>
+            </xpath>
+
+            <xpath expr="//span[@t-att-title='record.display_name.value']" position="after">
+                <span t-if="record.sku" style="display: block; margin-top: 4px;">
+                    <span class="o_text_overflow"> SKU: </span>
+                    <field name="sku"/>
+                </span>
+            </xpath>
+
+            <xpath expr="//div[contains(@class, 'o_project_kanban_main')]" position="before">
+                <field name="open" invisible="1"/>
+                <field name="active" invisible="1"/>
+                <widget name="web_ribbon" title="Cerrado" bg_color="text-bg-danger" invisible="active or open"/>
+            </xpath>
+
+            <!-- Agregar filtro de vista por fecha de creacion -->
+            <xpath expr="//field[@name='tag_ids']" position="before">
+                <field name="create_date"/>
+            </xpath>
+            <!-- Ordenar por fecha de creacion -->
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_order">create_date desc</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia de la vista form de las tareas  -->
+    <record id="project_task_view_form2_inherit" model="ir.ui.view">
+        <field name="name">project.task.view.form2.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <!-- <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="sku"/>
+            </xpath> -->
+            <xpath expr="//field[@name='allow_task_dependencies']" position="after">
+                <field name="read_only_close" invisible="1"/>
+                <field name="open" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[contains(@class,'oe_title')]" position="before">
+                <widget name="web_ribbon" title="Cerrado" bg_color="text-bg-danger" invisible="open and active"/>
+                <field name="open" invisible="1"/>
+                <field name="active" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='milestone_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_ids']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <!-- <xpath expr="//field[@name='sku']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath> -->
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="readonly">read_only_close</attribute>
+            </xpath>
+            <xpath expr="//page[@name='extra_info']" position="after">
+                <page name="alerts_config" string="Configuración de Alertas">
+                    <group>
+                        <field name="alert_hour" widget="float_time"/>
+                        <field name="alert_users" widget="many2many_avatar_user"/>
+                        <field name="days_alert"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia de la vista form de las tareas en project_enterprise  -->
+    <record id="project_task_enterprise_view_form2_inherit" model="ir.ui.view">
+        <field name="name">project.task.enterprise.view.form2.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_enterprise.project_task_view_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Mostrar los campos por separado -->
+            <xpath expr="(//label[@for='date_deadline'])[1]" position="replace">
+            </xpath>
+
+            <xpath expr="(//label[@for='date_deadline'])[1]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//label[@for='date_deadline']" position="before">
+                <field name="planned_date_begin" invisible="0" string="Fecha de Inicio"/>
+                <field name="date_deadline" invisible="0" string="Fecha de Fin"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia de la vista kanban de las tareas  -->
+    <record id="project_task_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">project.task.kanban</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="after">
+                <!-- <span t-if="record.sku" style="display: block; margin-top: 4px;">
+                    <span class="o_text_overflow"> SKU: </span>
+                    <field name="sku" />
+                </span> -->
+            </xpath>
+            <xpath expr="//kanban" position="attributes">
+               <attribute name="js_class">button_in_kanban</attribute>
+            </xpath>
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_order">create_date asc</attribute>
+            </xpath>
+            <xpath expr="//div[contains(@class, 'o_kanban_record_top')]" position="before">
+                <field name="open" invisible="1"/>
+                <field name="active" invisible="1"/>
+                <widget name="web_ribbon" title="Cerrado" bg_color="text-bg-danger" invisible="active or open" style="height: -webkit-fill-available;"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia de la vista tree de las tareas  -->
+    <record id="project_task_view_tree_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_enterprise.project_task_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath> 
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="planned_date_begin" string="Fecha de Inicio" optional="show"/>
+                <field name="date_deadline" string="Fecha de Fin" optional="show"/>
+            </xpath> 
+        </field>
+    </record>
+
+    <!-- Herencia de la vista tree de las tareas  -->
+    <record id="project_task_view_tree2_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+               <attribute name="js_class">button_in_tree</attribute>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">create_date asc</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Herencia del search view -->
+    <record id="project_project_search_view_inherit" model="ir.ui.view">
+        <field name="name">project.project.search.view.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_project_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='unassigned_projects']" position="after">
+                <field string="Categoría" name="categ_id" filter_domain="[('categ_id', 'child_of', raw_value)]"/>
+            </xpath>
+            <xpath expr="//filter[@name='company']" position="after">
+                <filter string="Categoría de proyecto"
+                            name="categ_id"
+                            context="{'group_by':'categ_id'}"/>
+            </xpath>
+            <xpath expr="//filter[@name='unassigned_projects']" position="after">
+                <filter string="Abierto" name="open" domain="[('open', '=', True)]"/>
+                <filter string="Cerrado" name="close" domain="[('open', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista lista general de proyectos -->
+    <record id="project_project_view_tree_general" model="ir.ui.view">
+        <field name="name">project.project.view.tree.general</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <tree string="Proyectos">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="categ_id"/>
+                <button name="action_download_attachments" type="object" class="oe_highlight" icon="fa-cloud-download"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Accion para la vista lista general de proyectos -->
+    <record id="project_project_action_general" model="ir.actions.act_window">
+        <field name="name">Proyectos</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_project_view_tree_general"/>
+    </record>
+
+</odoo>

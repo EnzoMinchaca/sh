@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">res.partner.view.form.inherit.l10n.pe.vat</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_latam_base.view_partner_latam_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+                <page name="sunat_details" string="SUNAT" invisible="not is_company">
+                    <group>
+                        <group>
+                            <field name="l10n_pe_taxpayer_type"/>
+                            <field name="l10n_pe_trade_name"/>
+                            <field name="l10n_pe_registration_date"/>
+                            <field name="l10n_pe_taxpayer_status"/>
+                            <field name="l10n_pe_taxpayer_condition"/>
+                            <field name="l10n_pe_activity_start_date"/>
+                            <field name="l10n_pe_activity_end_date"/>
+                            <field name="l10n_pe_foreign_trade_activity"/>
+                        </group>
+                        <group>
+                            <field name="l10n_pe_invoice_emission_system"/>
+                            <field name="l10n_pe_accounting_system"/>
+                            <field name="l10n_pe_payment_receipt_authorized_printing"/>
+                            <field name="l10n_pe_electronic_emission_system"/>
+                            <field name="l10n_pe_electronic_emission_start_date"/>
+                            <field name="l10n_pe_electronic_documents"/>
+                            <field name="l10n_pe_ple_affiliate_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="economic_activity_ids">
+                            <tree>
+                                <field name="activity_type"/>
+                                <field name="l10n_pe_economic_activity_id"/>
+                                <field name="code"/>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="related_branch_ids">
+                            <tree>
+                                <field name="code"/>
+                                <field name="branch_type"/>
+                                <field name="l10n_pe_economic_activity_id"/>
+                                <field name="street"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']//form//field[@name='company_id']" position="after">
+                <field name="repleg_identification_type"/>
+                <field name="repleg_vat"/>
+                <field name="repleg_start_date"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

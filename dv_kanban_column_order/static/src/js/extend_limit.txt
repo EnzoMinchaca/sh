@@ -1,0 +1,43 @@
+/** @odoo-module **/
+
+import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
+import { patch } from "@web/core/utils/patch";
+
+patch(KanbanRenderer.prototype, {
+    getGroupsOrRecords() {
+        const { list } = this.props;
+
+        if (list.isGrouped) {
+            if (this.props.list.config.resModel === 'crm.lead') {
+                list.groups.forEach(async (group) => {
+                    // Verificar si los registros ya han sido extendidos
+                    if (!group.list._extended) {
+                        group.list._extended = true;
+
+                        // Extiende la cantidad de registros
+                        await group.list.load({ limit: 10000 });
+                        const extendedRecords = group.list.records;
+
+                        // Log para ver los registros extendidos
+                        console.log("Extended Records:", extendedRecords);
+
+                        // Limitar nuevamente a 80 registros
+                        group.list.records = extendedRecords.slice(0, 80);
+
+                        // Log para confirmar el límite de 80 registros
+                        console.log("Limited to 80 Records:", group.list.records);
+                    }
+                });
+            }
+
+            return [...list.groups]
+                .sort((a, b) => (a.value && !b.value ? 1 : !a.value && b.value ? -1 : 0))
+                .map((group, i) => ({
+                    group,
+                    key: group.value === null ? `group_key_${i}` : String(group.value),
+                }));
+        } else {
+            return list.records.map((record) => ({ record, key: record.id }));
+        }
+    }
+});

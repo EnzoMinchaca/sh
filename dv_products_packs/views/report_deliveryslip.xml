@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Heredar el template existente -->
+    <template id="report_delivery_document_inherit" inherit_id="stock.report_delivery_document">
+        <!-- Reemplazar el bloque donde se utiliza move_ids -->
+        <xpath expr="//table[@name='stock_move_table']/tbody" position="replace">
+            <tbody>
+                <!-- Cambiar a report_line_ids en lugar de move_ids -->
+                <t t-set="lines" t-value="o.get_move_report_lines()"/>
+                <tr t-foreach="lines" t-as="move">
+                    <td>
+                        <span t-field="move.product_id"/>
+                        <p t-if="move.description_picking != move.product_id.name and move.description_picking != move.product_id.display_name">
+                            <span t-field="move.description_picking"/>
+                        </p>
+                    </td>
+                    <td>
+                        <span t-field="move.product_uom_qty"/>
+                        <span t-field="move.product_uom"/>
+                        <span t-if="move.product_packaging_id">
+                            (<span t-field="move.product_packaging_qty" t-options='{"widget": "integer"}'/> <span t-field="move.product_packaging_id"/>)
+                        </span>
+                    </td>
+                    <td>
+                        <span t-field="move.quantity"/>
+                        <span t-field="move.product_uom"/>
+                        <span t-if="move.product_packaging_id">
+                            (<span t-field="move.product_packaging_quantity" t-options='{"widget": "integer"}'/> <span t-field="move.product_packaging_id"/>)
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </xpath>
+
+         <!-- Reemplazar el bloque del tbody de la segunda tabla -->
+        <xpath expr="//table[@name='stock_move_line_table']/tbody" position="replace">
+            <tbody>
+                <!-- This part gets complicated with different use cases (additional use cases in extensions of this report):
+                    1. If serial numbers are used and set to print on delivery slip => print lines as is, otherwise group them by overlapping
+                        product + description + uom combinations
+                    2. If any packages are assigned => split products up by package (or non-package) and then apply use case 1 -->
+                <!-- If has destination packages => create sections of corresponding products -->
+                <t t-if="o.has_packages" name="has_packages">
+                    <t t-set="packages" t-value="o.move_line_ids.mapped('result_package_id')"/>
+                    <t t-foreach="packages" t-as="package">
+                        <t t-call="stock.stock_report_delivery_package_section_line"/>
+                        <t t-set="package_move_lines" t-value="o.move_line_ids.filtered(lambda l: l.result_package_id == package)"/>
+                        <!-- If printing lots/serial numbers => keep products in original lines -->
+                        <t t-if="has_serial_number">
+                            <tr t-foreach="package_move_lines" t-as="move_line">
+                                <t t-call="stock.stock_report_delivery_has_serial_move_line"/>
+                            </tr>
+                        </t>
+                        <!-- If not printing lots/serial numbers => merge lines with same product+description+uom -->
+                        <t t-else="">
+                            <t t-set="aggregated_lines" t-value="package_move_lines._get_aggregated_product_quantities(strict=True)"/>
+                            <t t-call="stock.stock_report_delivery_aggregated_move_lines"/>
+                        </t>
+                    </t>
+                    <!-- Make sure we do another section for package-less products if they exist -->
+                    <t t-set="move_lines" t-value="o.move_line_ids.filtered(lambda l: not l.result_package_id)"/>
+                    <t t-set="aggregated_lines" t-value="o.move_line_ids._get_aggregated_product_quantities(except_package=True)"/>
+                    <t t-if="move_lines or aggregated_lines" name="no_package_move_lines">
+                        <t t-call="stock.stock_report_delivery_no_package_section_line" name="no_package_section"/>
+                        <t t-if="has_serial_number">
+                            <tr t-foreach="move_lines" t-as="move_line">
+                                <t t-call="stock.stock_report_delivery_has_serial_move_line"/>
+                            </tr>
+                        </t>
+                        <t t-elif="aggregated_lines">
+                            <t t-call="stock.stock_report_delivery_aggregated_move_lines"/>
+                        </t>
+                    </t>
+                </t>
+                <!-- No destination packages -->
+                <t t-else="">
+                    <!-- If printing lots/serial numbers => keep products in original lines -->
+                    <t t-if="has_serial_number">
+                        <tr t-foreach="o.move_line_ids" t-as="move_line">
+                            <t t-call="stock.stock_report_delivery_has_serial_move_line"/>
+                        </tr>
+                    </t>
+                    <!-- If not printing lots/serial numbers => merge lines with same product -->
+                    <t t-else="">
+                        <t t-set="aggregated_lines" t-value="o.get_move_report_lines()"/>
+                        <t t-foreach="aggregated_lines" t-as="aggregated_line">
+                            <tr>
+                                <td>
+                                    <span t-field="aggregated_line.product_id"/>
+                                    <p t-if="aggregated_line.description_picking != aggregated_line.product_id.name and aggregated_line.description_picking != aggregated_line.product_id.display_name">
+                                        <span t-field="aggregated_line.description_picking"/>
+                                    </p>
+                                </td>
+                                <td>
+                                    <span t-field="aggregated_line.product_uom_qty"/>
+                                    <span t-field="aggregated_line.product_uom"/>
+                                    <span t-if="aggregated_line.product_packaging_id">
+                                        (<span t-field="aggregated_line.product_packaging_qty" t-options='{"widget": "integer"}'/> <span t-field="aggregated_line.product_packaging_id"/>)
+                                    </span>
+                                </td>
+                                <td>
+                                    <span t-field="aggregated_line.quantity"/>
+                                    <span t-field="aggregated_line.product_uom"/>
+                                    <span t-if="aggregated_line.product_packaging_id">
+                                        (<span t-field="aggregated_line.product_packaging_quantity" t-options='{"widget": "integer"}'/> <span t-field="aggregated_line.product_packaging_id"/>)
+                                    </span>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </t>
+            </tbody>
+        </xpath>
+    </template>
+</odoo>

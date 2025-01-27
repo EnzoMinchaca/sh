@@ -1,0 +1,52 @@
+<odoo>
+    <record id="view_purchase_request_line_tree" model="ir.ui.view">
+        <field name="name">purchase.request.line.tree</field>
+        <field name="model">purchase.request.line</field>
+        <field name="arch" type="xml">
+            <tree string="Lineas de solicitud">
+                <field name="purchase_id"/>
+                <field name="product_id"/>
+                <field name="name"/>
+                <field name="product_qty"/>
+                <field name="product_uom"/>
+                <field name="product_uom_category_id" column_invisible="1"/>
+                <field name="partner_id"/>
+                <field name="account_analytic_id"/>
+                <field name="account_id"/>
+                <field name="date_order"/>
+                <field name="date_planned"/>
+                <field name="state" widget="badge"
+                    decoration-info="state == 'pending'"
+                    decoration-warning="state == 'process'"
+                    decoration-success="state == 'done'"
+                    decoration-danger="state == 'cancel'"/>
+                <field name="user_id" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_purchase_request_line_search" model="ir.ui.view">
+        <field name="name">purchase.request.line.search</field>
+        <field name="model">purchase.request.line</field>
+        <field name="arch" type="xml">
+            <search string="Busqueda por linea de solicitud">
+                <filter name="pendings" string="Pendientes" domain="[('state', '=', 'pending')]"/>
+                <filter name="approved" string="Aprobados" domain="[('state', '=', 'approved')]"/>
+                <filter name="rejected" string="Rechazados" domain="[('state', '=', 'rejected')]"/>
+                <filter name="done" string="Completados" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Solicitud" name="purchase_id" domain="[]" context="{'group_by': 'purchase_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción de ventana -->
+    <record id="action_purchase_request_line" model="ir.actions.act_window">
+        <field name="name">Lineas de solicitud de compra</field>
+        <field name="res_model">purchase.request.line</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_purchase_id': 1}</field>
+    </record>
+</odoo>

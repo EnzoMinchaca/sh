@@ -1,0 +1,306 @@
+<odoo>
+  <data>
+      <record id="helpdesk.helpdesk_ticket_action_main_my" model="ir.actions.act_window">
+      <field name="name">My Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,kanban,form,activity,pivot,graph,cohort</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_is_open': True,
+            'default_user_id': uid,
+            'default_ticket_origin': 'manual',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tickets found. Let's create one!
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk.helpdesk_ticket_action_main_tree" model="ir.actions.act_window">
+        <field name="name">All Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,kanban,form,activity,pivot,graph,cohort</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="context">{
+          'search_default_is_open': True,
+          'default_ticket_origin': 'manual'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tickets found. Let's create one!
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
+            </p>
+        </field>
+    </record>
+    
+    <record id="helpdesk.helpdesk_ticket_action_close_analysis" model="ir.actions.act_window">
+        <field name="name">Closed Tickets Analysis</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_is_close': True,
+            'default_ticket_origin': 'manual',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create tickets to get statistics.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk.helpdesk_ticket_action_7days_tickets" model="ir.actions.act_window">
+        <field name="name">Closed Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,kanban,form,activity,pivot,graph,cohort</field>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_closed_last_7days': True,
+            'default_ticket_origin': 'manual',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create tickets to get statistics.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk.helpdesk_ticket_action_team" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">kanban,tree,form,activity,pivot,graph,cohort</field>
+        <field name="domain">[('team_id', '=', active_id)]</field>
+        <field name="context">{'default_team_id': active_id, 'default_ticket_origin': 'manual'}</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tickets found. Let's create one!
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk.helpdesk_ticket_action_unassigned" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">kanban,list,form,activity,pivot,graph,cohort</field>
+        <field name="context">{
+            'search_default_unassigned': True,
+            'search_default_is_open': True,
+            'default_ticket_origin': 'manual',
+        }</field>
+        <field name="domain">[('team_id', '=', active_id)]</field>
+        <field name="search_view_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No tickets found. Let's create one!
+                </p><p>To get things done, plan activities and use the ticket status.<br/>
+                Collaborate efficiently by chatting in real-time or via email.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk.helpdesk_ticket_action_success" model="ir.actions.act_window">
+        <field name="name">Success Rate Analysis</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="search_view_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="context">{
+            'search_default_is_close': True,
+            'search_default_my_ticket': True,
+            'search_default_sla_success': True,
+            'pivot_measures': ['__count__'],
+            'default_ticket_origin': 'manual',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create tickets to get statistics.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk.helpdesk_ticket_action_7days_success" model="ir.actions.act_window">
+        <field name="name">Success Rate</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,kanban,form,activity,pivot,graph,cohort</field>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_sla_success': True,
+            'search_default_closed_last_7days': True,
+            'default_ticket_origin': 'manual',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create tickets to get statistics.
+            </p>
+        </field>
+    </record>
+  
+    <record model="ir.ui.view" id="helpdesk_partner_list_view">
+      <field name="name">helpdesk.partner.list</field>
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" string="Contacto"/>
+          <field name="function" string="Título"/>
+          <field name="parent_id" string="Empresa"/>
+          <field name="email" string="Dirección de correo electrónico"/>
+          <field name="phone" string="Teléfono de trabajo"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="helpdesk_partner_form_timeline_view" model="ir.ui.view">
+        <field name="name">helpdesk.partner.form.timeline</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <form create="false">
+              <sheet>
+                <!-- Parte superior -->
+                  <group>
+                    <field name="image_1920" widget="image" class="oe-avatar" options="{'preview_image': 'image_1920'}"
+                           style="width: 150px; height: 150px; border-radius: 50%;" nolabel="1"/>
+                    <div style="display: flex; flex-direction: column; margin-left: 20px;">
+                      <field name="name" nolabel="1" style="font-size: 32px; font-weight: 900;" readonly="1"/>
+                      <field name="parent_id" nolabel="1" readonly="1"/>
+                    </div>
+                  </group>
+                <notebook>
+                  <page string="Escala de Tiempo">
+                    <div class="o_field_tickets_one2many">
+                      <field mode="tree" nolabel="1" name="ticket_ids" context="{'default_partner_id': id}" widget="ticket_one2many">
+                        <tree>
+                          <field name="line_type_id"/>
+                          <field name="create_date"/>
+                          <field name="name"/>
+                          <field name="kanban_state"/>
+                          <field name="priority"/>
+                          <field name="team_id"/>
+                          <field name="stage_id"/>
+                          <field name="user_id"/>
+                          <field name="duration_tracking"/>
+                          <field name="ticket_origin"/>
+                          <field name="display_type" column_invisible="True"/>
+                        </tree>
+                      </field>
+                    </div>
+                  </page>
+                  <page string="Tickets">
+                    <field mode="kanban" name="ticket_ids" context="{'default_duration_tracking': 'duration_tracking', 'form_view_ref': 'helpdesk.helpdesk_ticket_view_form'}">
+                      <kanban
+                        class="o_base_automation_kanban_view"
+                        records_draggable="false"
+                        groups_draggable="false"
+                        quick_create="false"
+                        group_create="false"
+                        group_edit="false"
+                        group_delete="false"
+                        create="false"
+                      >
+                        <field name="ticket_origin"/>
+                        <field name="kanban_state"/>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="team_id"/>
+                        <field name="user_id"/>
+                        <field name="stage_id"/>
+                        <field name="display_timer"/>
+                        <field name="duration_tracking"/>
+                        <templates>
+                          <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                              <div class="d-flex flex-column flex-md-row gap-3 flex-grow-1">
+                                <div class="d-flex align-items-center o_automation_base_info">
+                                  <div class="d-flex align-items-center" style="margin-right: 10px;">
+                                    <!-- Condicional para mostrar un ícono según el valor de ticket_origin -->
+                                    <t t-if="record.ticket_origin.raw_value == 'web'">
+                                        <i class="fa fa-globe me-3" title="Web"/> <!-- Ícono para origen 'web' -->
+                                    </t>
+                                    <t t-if="record.ticket_origin.raw_value == 'email'">
+                                        <i class="fa fa-envelope me-3" title="Email"/> <!-- Ícono para origen 'email' -->
+                                    </t>
+                                    <t t-if="record.ticket_origin.raw_value == 'manual'">
+                                        <i class="fa fa-pencil" title="Manual"/> <!-- Ícono para origen 'manual' -->
+                                    </t>
+                                  </div>
+                                  <div class="d-flex flex-column">
+                                    <strong t-esc="record.name.raw_value" class="o_kanban_title custom_name_style"/>
+                                    <span> Estado:
+                                      <t t-if="record.kanban_state.value == 'Gris'">
+                                          En Progreso
+                                      </t>
+                                      <t t-if="record.kanban_state.value == 'Verde'">
+                                          Listo
+                                      </t>
+                                      <t t-if="record.kanban_state.value == 'Rojo'">
+                                          Bloqueado
+                                      </t>
+                                      <t t-if="record.team_id.raw_value">
+                                        - Grupo: <t t-esc="record.team_id.value"/>
+                                      </t>
+                                      <t t-if="record.user_id.raw_value">
+                                        - Agente: <t t-esc="record.user_id.value"/>
+                                      </t>
+                                    </span>
+                                    <small>
+                                      <t t-esc="record.stage_id.value"/>
+                                      , creado el: 
+                                      <field name="create_date"/>
+                                      <field name="duration_tracking" widget="duration"/>
+                                    </small>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </t>
+                        </templates>
+                      </kanban>
+                    </field>
+                  </page>
+                </notebook>
+              </sheet>
+            </form> 
+        </field>
+    </record>
+
+    <!-- Acción para la vista de lista -->
+    <record id="action_helpdesk_partner_list" model="ir.actions.act_window">
+      <field name="name">Contactos</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_ids" eval="[
+        (5, 0, 0),
+        (0, 0, {'view_mode': 'tree', 'view_id': ref('helpdesk_partner_list_view')}),
+        (0, 0, {'view_mode': 'form', 'view_id': ref('helpdesk_partner_form_timeline_view')})
+      ]"/>
+      <field name="domain">['&amp;', 
+                            ('class_type', '=', 'cliente'),
+                            '|', 
+                            ('count_tickets', '>=', 1),
+                            ('ticket_count', '>=', 1)]</field>
+    </record>
+
+    <menuitem id="menu_custom_contact_list" name="Contactos"
+              parent="helpdesk.menu_helpdesk_root"
+              action="action_helpdesk_partner_list"/>
+
+  </data>
+</odoo>

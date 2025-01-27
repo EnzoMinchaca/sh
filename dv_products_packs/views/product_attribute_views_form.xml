@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="product_attribute_view_form" model="ir.ui.view">
+            <field name="name">product.attribute.form.inherit</field>
+            <field name="model">product.attribute</field>
+            <field name="inherit_id" ref="product.product_attribute_view_form"/>
+            <field name="arch" type="xml">   
+                <xpath expr="//field[@name='create_variant']" position="after">
+                    <group>
+                        <field name="boolean_stock" string="Afecta Stock"/>
+                    </group>
+                </xpath>
+                
+                <xpath expr="//field[@name='default_extra_price']" position="before">
+                    <field name="stock" invisible="parent.boolean_stock == False"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

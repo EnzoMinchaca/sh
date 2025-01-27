@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="view_sale_order_form_inherit_custom" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="description_bomberos"/>
+                    <field name="description_interior"/>
+                    <field name="description_ambiente"/>
+                    <!-- <field name="description_general"/> -->
+                    <field name="applicant_company"/>
+                    <field name="date_event"/>
+                    <field name="time_start"/>
+                    <field name="time_finish"/>
+                    <field name="celebration"/>
+                    <field name="duration"/>
+                    <field name="zone_launch"/>
+                    <field name="ubication_event"/>
+                    <field name="technical"/>
+                    <field name="vehicle"/>
+                    <field name="note_custom"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

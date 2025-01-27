@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <template id="template_confirmed">
+            <t t-call="website.layout">
+                <div class="container">
+                    <h2>¡El descuento ha sido aprobado con éxito!</h2>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
